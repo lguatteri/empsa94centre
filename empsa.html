@@ -1,0 +1,2810 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="EMPSA">
+<meta name="theme-color" content="#1a2942">
+<title>EMPSA 94 — Entretien gérontopsychiatrie</title>
+
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231a2942"/><text y="68" x="50" text-anchor="middle" font-family="Georgia" font-size="52" fill="%23e8e4dc" font-style="italic">e</text></svg>'>
+
+<style>
+:root {
+  --ink: #1a2942;
+  --ink-soft: #2d3d56;
+  --ink-faint: #5a6478;
+  --paper: #f5f2ea;
+  --paper-warm: #ebe6d9;
+  --paper-card: #ffffff;
+  --accent: #8b1e1e;
+  --accent-soft: #b84545;
+  --rule: #d4cfc0;
+  --rule-soft: #e3dfd3;
+  --ok: #3d6b4a;
+  --warn: #8b6914;
+  --shadow-sm: 0 1px 2px rgba(26, 41, 66, 0.06);
+  --shadow-md: 0 2px 8px rgba(26, 41, 66, 0.08), 0 1px 2px rgba(26, 41, 66, 0.04);
+  --shadow-lg: 0 10px 30px rgba(26, 41, 66, 0.12), 0 4px 8px rgba(26, 41, 66, 0.06);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ===== Typographie ===== */
+h1, h2, h3, h4 {
+  font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.sans { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; }
+.mono { font-family: 'SF Mono', 'Menlo', 'Consolas', monospace; }
+.smallcaps { font-variant: small-caps; letter-spacing: 0.08em; font-weight: 500; }
+
+/* ===== Layout principal ===== */
+.app { max-width: 920px; margin: 0 auto; padding: 0 24px; }
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px; background: var(--ink); color: var(--paper);
+  position: sticky; top: 0; z-index: 50;
+  padding-top: calc(16px + env(safe-area-inset-top));
+  box-shadow: var(--shadow-md);
+}
+.topbar .brand { display: flex; align-items: baseline; gap: 12px; }
+.topbar .brand .mark { font-style: italic; font-size: 22px; font-weight: 500; }
+.topbar .brand .title {
+  font-size: 13px; opacity: 0.75; letter-spacing: 0.05em; text-transform: uppercase;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.topbar .actions { display: flex; gap: 8px; }
+.topbar button {
+  background: rgba(255,255,255,0.08); color: var(--paper);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 8px 14px; border-radius: 6px; font-size: 13px;
+  font-family: -apple-system, sans-serif; cursor: pointer;
+  transition: background 0.15s;
+}
+.topbar button:hover, .topbar button:active { background: rgba(255,255,255,0.15); }
+
+/* ===== Écran de connexion ===== */
+.lock-screen {
+  min-height: 100vh; min-height: 100dvh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px; background: var(--ink); color: var(--paper);
+}
+.lock-card { max-width: 380px; width: 100%; text-align: center; }
+.lock-card .seal {
+  font-family: Georgia, serif; font-style: italic;
+  font-size: 64px; line-height: 1;
+  margin-bottom: 24px; color: var(--paper-warm);
+}
+.lock-card h1 { color: var(--paper); font-size: 22px; margin: 0 0 8px; font-weight: 500; }
+.lock-card .sub {
+  color: rgba(245, 242, 234, 0.6); font-size: 14px;
+  margin-bottom: 40px; font-family: -apple-system, sans-serif;
+}
+.pin-input {
+  width: 100%; padding: 18px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;
+  color: var(--paper); font-size: 24px; text-align: center;
+  letter-spacing: 0.5em; font-family: 'SF Mono', monospace;
+  margin-bottom: 16px; -webkit-appearance: none;
+}
+.pin-input:focus {
+  outline: none; border-color: var(--paper-warm);
+  background: rgba(255,255,255,0.08);
+}
+.lock-card button {
+  width: 100%; padding: 14px; background: var(--paper); color: var(--ink);
+  border: none; border-radius: 8px; font-size: 15px; font-weight: 600;
+  font-family: -apple-system, sans-serif; cursor: pointer; margin-bottom: 12px;
+}
+.lock-card button:active { opacity: 0.8; }
+.lock-card .hint {
+  color: rgba(245, 242, 234, 0.5); font-size: 12px;
+  font-family: -apple-system, sans-serif; margin-top: 20px;
+}
+.lock-card .error {
+  color: #ff9b9b; font-size: 13px;
+  font-family: -apple-system, sans-serif; min-height: 18px; margin-bottom: 12px;
+}
+.dev-notice {
+  background: rgba(255, 200, 100, 0.15);
+  border: 1px solid rgba(255, 200, 100, 0.3);
+  color: #ffd98a;
+  padding: 10px 14px; border-radius: 6px;
+  font-size: 12px; font-family: -apple-system, sans-serif;
+  margin-bottom: 16px; text-align: left;
+}
+
+/* ===== Listes patients ===== */
+.screen { padding: 32px 0 120px; }
+.screen h2 {
+  font-size: 14px; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--ink-faint); margin: 0 0 20px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+  font-family: -apple-system, sans-serif; font-weight: 600;
+}
+.patient-list { display: flex; flex-direction: column; gap: 2px; }
+.patient-item {
+  background: var(--paper-card); padding: 18px 20px;
+  border: 1px solid var(--rule-soft);
+  display: flex; justify-content: space-between; align-items: center;
+  cursor: pointer; transition: background 0.1s, transform 0.1s;
+}
+.patient-item:first-child { border-radius: 8px 8px 0 0; }
+.patient-item:last-child { border-radius: 0 0 8px 8px; }
+.patient-item:only-child { border-radius: 8px; }
+.patient-item + .patient-item { border-top: none; }
+.patient-item:hover { background: var(--paper-warm); }
+.patient-item:active { transform: scale(0.995); }
+.patient-item .ident { display: flex; flex-direction: column; gap: 4px; }
+.patient-item .pid {
+  font-family: 'SF Mono', monospace; font-size: 11px;
+  color: var(--ink-faint); letter-spacing: 0.05em;
+}
+.patient-item .pname { font-size: 17px; font-weight: 500; }
+.patient-item .pmeta {
+  font-size: 13px; color: var(--ink-faint);
+  font-family: -apple-system, sans-serif;
+}
+.patient-item .arrow { color: var(--ink-faint); font-size: 20px; }
+
+.empty-state {
+  text-align: center; padding: 60px 20px; color: var(--ink-faint);
+}
+.empty-state .glyph {
+  font-family: Georgia, serif; font-style: italic;
+  font-size: 56px; color: var(--rule); margin-bottom: 16px;
+}
+.empty-state p { font-family: -apple-system, sans-serif; font-size: 14px; margin: 4px 0; }
+
+/* ===== Bouton principal flottant ===== */
+.fab {
+  position: fixed; bottom: 24px; right: 24px;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  background: var(--ink); color: var(--paper); border: none;
+  padding: 14px 22px; border-radius: 999px;
+  font-size: 14px; font-weight: 600;
+  font-family: -apple-system, sans-serif;
+  cursor: pointer; box-shadow: var(--shadow-lg);
+  z-index: 40; display: flex; align-items: center; gap: 8px;
+}
+.fab:active { transform: scale(0.97); }
+.fab .plus { font-size: 18px; line-height: 1; }
+
+/* ===== Formulaire d'entretien ===== */
+.form-header {
+  padding: 24px 0 8px; display: flex;
+  justify-content: space-between; align-items: flex-start;
+  gap: 16px; flex-wrap: wrap;
+}
+.form-header .h-left h1 { font-size: 24px; margin: 0 0 4px; font-weight: 500; }
+.form-header .h-left .h-sub {
+  font-family: -apple-system, sans-serif; font-size: 13px; color: var(--ink-faint);
+}
+.form-header .h-right { display: flex; gap: 8px; }
+
+.back-link {
+  background: none; border: none; color: var(--ink-faint);
+  font-family: -apple-system, sans-serif; font-size: 13px;
+  padding: 4px 0; margin-bottom: 8px; cursor: pointer;
+}
+.back-link:hover { color: var(--ink); }
+
+/* Navigation par sections */
+.section-nav {
+  position: sticky; top: 60px;
+  background: var(--paper); padding: 12px 0;
+  margin: 0 -24px; padding-left: 24px; padding-right: 24px;
+  border-bottom: 1px solid var(--rule);
+  z-index: 10; overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex; gap: 4px; scrollbar-width: none;
+}
+.section-nav::-webkit-scrollbar { display: none; }
+.section-nav button {
+  background: transparent; border: 1px solid var(--rule);
+  color: var(--ink-soft); padding: 6px 14px;
+  border-radius: 999px; font-size: 12px;
+  font-family: -apple-system, sans-serif;
+  white-space: nowrap; cursor: pointer; transition: all 0.15s;
+}
+.section-nav button.active {
+  background: var(--ink); border-color: var(--ink); color: var(--paper);
+}
+
+/* Sections */
+section.block {
+  background: var(--paper-card); margin-top: 24px;
+  border-radius: 8px; border: 1px solid var(--rule-soft); overflow: hidden;
+}
+section.block > header {
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--rule-soft);
+  background: var(--paper-warm);
+}
+section.block > header .roman {
+  font-family: Georgia, serif; font-style: italic;
+  color: var(--accent); font-size: 13px;
+  letter-spacing: 0.1em; display: block;
+}
+section.block > header h3 { margin: 2px 0 0; font-size: 17px; font-weight: 600; }
+section.block .body { padding: 18px 22px 22px; }
+
+/* Champs */
+.field { margin-bottom: 18px; }
+.field:last-child { margin-bottom: 0; }
+.field label.lbl {
+  display: block; font-family: -apple-system, sans-serif;
+  font-size: 12px; font-weight: 600;
+  color: var(--ink-soft); text-transform: uppercase;
+  letter-spacing: 0.08em; margin-bottom: 6px;
+}
+.field input[type="text"],
+.field input[type="number"],
+.field input[type="date"],
+.field textarea,
+.field select {
+  width: 100%; padding: 10px 12px;
+  border: 1px solid var(--rule); border-radius: 6px;
+  font-family: inherit; font-size: 15px;
+  background: var(--paper-card); color: var(--ink);
+  -webkit-appearance: none;
+}
+.field textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
+.field input:focus, .field textarea:focus, .field select:focus {
+  outline: none; border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(26, 41, 66, 0.1);
+}
+.field-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+}
+.field-row-3 {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;
+}
+@media (max-width: 600px) {
+  .field-row, .field-row-3 { grid-template-columns: 1fr; }
+}
+
+.sub-head {
+  font-family: -apple-system, sans-serif;
+  font-size: 13px; font-weight: 700; color: var(--ink);
+  margin: 20px 0 12px; padding-bottom: 6px;
+  border-bottom: 1px dashed var(--rule); letter-spacing: 0.02em;
+}
+.sub-head:first-child { margin-top: 0; }
+
+/* Cases à cocher et radio (chips) */
+.choices {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;
+}
+.chip {
+  display: inline-flex; align-items: center;
+  padding: 7px 12px; border: 1px solid var(--rule);
+  border-radius: 999px; background: var(--paper-card);
+  font-size: 13px; font-family: -apple-system, sans-serif;
+  cursor: pointer; user-select: none;
+  transition: all 0.1s; line-height: 1.2;
+}
+.chip:hover { background: var(--paper-warm); }
+.chip input { display: none; }
+.chip.checked {
+  background: var(--ink); color: var(--paper); border-color: var(--ink);
+}
+.chip.checked.warn {
+  background: var(--accent); border-color: var(--accent);
+}
+
+.toggle-row {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+}
+.toggle-row .toggle-label {
+  font-size: 14px; font-family: -apple-system, sans-serif;
+  color: var(--ink-soft); margin-right: 8px;
+}
+
+/* Liste d'antécédents avec cases à cocher */
+.atcd-list {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.atcd-row {
+  display: grid; grid-template-columns: auto 1fr; gap: 10px;
+  align-items: start; padding: 8px 10px;
+  border: 1px solid var(--rule-soft); border-radius: 6px;
+  background: var(--paper-card);
+  transition: background 0.1s;
+}
+.atcd-row:hover { background: var(--paper-warm); }
+.atcd-row.checked { background: rgba(26, 41, 66, 0.04); border-color: var(--rule); }
+.atcd-row input[type="checkbox"] {
+  width: 20px; height: 20px; margin-top: 2px;
+  accent-color: var(--ink); cursor: pointer;
+}
+.atcd-row .atcd-label {
+  font-family: -apple-system, sans-serif; font-size: 14px;
+  font-weight: 500; cursor: pointer;
+}
+.atcd-row .atcd-detail {
+  grid-column: 2; margin-top: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--rule-soft); border-radius: 4px;
+  font-family: inherit; font-size: 14px;
+  background: white;
+}
+.atcd-row .atcd-detail:focus {
+  outline: none; border-color: var(--ink);
+}
+
+/* Scores ADL/IADL */
+.score-list { display: flex; flex-direction: column; gap: 0; }
+.score-item {
+  padding: 14px 0; border-bottom: 1px solid var(--rule-soft);
+}
+.score-item:last-child { border-bottom: none; }
+.score-item .s-title {
+  font-weight: 600; font-size: 15px; margin-bottom: 6px;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.score-item .s-num {
+  font-family: 'SF Mono', monospace; font-size: 11px;
+  color: var(--ink-faint); background: var(--paper-warm);
+  padding: 2px 6px; border-radius: 3px;
+}
+.score-options {
+  display: flex; flex-direction: column; gap: 4px; margin-top: 4px;
+}
+.score-option {
+  display: flex; align-items: flex-start;
+  padding: 8px 10px; border: 1px solid var(--rule-soft);
+  border-radius: 6px; cursor: pointer;
+  font-size: 13px; font-family: -apple-system, sans-serif;
+  line-height: 1.4; gap: 10px; transition: background 0.1s;
+}
+.score-option:hover { background: var(--paper-warm); }
+.score-option input { margin-top: 2px; accent-color: var(--ink); }
+.score-option.selected {
+  background: var(--ink); color: var(--paper); border-color: var(--ink);
+}
+.score-option .pt {
+  font-family: 'SF Mono', monospace;
+  margin-left: auto; font-weight: 600; opacity: 0.7;
+}
+.score-total {
+  background: var(--ink); color: var(--paper);
+  padding: 12px 16px; border-radius: 6px; margin-top: 16px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: -apple-system, sans-serif;
+}
+.score-total .lbl-tot {
+  font-size: 13px; letter-spacing: 0.08em;
+  text-transform: uppercase; opacity: 0.7;
+}
+.score-total .val {
+  font-family: 'Iowan Old Style', Georgia, serif;
+  font-size: 22px; font-weight: 600;
+}
+
+/* Modales */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(26, 41, 66, 0.5);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  z-index: 100;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px; animation: fadeIn 0.15s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal {
+  background: var(--paper-card); border-radius: 10px;
+  max-width: 780px; width: 100%; max-height: 90vh;
+  display: flex; flex-direction: column;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.2s ease;
+}
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.modal header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--rule);
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.modal header h3 { margin: 0; font-size: 18px; font-weight: 600; }
+.modal header .close-x {
+  background: none; border: none;
+  font-size: 24px; color: var(--ink-faint);
+  cursor: pointer; line-height: 1; padding: 0;
+}
+.modal .modal-body { padding: 20px 24px; overflow-y: auto; flex: 1; }
+.modal .modal-foot {
+  padding: 14px 24px; border-top: 1px solid var(--rule);
+  display: flex; justify-content: flex-end; gap: 10px;
+  background: var(--paper-warm); border-radius: 0 0 10px 10px;
+}
+
+button.btn {
+  background: var(--paper-card); color: var(--ink);
+  border: 1px solid var(--rule);
+  padding: 10px 18px; border-radius: 6px;
+  font-family: -apple-system, sans-serif;
+  font-size: 14px; font-weight: 500; cursor: pointer;
+}
+button.btn:hover { background: var(--paper-warm); }
+button.btn.primary {
+  background: var(--ink); color: var(--paper); border-color: var(--ink);
+}
+button.btn.primary:hover { background: var(--ink-soft); }
+button.btn.danger { color: var(--accent); border-color: var(--rule); }
+button.btn.danger:hover {
+  background: var(--accent); color: var(--paper); border-color: var(--accent);
+}
+
+/* Observation générée */
+.obs-text {
+  background: var(--paper-warm);
+  padding: 20px 22px; border-radius: 6px;
+  border: 1px solid var(--rule);
+  font-family: 'Iowan Old Style', Georgia, serif;
+  font-size: 15px; line-height: 1.7;
+  white-space: pre-wrap; color: var(--ink);
+  max-height: 60vh; overflow-y: auto;
+}
+.obs-actions {
+  display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;
+}
+
+/* Aperçu en direct (preview par section) */
+.section-preview {
+  margin-top: 18px; padding: 14px 16px;
+  background: rgba(26, 41, 66, 0.04);
+  border-left: 3px solid var(--ink-faint);
+  border-radius: 0 6px 6px 0;
+  font-family: 'Iowan Old Style', Georgia, serif;
+  font-size: 14px; line-height: 1.6;
+  white-space: pre-wrap; color: var(--ink-soft);
+}
+.section-preview:empty { display: none; }
+.section-preview .preview-label {
+  font-family: -apple-system, sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-faint); margin-bottom: 8px;
+  display: block;
+}
+
+.toast {
+  position: fixed; bottom: 30px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink); color: var(--paper);
+  padding: 12px 22px; border-radius: 999px;
+  font-family: -apple-system, sans-serif;
+  font-size: 14px; z-index: 200;
+  box-shadow: var(--shadow-lg); animation: toastIn 0.2s ease;
+}
+.toast.ok { background: var(--ok); }
+.toast.err { background: var(--accent); }
+@keyframes toastIn {
+  from { transform: translate(-50%, 20px); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+/* divider */
+.divider {
+  text-align: center; color: var(--ink-faint);
+  font-family: Georgia, serif; font-style: italic;
+  font-size: 14px; margin: 32px 0 12px;
+  display: flex; align-items: center; gap: 12px;
+}
+.divider::before, .divider::after {
+  content: ""; flex: 1; height: 1px; background: var(--rule);
+}
+
+/* Aide flottante */
+.helpbar {
+  margin-top: 24px; padding: 14px 18px;
+  background: var(--paper-warm);
+  border-left: 3px solid var(--accent);
+  font-family: -apple-system, sans-serif;
+  font-size: 13px; color: var(--ink-soft);
+  border-radius: 0 6px 6px 0;
+}
+.helpbar strong { color: var(--ink); }
+
+/* Sélecteur + input couplés */
+.inline-pair {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-top: 4px;
+}
+@media (max-width: 600px) {
+  .inline-pair { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Écran verrouillé -->
+<div id="lockScreen" class="lock-screen">
+  <div class="lock-card">
+    <div class="seal">℮</div>
+    <h1>EMPSA 94</h1>
+    <div class="sub">Entretien mobile de gérontopsychiatrie</div>
+    <div class="dev-notice">
+      <strong>Mode développement</strong> — PIN par défaut : <strong>0000</strong>
+    </div>
+    <div id="lockError" class="error"></div>
+    <input id="pinInput" class="pin-input" type="password" inputmode="numeric" pattern="[0-9]*" placeholder="••••" maxlength="8" autocomplete="off" value="0000">
+    <button id="unlockBtn">Déverrouiller</button>
+    <div class="hint">Les données sont chiffrées localement et ne quittent jamais cet appareil.</div>
+  </div>
+</div>
+
+<!-- App principale -->
+<div id="app" style="display:none;">
+  <div class="topbar">
+    <div class="brand">
+      <span class="mark">℮</span>
+      <span class="title">EMPSA 94 · Entretien</span>
+    </div>
+    <div class="actions">
+      <button id="exportAllBtn" title="Exporter toutes les données chiffrées">Sauvegarder</button>
+      <button id="lockNowBtn" title="Verrouiller l'application">Verrouiller</button>
+    </div>
+  </div>
+
+  <div class="app">
+    <!-- Liste patients -->
+    <div id="listScreen" class="screen">
+      <h2>Patients suivis</h2>
+      <div id="patientList" class="patient-list"></div>
+      <div class="helpbar">
+        <strong>Pseudonymisation</strong> — utilise un identifiant court et des initiales plutôt qu'un nom complet.
+        La correspondance se gère en dehors de l'app (carnet, SIH).
+      </div>
+    </div>
+
+    <!-- Écran formulaire -->
+    <div id="formScreen" class="screen" style="display:none;"></div>
+  </div>
+
+  <button id="newPatientFab" class="fab">
+    <span class="plus">＋</span>
+    <span>Nouveau patient</span>
+  </button>
+</div>
+
+<!-- Modales (injection dynamique) -->
+<div id="modalRoot"></div>
+<div id="toastRoot"></div>
+
+<script>
+/* =====================================================================
+   EMPSA 94 v2 — PWA d'entretien gérontopsychiatrique
+   Stockage : IndexedDB + chiffrement AES-GCM (clé dérivée du PIN via PBKDF2)
+   Pas de réseau, pas de cloud. Tout reste sur l'appareil.
+===================================================================== */
+
+// ========== Utilitaires de chiffrement ==========
+const CryptoBox = (() => {
+  const enc = new TextEncoder();
+  const dec = new TextDecoder();
+  let derivedKey = null;
+
+  async function deriveKey(pin, salt) {
+    const baseKey = await crypto.subtle.importKey(
+      'raw', enc.encode(pin), { name: 'PBKDF2' }, false, ['deriveKey']
+    );
+    return crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt, iterations: 250000, hash: 'SHA-256' },
+      baseKey,
+      { name: 'AES-GCM', length: 256 },
+      false, ['encrypt', 'decrypt']
+    );
+  }
+
+  async function encrypt(data) {
+    if (!derivedKey) throw new Error('Not unlocked');
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const json = enc.encode(JSON.stringify(data));
+    const cipher = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, derivedKey, json);
+    return { iv: Array.from(iv), data: Array.from(new Uint8Array(cipher)) };
+  }
+
+  async function decrypt(payload) {
+    if (!derivedKey) throw new Error('Not unlocked');
+    const iv = new Uint8Array(payload.iv);
+    const cipher = new Uint8Array(payload.data);
+    const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, derivedKey, cipher);
+    return JSON.parse(dec.decode(plain));
+  }
+
+  return {
+    async setup(pin) {
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      derivedKey = await deriveKey(pin, salt);
+      const canary = await encrypt({ ok: 'empsa-canary' });
+      localStorage.setItem('empsa.salt', JSON.stringify(Array.from(salt)));
+      localStorage.setItem('empsa.canary', JSON.stringify(canary));
+    },
+    async unlock(pin) {
+      const saltRaw = localStorage.getItem('empsa.salt');
+      const canaryRaw = localStorage.getItem('empsa.canary');
+      if (!saltRaw || !canaryRaw) return false;
+      const salt = new Uint8Array(JSON.parse(saltRaw));
+      derivedKey = await deriveKey(pin, salt);
+      try {
+        const canary = await decrypt(JSON.parse(canaryRaw));
+        return canary.ok === 'empsa-canary';
+      } catch {
+        derivedKey = null;
+        return false;
+      }
+    },
+    lock() { derivedKey = null; },
+    isUnlocked() { return !!derivedKey; },
+    hasSetup() { return !!localStorage.getItem('empsa.salt'); },
+    encrypt, decrypt
+  };
+})();
+
+// ========== Persistance (IndexedDB) ==========
+const Store = (() => {
+  let db = null;
+  function open() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open('empsa-db', 1);
+      req.onupgradeneeded = (e) => {
+        const d = e.target.result;
+        if (!d.objectStoreNames.contains('patients')) {
+          d.createObjectStore('patients', { keyPath: 'id' });
+        }
+        if (!d.objectStoreNames.contains('entretiens')) {
+          const s = d.createObjectStore('entretiens', { keyPath: 'id' });
+          s.createIndex('patientId', 'patientId', { unique: false });
+        }
+      };
+      req.onsuccess = () => { db = req.result; resolve(db); };
+      req.onerror = () => reject(req.error);
+    });
+  }
+  function tx(store, mode='readonly') {
+    return db.transaction(store, mode).objectStore(store);
+  }
+  async function putEnc(store, id, obj) {
+    const payload = await CryptoBox.encrypt(obj);
+    return new Promise((res, rej) => {
+      const r = tx(store, 'readwrite').put({ id, payload });
+      r.onsuccess = () => res(); r.onerror = () => rej(r.error);
+    });
+  }
+  async function getEnc(store, id) {
+    return new Promise((res, rej) => {
+      const r = tx(store).get(id);
+      r.onsuccess = async () => {
+        if (!r.result) return res(null);
+        try { res(await CryptoBox.decrypt(r.result.payload)); }
+        catch (e) { rej(e); }
+      };
+      r.onerror = () => rej(r.error);
+    });
+  }
+  async function allEnc(store) {
+    return new Promise((res, rej) => {
+      const r = tx(store).getAll();
+      r.onsuccess = async () => {
+        const out = [];
+        for (const item of r.result) {
+          try { out.push(await CryptoBox.decrypt(item.payload)); } catch {}
+        }
+        res(out);
+      };
+      r.onerror = () => rej(r.error);
+    });
+  }
+  async function del(store, id) {
+    return new Promise((res, rej) => {
+      const r = tx(store, 'readwrite').delete(id);
+      r.onsuccess = () => res(); r.onerror = () => rej(r.error);
+    });
+  }
+  return { open, putEnc, getEnc, allEnc, del };
+})();
+
+// ========== Helpers généraux ==========
+function h(tag, attrs = {}, ...children) {
+  const el = document.createElement(tag);
+  Object.entries(attrs || {}).forEach(([k, v]) => {
+    if (k === 'class') el.className = v;
+    else if (k === 'style') el.setAttribute('style', v);
+    else if (k.startsWith('on')) el.addEventListener(k.slice(2).toLowerCase(), v);
+    else if (v === true) el.setAttribute(k, '');
+    else if (v !== false && v !== null && v !== undefined) el.setAttribute(k, v);
+  });
+  children.flat().forEach(c => {
+    if (c === null || c === undefined || c === false) return;
+    if (typeof c === 'string' || typeof c === 'number') el.appendChild(document.createTextNode(String(c)));
+    else el.appendChild(c);
+  });
+  return el;
+}
+
+function toast(msg, kind = '') {
+  const root = document.getElementById('toastRoot');
+  const el = h('div', { class: `toast ${kind}` }, msg);
+  root.appendChild(el);
+  setTimeout(() => el.remove(), 2200);
+}
+
+function uid() {
+  return Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-4);
+}
+function shortId() {
+  return String(Math.floor(1000 + Math.random() * 9000));
+}
+
+// Accords grammaticaux selon sexe (f/m/null)
+function accord(sexe, masc, fem, neutre) {
+  if (sexe === 'f') return fem;
+  if (sexe === 'm') return masc;
+  return neutre || masc;
+}
+function sujetPatient(sexe) {
+  return accord(sexe, 'le patient', 'la patiente', 'le/la patient·e');
+}
+function neLe(sexe) {
+  return accord(sexe, 'né le', 'née le', 'né·e le');
+}
+
+// Joindre une liste de chaînes avec virgules et "et" final
+function joinList(arr) {
+  arr = (arr || []).filter(Boolean);
+  if (!arr.length) return '';
+  if (arr.length === 1) return arr[0];
+  return arr.slice(0, -1).join(', ') + ' et ' + arr[arr.length - 1];
+}
+/* =====================================================================
+   SCHÉMAS DE DONNÉES
+   FORM_SCHEMA suit la trame EMPSA 94, enrichie avec les détails ChatGPT
+===================================================================== */
+
+// Antécédents médicaux — liste par défaut
+const MEDICAL_ITEMS = [
+  'HTA', 'Diabète', 'Dyslipidémie',
+  'Cardiopathie ischémique / coronaropathie', 'Insuffisance cardiaque',
+  'Fibrillation atriale', 'AVC / AIT', 'BPCO / asthme',
+  'Insuffisance rénale chronique', 'Hypothyroïdie',
+  'Cancer', 'Arthrose', 'Ostéoporose',
+  'Chutes à répétition', 'Incontinence urinaire'
+];
+
+const SURGICAL_ITEMS = [
+  'Appendicectomie', 'Cholécystectomie', 'Hystérectomie',
+  'Chirurgie de la cataracte', 'Prothèse de hanche', 'Prothèse de genou',
+  'Chirurgie digestive', 'Chirurgie cardiaque / vasculaire',
+  'Chirurgie carcinologique', 'Pacemaker'
+];
+
+// Villes couvertes par l'EMPSA 94
+const VILLES = [
+  'Maisons-Alfort', 'Créteil', 'Santeny', 'Bonneuil-sur-Marne',
+  'Sucy-en-Brie', 'Marolles-en-Brie', 'Boissy-Saint-Léger'
+];
+
+const FORM_SCHEMA = {
+  /* =========================================================
+     I. BIOGRAPHIE (très enrichie)
+     ========================================================= */
+  biographie: {
+    roman: 'I',
+    title: 'Éléments de biographie',
+    fields: [
+      // --- Lieu de vie ---
+      { type: 'subhead', label: 'Lieu de vie' },
+      { type: 'select', key: 'modeVie', label: 'Mode de vie',
+        options: ['Seul', 'En couple', 'En colocation', 'Avec enfants', 'Avec famille'] },
+      { type: 'select', key: 'ville', label: 'Ville', options: VILLES, allowCustom: true },
+      { type: 'select', key: 'statut', label: 'Statut',
+        options: ['Locataire', 'Propriétaire', 'Résident', 'Hébergé'] },
+      { type: 'select', key: 'typeLogement', label: 'Type de logement',
+        options: ['Appartement', 'Maison', 'EHPAD', 'Résidence autonomie'] },
+      { type: 'text', key: 'etage', label: 'Étage',
+        showIf: { key: 'typeLogement', val: 'Appartement' } },
+      { type: 'text', key: 'structure', label: 'Nom de la structure',
+        showIf: (d) => d.typeLogement === 'EHPAD' || d.typeLogement === 'Résidence autonomie' },
+
+      // --- Situation conjugale ---
+      { type: 'subhead', label: 'Situation conjugale' },
+      { type: 'select', key: 'situationConj', label: 'Situation',
+        options: ['Concubinage', 'Mariage', 'Pacs', 'Célibataire', 'Divorcé.e', 'Veuf / veuve'] },
+      { type: 'text', key: 'situationConjCom', label: 'Précisions' },
+
+      // --- Composition familiale ---
+      { type: 'subhead', label: 'Composition familiale / entourage' },
+      { type: 'select', key: 'enfants', label: 'Enfants',
+        options: ['Aucun', '1', '2', '3', '4+'] },
+      { type: 'text', key: 'enfantsCom', label: 'Précisions sur les enfants',
+        placeholder: 'Ex : vit à Lyon, en contact régulier' },
+      { type: 'select', key: 'conjoint', label: 'Conjoint(e) présent(e)',
+        options: ['Oui', 'Non'] },
+      { type: 'text', key: 'conjointCom', label: 'Précisions sur le conjoint' },
+      { type: 'select', key: 'fratrie', label: 'Fratrie',
+        options: ['Aucune', '1', '2', '3+'] },
+      { type: 'text', key: 'fratrieCom', label: 'Précisions sur la fratrie' },
+      { type: 'text', key: 'aidantPrincipal', label: 'Aidant principal',
+        placeholder: 'Ex : fille aînée, conjoint, voisin...' },
+      { type: 'select', key: 'isolement', label: 'Isolement social', options: ['Oui', 'Non'] },
+
+      // --- Loisirs ---
+      { type: 'subhead', label: 'Loisirs' },
+      { type: 'textarea', key: 'loisirs', label: 'Loisirs',
+        placeholder: 'Ex : lecture, télévision, jardinage, sorties...' },
+
+      // --- Autonomie (aides & appareillages) ---
+      { type: 'subhead', label: 'Autonomie — aides et appareillages' },
+      { type: 'select', key: 'aideDomicile', label: 'Aide à domicile', options: ['Oui', 'Non'] },
+      { type: 'text', key: 'aideDomicileCom', label: 'Précisions',
+        placeholder: 'Fréquence, type d\'aide...' },
+      { type: 'text', key: 'ide', label: 'IDE (passage infirmier)' },
+      { type: 'text', key: 'aideMenagere', label: 'Aide-ménagère' },
+      { type: 'text', key: 'auxiliaireVie', label: 'Auxiliaire de vie' },
+      { type: 'text', key: 'portageRepas', label: 'Portage des repas' },
+      { type: 'text', key: 'autresAides', label: 'Autres aides' },
+      { type: 'text', key: 'appVisuel', label: 'Appareillage visuel',
+        placeholder: 'Ex : lunettes, lentilles' },
+      { type: 'text', key: 'appAuditif', label: 'Appareillage auditif' },
+      { type: 'text', key: 'appDentaire', label: 'Appareil dentaire' },
+      { type: 'text', key: 'appMarche', label: 'Aide à la marche',
+        placeholder: 'Ex : canne, déambulateur, fauteuil' },
+
+      // --- Sphère socio-professionnelle ---
+      { type: 'subhead', label: 'Sphère socio-professionnelle' },
+      { type: 'select', key: 'socioStatut', label: 'Statut',
+        options: ['Retraité(e)', 'En activité', 'Sans activité'] },
+      { type: 'text', key: 'profession', label: 'Profession',
+        placeholder: 'Ex : ancien menuisier, infirmière...' },
+      { type: 'text', key: 'niveauEtude', label: 'Niveau d\'étude' },
+      { type: 'textarea', key: 'prestations', label: 'Prestations sociales',
+        placeholder: 'Ex : APA, AAH, pension d\'invalidité...' },
+      { type: 'select', key: 'protection', label: 'Mesure de protection juridique',
+        options: ['Aucune', 'Curatelle simple', 'Curatelle renforcée', 'Tutelle', 'Sauvegarde de justice', 'Autre'] },
+      { type: 'text', key: 'protectionCom', label: 'Préciser (si autre)',
+        showIf: (d) => d.protection === 'Autre' },
+      { type: 'textarea', key: 'social', label: 'Accompagnement social',
+        placeholder: 'Ex : suivi assistante sociale, dossier APA en cours...' },
+
+      // --- Éléments de vie / personnalité ---
+      { type: 'subhead', label: 'Éléments de vie et prémorbide' },
+      { type: 'textarea', key: 'premorbide', label: 'Éléments prémorbides / personnalité' },
+      { type: 'textarea', key: 'elementsVie', label: 'Éléments de vie marquants' }
+    ]
+  },
+
+  /* =========================================================
+     II. ANTÉCÉDENTS MÉDICO-CHIRURGICAUX
+     (liste à cocher + autre libre)
+     ========================================================= */
+  atcdMedchir: {
+    roman: 'II',
+    title: 'Antécédents médico-chirurgicaux',
+    fields: [
+      { type: 'subhead', label: 'Antécédents médicaux' },
+      { type: 'atcdList', key: 'medical', items: MEDICAL_ITEMS },
+      { type: 'text', key: 'medOther', label: 'Autre antécédent médical',
+        placeholder: 'Hors liste' },
+      { type: 'subhead', label: 'Antécédents chirurgicaux' },
+      { type: 'atcdList', key: 'chir', items: SURGICAL_ITEMS },
+      { type: 'text', key: 'chirOther', label: 'Autre antécédent chirurgical',
+        placeholder: 'Hors liste' }
+    ]
+  },
+
+  /* =========================================================
+     III. ANTÉCÉDENTS PSYCHIATRIQUES
+     ========================================================= */
+  atcdPsy: {
+    roman: 'III',
+    title: 'Antécédents psychiatriques',
+    fields: [
+      { type: 'select', key: 'diag', label: 'Diagnostic principal',
+        options: [
+          'Aucun',
+          'Épisode dépressif caractérisé',
+          'Trouble dépressif récurrent',
+          'Trouble dépressif persistant',
+          'Trouble anxieux',
+          'Trouble panique',
+          'TOC',
+          'ESPT',
+          'Schizophrénie',
+          'Trouble bipolaire',
+          'Trouble schizo-affectif',
+          'Trouble de la personnalité',
+          'Autre'
+        ] },
+      { type: 'text', key: 'diagCom', label: 'Précisions / autre diagnostic' },
+
+      { type: 'textarea', key: 'hospitalisations', label: 'Hospitalisations et suivi' },
+      { type: 'textarea', key: 'psychotropesAnt', label: 'Traitements psychotropes antérieurs' },
+
+      { type: 'subhead', label: 'Conduites suicidaires' },
+      { type: 'select', key: 'nbTS', label: 'Nombre de tentatives de suicide',
+        options: ['0', '1', '2', '3', 'Multiples'] },
+      { type: 'textarea', key: 'tsDetails', label: 'Précisions (dates, moyen, contexte)',
+        showIf: (d) => d.nbTS && d.nbTS !== '0' },
+      { type: 'textarea', key: 'heteroAgressivite', label: 'Conduites hétéro-agressives' },
+
+      { type: 'subhead', label: 'Antécédents psychiatriques familiaux' },
+      { type: 'textarea', key: 'atcdFam', label: 'Antécédents psychiatriques familiaux' },
+
+      { type: 'subhead', label: 'Comorbidités addictologiques' },
+      { type: 'select', key: 'tabac', label: 'Tabac',
+        options: ['Non', 'Actuel', 'Sevré'] },
+      { type: 'text', key: 'tabacPA', label: 'Paquets-années (PA)',
+        placeholder: 'Ex : 20',
+        showIf: (d) => d.tabac === 'Actuel' || d.tabac === 'Sevré' },
+      { type: 'text', key: 'tabacCom', label: 'Précisions tabac',
+        showIf: (d) => d.tabac === 'Actuel' || d.tabac === 'Sevré' },
+      { type: 'select', key: 'alcool', label: 'Alcool',
+        options: ['Non', 'Actuel', 'Sevré'] },
+      { type: 'text', key: 'alcoolCom', label: 'Précisions alcool',
+        showIf: (d) => d.alcool === 'Actuel' || d.alcool === 'Sevré' },
+      { type: 'select', key: 'substances', label: 'Substances',
+        options: ['Non', 'Actuel', 'Sevré'] },
+      { type: 'text', key: 'substancesType', label: 'Type de substances',
+        placeholder: 'Ex : cannabis, benzodiazépines...',
+        showIf: (d) => d.substances === 'Actuel' || d.substances === 'Sevré' },
+      { type: 'text', key: 'substancesCom', label: 'Précisions substances',
+        showIf: (d) => d.substances === 'Actuel' || d.substances === 'Sevré' },
+
+      { type: 'subhead', label: 'Pathologie neurocognitive' },
+      { type: 'select', key: 'tnc', label: 'Niveau',
+        options: ['Aucun', 'Trouble neurocognitif léger', 'Trouble neurocognitif majeur'] },
+      { type: 'select', key: 'etiologie', label: 'Étiologie',
+        options: ['Alzheimer', 'Parkinson', 'DCL', 'DFT', 'Vasculaire', 'Mixte', 'Autre'],
+        showIf: (d) => d.tnc && d.tnc !== 'Aucun' },
+      { type: 'text', key: 'etiologieCom', label: 'Précisions étiologiques',
+        showIf: (d) => d.tnc && d.tnc !== 'Aucun' && d.etiologie === 'Autre' },
+      { type: 'text', key: 'tncCom', label: 'Stade, symptômes, particularités',
+        showIf: (d) => d.tnc && d.tnc !== 'Aucun' },
+      { type: 'textarea', key: 'imagerie', label: 'Imagerie cérébrale' },
+      { type: 'textarea', key: 'bilanNP', label: 'Bilan neuropsychologique' }
+    ]
+  },
+
+  /* =========================================================
+     IV. HISTOIRE RÉCENTE DE LA MALADIE
+     ========================================================= */
+  histoireMaladie: {
+    roman: 'IV',
+    title: 'Histoire récente de la maladie',
+    fields: [
+      { type: 'textarea', key: 'histoire', label: 'Histoire récente de la maladie',
+        placeholder: 'Chronologie de l\'épisode actuel, facteurs déclenchants, évolution...',
+        rows: 8 }
+    ]
+  },
+
+  /* =========================================================
+     V. TRAITEMENTS ACTUELS
+     ========================================================= */
+  traitements: {
+    roman: 'V',
+    title: 'Traitements actuels',
+    fields: [
+      { type: 'textarea', key: 'traitementsActuels', label: 'Traitements actuels',
+        placeholder: 'Molécule — posologie — horaire',
+        rows: 8 }
+    ]
+  },
+
+  /* =========================================================
+     VI. ÉVALUATION PSYCHIATRIQUE (repris de Claude)
+     ========================================================= */
+  evalPsy: {
+    roman: 'VI',
+    title: 'Évaluation psychiatrique',
+    fields: [
+      { type: 'subhead', label: 'Présentation & description générale' },
+
+      { type: 'choice', key: 'tenue', label: 'Tenue vestimentaire',
+        options: [
+          { v: 'spl', t: 'Sans particularité' },
+          { v: 'extrav', t: 'Extravagante / bizarre', warn: true }
+        ]},
+      { type: 'choice', key: 'hygiene', label: 'Hygiène corporelle',
+        options: [
+          { v: 'bonne', t: 'Bonne' },
+          { v: 'negligee', t: 'Négligée', warn: true },
+          { v: 'incurie', t: 'Incurie', warn: true }
+        ]},
+      { type: 'multi', key: 'contact', label: 'Contact',
+        options: [
+          { v: 'spl', t: 'Sans particularité' },
+          { v: 'reticence', t: 'Réticence', warn: true },
+          { v: 'familiarite', t: 'Familiarité', warn: true },
+          { v: 'bizarrerie', t: 'Bizarrerie', warn: true }
+        ]},
+      { type: 'multi', key: 'comportement', label: 'Comportement interpersonnel',
+        options: [
+          { v: 'coop', t: 'Coopérant' },
+          { v: 'diminue', t: 'Diminué (non-coopérant, clinophilie, retrait)', warn: true },
+          { v: 'desinhibe', t: 'Désinhibé (ludisme, familiarité, agressivité)', warn: true },
+          { v: 'inadapte', t: 'Inadapté (bizarrerie, acte insolite)', warn: true }
+        ]},
+      { type: 'multi', key: 'mimique', label: 'Mimique faciale',
+        options: [
+          { v: 'normale', t: 'Normale' },
+          { v: 'diminuee', t: 'Diminuée (hypomimie, amimie, fixité)', warn: true },
+          { v: 'augmentee', t: 'Augmentée (hypermimie)', warn: true },
+          { v: 'alteree', t: 'Altérée qualitativement (grimaces, paramimies)', warn: true }
+        ]},
+      { type: 'multi', key: 'psychomot', label: 'Activité psychomotrice globale',
+        options: [
+          { v: 'normale', t: 'Normale' },
+          { v: 'diminuee', t: 'Diminuée (RPM, bradykinésie, stupeur)', warn: true },
+          { v: 'augmentee', t: 'Augmentée (accélération PM, hyperkinésie, agitation)', warn: true },
+          { v: 'alteree', t: 'Altérée (parakinésies, catalepsie, maniérisme, stéréotypies)', warn: true }
+        ]},
+
+      { type: 'subhead', label: 'Langage' },
+      { type: 'choice', key: 'prosodie', label: 'Prosodie',
+        options: [
+          { v: 'normale', t: 'Normale' },
+          { v: 'diminuee', t: 'Diminuée (monocorde)', warn: true },
+          { v: 'augmentee', t: 'Augmentée', warn: true },
+          { v: 'alteree', t: 'Altérée (dysprosodie)', warn: true }
+        ]},
+      { type: 'multi', key: 'rythmeLangage', label: 'Rythme & quantité de langage',
+        options: [
+          { v: 'normaux', t: 'Normaux' },
+          { v: 'alteres', t: 'Altérés (fading, barrages)', warn: true },
+          { v: 'diminues', t: 'Diminués (bradyphémie, latences, alogie, mutisme)', warn: true },
+          { v: 'augmentes', t: 'Augmentés (tachyphémie, logorrhée)', warn: true }
+        ]},
+      { type: 'choice', key: 'intensite', label: 'Intensité sonore',
+        options: [
+          { v: 'normale', t: 'Normale' },
+          { v: 'diminuee', t: 'Diminuée (hypophonie)', warn: true },
+          { v: 'augmentee', t: 'Augmentée (hyperphonie, cris)', warn: true }
+        ]},
+      { type: 'choice', key: 'signification', label: 'Signification du langage',
+        options: [
+          { v: 'normale', t: 'Normale' },
+          { v: 'alteree', t: 'Altérée (néologismes, écholalie, stéréotypies)', warn: true }
+        ]},
+
+      { type: 'subhead', label: 'Pensée' },
+      { type: 'choice', key: 'rythmePensee', label: 'Rythme de la pensée',
+        options: [
+          { v: 'normal', t: 'Normal' },
+          { v: 'diminue', t: 'Diminué (bradypsychie, monoïdéisme)', warn: true },
+          { v: 'augmente', t: 'Augmenté', warn: true }
+        ]},
+      { type: 'choice', key: 'coursPensee', label: 'Cours de la pensée',
+        options: [
+          { v: 'logique', t: 'Logique et cohérent' },
+          { v: 'illogique', t: 'Illogique / incohérent (digressif, diffluent)', warn: true }
+        ]},
+      { type: 'multi', key: 'contenuPensee', label: 'Contenu de la pensée',
+        options: [
+          { v: 'delire', t: 'Idées délirantes', warn: true },
+          { v: 'obsess', t: 'Soucis / idées obsessionnelles', warn: true },
+          { v: 'reviv', t: 'Reviviscences, remémorations, flashbacks', warn: true },
+          { v: 'phobie', t: 'Idées phobiques', warn: true },
+          { v: 'anxiete', t: 'Idées liées à l\'anxiété anticipatoire', warn: true },
+          { v: 'depressif', t: 'Idées dépressives (dévalorisation, incurabilité)', warn: true },
+          { v: 'exalte', t: 'Idées exaltées (grandeur, optimisme démesuré)', warn: true }
+        ]},
+      { type: 'textarea', key: 'contenuPenseeDetails', label: 'Précisions (thématiques, mécanismes)' },
+
+      { type: 'subhead', label: 'Affectivité' },
+      { type: 'multi', key: 'emotions', label: 'Émotions',
+        options: [
+          { v: 'normales', t: 'Normales' },
+          { v: 'diminuees', t: 'Diminuées (hypoesthésie / anesthésie affective)', warn: true },
+          { v: 'anhedonie', t: 'Anhédonie', warn: true },
+          { v: 'augmentees', t: 'Augmentées (hyperréactivité)', warn: true },
+          { v: 'labiles', t: 'Labiles', warn: true },
+          { v: 'hyperhedonie', t: 'Hyperhédonie', warn: true },
+          { v: 'inadaptees', t: 'Inadaptées (discordance, ambivalence)', warn: true },
+          { v: 'anxiete', t: 'Anxiété', warn: true }
+        ]},
+      { type: 'choice', key: 'humeur', label: 'Humeur',
+        options: [
+          { v: 'euthymie', t: 'Euthymie' },
+          { v: 'diminuee', t: 'Diminuée (hypothymie, dépressive, dysphorique)', warn: true },
+          { v: 'augmentee', t: 'Augmentée (hyperthymie, exaltée, euphorique)', warn: true },
+          { v: 'labile', t: 'Labile', warn: true }
+        ]},
+      { type: 'choice', key: 'motivation', label: 'Motivation',
+        options: [
+          { v: 'normale', t: 'Normale' },
+          { v: 'diminuee', t: 'Diminuée (aboulie, procrastination)', warn: true },
+          { v: 'augmentee', t: 'Augmentée', warn: true }
+        ]},
+
+      { type: 'subhead', label: 'Auto-agressivité' },
+      { type: 'bool', key: 'ideesNoires', label: 'Idées noires', warn: true },
+      { type: 'bool', key: 'ideesSuicidaires', label: 'Idées suicidaires présentes', warn: true },
+      { type: 'textarea', key: 'auto_details', label: 'Précisions (scénario, moyen, date, facteurs de protection)',
+        showIf: (d) => d.ideesNoires || d.ideesSuicidaires },
+
+      { type: 'subhead', label: 'Perception' },
+      { type: 'bool', key: 'hallu_vis', label: 'Hallucinations visuelles', warn: true },
+      { type: 'bool', key: 'hallu_aud', label: 'Hallucinations auditives', warn: true },
+      { type: 'bool', key: 'hallu_ip', label: 'Hallucinations intrapsychiques', warn: true },
+      { type: 'bool', key: 'hallu_cen', label: 'Hallucinations cénesthésiques', warn: true },
+      { type: 'bool', key: 'hallu_olf', label: 'Hallucinations olfactives', warn: true },
+      { type: 'textarea', key: 'hallu_details', label: 'Précisions (thématique, critique, retentissement)' },
+
+      { type: 'subhead', label: 'Cognitions' },
+      { type: 'choice', key: 'ots', label: 'Orientation temporo-spatiale',
+        options: [
+          { v: 'normale', t: 'Normale' },
+          { v: 'desorientee', t: 'Désorientation temporo-spatiale', warn: true }
+        ]},
+      { type: 'choice', key: 'vigilance', label: 'Vigilance & niveau de conscience',
+        options: [
+          { v: 'normaux', t: 'Normaux' },
+          { v: 'diminuees', t: 'Diminués (somnolence, stupeur, coma)', warn: true }
+        ]},
+      { type: 'choice', key: 'attention', label: 'Attention',
+        options: [
+          { v: 'normale', t: 'Normale' },
+          { v: 'diminuee', t: 'Diminuée (hypoprosexie, distractibilité)', warn: true },
+          { v: 'augmentee', t: 'Augmentée (hyperprosexie)', warn: true }
+        ]},
+
+      { type: 'subhead', label: 'Fonctions physiologiques' },
+      { type: 'choice', key: 'alimentation', label: 'Alimentation',
+        options: [
+          { v: 'normale', t: 'Normale' },
+          { v: 'anorexie', t: 'Anorexie', warn: true },
+          { v: 'hyperphagie', t: 'Hyperphagie', warn: true }
+        ]},
+      { type: 'multi', key: 'sommeil', label: 'Sommeil',
+        options: [
+          { v: 'normal', t: 'Normal' },
+          { v: 'insomnie', t: 'Insomnie', warn: true },
+          { v: 'hypersomnie', t: 'Hypersomnie', warn: true },
+          { v: 'som_diurne', t: 'Somnolence diurne excessive', warn: true },
+          { v: 'cauchemars', t: 'Cauchemars', warn: true }
+        ]},
+      { type: 'choice', key: 'sexualite', label: 'Sexualité',
+        options: [
+          { v: 'normale', t: 'Normale' },
+          { v: 'baisse', t: 'Baisse du désir / de l\'excitation', warn: true },
+          { v: 'augmentation', t: 'Augmentation du désir / de l\'excitation', warn: true }
+        ]},
+
+      { type: 'subhead', label: 'Évaluation du jugement' },
+      { type: 'choice', key: 'conscienceTrouble', label: 'Conscience du trouble',
+        options: [
+          { v: 'totale', t: 'Totale' },
+          { v: 'partielle', t: 'Partielle', warn: true },
+          { v: 'absente', t: 'Absente', warn: true }
+        ]}
+    ]
+  }
+};
+
+// Items ADL (Katz)
+const ADL_ITEMS = [
+  { key: 'toilette', label: 'Toilette (lavabo, bain, douche)',
+    options: [
+      { t: 'Besoin d\'aucune aide.', v: 1 },
+      { t: 'Aide pour une seule partie du corps.', v: 0.5 },
+      { t: 'Aide plusieurs parties du corps, ou toilette impossible.', v: 0 }
+    ]},
+  { key: 'habillage', label: 'Habillage',
+    options: [
+      { t: 'Besoin d\'aucune aide.', v: 1 },
+      { t: 'Aide uniquement pour lacer, boutonner, fermer Éclair.', v: 0.5 },
+      { t: 'Aide pour s\'habiller, ou reste partiellement déshabillé(e).', v: 0 }
+    ]},
+  { key: 'wc', label: 'Aller aux W.-C.',
+    options: [
+      { t: 'Besoin d\'aucune aide (canne, fauteuil possible).', v: 1 },
+      { t: 'Besoin d\'une aide.', v: 0.5 },
+      { t: 'Ne va pas aux W.-C.', v: 0 }
+    ]},
+  { key: 'locomotion', label: 'Locomotion',
+    options: [
+      { t: 'Aucune aide pour entrer/sortir du lit, s\'asseoir, se lever.', v: 1 },
+      { t: 'Besoin d\'une aide.', v: 0.5 },
+      { t: 'Ne quitte pas le lit.', v: 0 }
+    ]},
+  { key: 'continence', label: 'Continence',
+    options: [
+      { t: 'Contrôle complet des urines et des selles.', v: 1 },
+      { t: 'Accidents occasionnels.', v: 0.5 },
+      { t: 'Incontinence totale, sondage / surveillance permanente.', v: 0 }
+    ]},
+  { key: 'alimADL', label: 'Alimentation',
+    options: [
+      { t: 'Besoin d\'aucune aide.', v: 1 },
+      { t: 'Aide pour couper la viande / beurrer le pain.', v: 0.5 },
+      { t: 'Aide complète ou alimentation artificielle.', v: 0 }
+    ]}
+];
+
+// Items IADL (Lawton) — forme simplifiée autonome/dépendant compatible Lawton
+const IADL_ITEMS = [
+  { key: 'telephone', label: 'Aptitude à utiliser le téléphone',
+    options: [
+      { t: 'Se sert normalement du téléphone.', v: 1 },
+      { t: 'Compose quelques numéros très connus.', v: 1 },
+      { t: 'Répond au téléphone mais ne l\'utilise pas spontanément.', v: 1 },
+      { t: 'N\'utilise pas du tout le téléphone spontanément.', v: 0 },
+      { t: 'Incapable d\'utiliser le téléphone.', v: 0 }
+    ]},
+  { key: 'courses', label: 'Courses',
+    options: [
+      { t: 'Fait les courses.', v: 1 },
+      { t: 'Fait quelques courses (nombre limité).', v: 0 },
+      { t: 'Doit être accompagné(e) pour faire ses courses.', v: 0 },
+      { t: 'Complètement incapable de faire ses courses.', v: 0 }
+    ]},
+  { key: 'repas', label: 'Préparation des aliments',
+    options: [
+      { t: 'Prévoit, prépare et sert normalement les repas.', v: 1 },
+      { t: 'Prépare si les ingrédients sont fournis.', v: 0 },
+      { t: 'Réchauffe / sert / prépare de façon inadéquate.', v: 0 },
+      { t: 'Nécessaire de lui préparer et servir les repas.', v: 0 }
+    ]},
+  { key: 'menage', label: 'Entretien ménager',
+    options: [
+      { t: 'Entretient sa maison seul(e) ou avec aide occasionnelle.', v: 1 },
+      { t: 'Tâches quotidiennes légères (lits, vaisselle).', v: 1 },
+      { t: 'Quelques tâches sans maintenir un état propre.', v: 1 },
+      { t: 'A besoin d\'aide pour tous les travaux ménagers.', v: 1 },
+      { t: 'Incapable de participer à quelque tâche ménagère.', v: 0 }
+    ]},
+  { key: 'blanchisserie', label: 'Blanchisserie',
+    options: [
+      { t: 'Effectue totalement sa blanchisserie.', v: 1 },
+      { t: 'Lave des petits articles (chaussettes, bas).', v: 1 },
+      { t: 'Toute la blanchisserie est faite par d\'autres.', v: 0 }
+    ]},
+  { key: 'transport', label: 'Moyens de transport',
+    options: [
+      { t: 'Utilise les transports de façon indépendante ou conduit.', v: 1 },
+      { t: 'Organise ses déplacements en taxi.', v: 1 },
+      { t: 'Utilise les transports publics avec aide.', v: 1 },
+      { t: 'Déplacement limité en taxi / voiture avec aide.', v: 0 }
+    ]},
+  { key: 'traitement', label: 'Responsabilité à l\'égard de son traitement',
+    options: [
+      { t: 'Responsable de la prise (doses et rythmes corrects).', v: 1 },
+      { t: 'Responsable si les doses sont préparées à l\'avance.', v: 0 },
+      { t: 'Incapable de prendre seul, même préparé.', v: 0 }
+    ]},
+  { key: 'argent', label: 'Aptitude à manipuler l\'argent',
+    options: [
+      { t: 'Gère ses finances de façon autonome.', v: 1 },
+      { t: 'Achats quotidiens ok, aide pour banque / gros achats.', v: 1 },
+      { t: 'Incapable de manipuler l\'argent.', v: 0 }
+    ]}
+];
+/* =====================================================================
+   MOTEUR DE GÉNÉRATION D'OBSERVATIONS
+   À partir des données saisies, produit un texte en français lisible.
+   Aucune IA : règles déterministes + templates.
+===================================================================== */
+const ObsEngine = (() => {
+
+  // ===== Helpers de formatage =====
+  const nonEmpty = (v) => v !== undefined && v !== null && v !== '' &&
+                         (!Array.isArray(v) || v.length > 0);
+
+  // Libellés humains pour les codes de choix multi/choice
+  const humanize = (sectionKey, fieldKey, val) => {
+    const sec = FORM_SCHEMA[sectionKey];
+    if (!sec) return val;
+    const f = sec.fields.find(x => x.key === fieldKey);
+    if (!f || !f.options) return val;
+    if (typeof f.options[0] === 'string') return val;
+    const opt = f.options.find(o => o.v === val);
+    return opt ? opt.t.toLowerCase() : val;
+  };
+  const humanizeMulti = (sectionKey, fieldKey, vals) => {
+    if (!Array.isArray(vals)) return [];
+    return vals.map(v => humanize(sectionKey, fieldKey, v));
+  };
+
+  // Formatage d'un élément famille avec commentaire
+  const withCom = (base, com) => {
+    if (!base) return '';
+    if (com) return `${base} (${com})`;
+    return base;
+  };
+
+  /* ===========================================================
+     IDENTITÉ / EN-TÊTE
+     =========================================================== */
+  function identite(patient, entretien) {
+    if (!patient) return '';
+    const parts = [];
+    const today = new Date(entretien.date || Date.now()).toLocaleDateString('fr-FR', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    });
+
+    let ligne1 = `${patient.initials || '—'}`;
+    if (patient.sexe === 'f') ligne1 += ', sexe féminin';
+    else if (patient.sexe === 'm') ligne1 += ', sexe masculin';
+    if (patient.birthDate) ligne1 += `, ${neLe(patient.sexe)} ${patient.birthDate}`;
+    else if (patient.birthYear) ligne1 += `, ${accord(patient.sexe, 'né', 'née')} en ${patient.birthYear}`;
+
+    parts.push(`Patient : ${ligne1}.`);
+    parts.push(`Identifiant interne : #${patient.shortId}.`);
+    parts.push(`Visite à domicile du ${today}.`);
+    if (entretien.motif) parts.push(`Motif de visite : ${entretien.motif}`);
+
+    return parts.join('\n');
+  }
+
+  /* ===========================================================
+     I. BIOGRAPHIE
+     Construction en plusieurs sous-parties :
+     - Lieu de vie
+     - Situation conjugale
+     - Composition familiale
+     - Loisirs
+     - Autonomie (aides, appareillages, ADL/IADL)
+     - Sphère socio-pro
+     - Prémorbide
+     =========================================================== */
+  function biographie(d, patient) {
+    const sexe = patient ? patient.sexe : null;
+    const lines = [];
+
+    // --- Lieu de vie ---
+    const lieu = [];
+    const mode = d.modeVie;
+    const ville = d.ville;
+    const statut = d.statut;
+    const type = d.typeLogement;
+    const etage = d.etage;
+    const structure = d.structure;
+
+    if (type === 'EHPAD' || type === 'Résidence autonomie') {
+      let phrase = 'Réside';
+      if (type) phrase += ` en ${type}`;
+      if (ville) phrase += ` à ${ville}`;
+      if (structure) phrase += ` (${structure})`;
+      phrase += '.';
+      lieu.push(phrase);
+    } else if (mode || ville || type) {
+      let phrase = '';
+      if (mode === 'Seul') phrase = accord(sexe, 'Vit seul', 'Vit seule');
+      else if (mode === 'En couple') phrase = 'Vit en couple';
+      else if (mode === 'En colocation') phrase = 'Vit en colocation';
+      else if (mode === 'Avec enfants') phrase = 'Vit avec ses enfants';
+      else if (mode === 'Avec famille') phrase = 'Vit en famille';
+      else phrase = 'Réside';
+
+      if (ville) phrase += ` à ${ville}`;
+      if (statut && type) {
+        phrase += `, ${statut.toLowerCase()} de `;
+        if (type === 'Appartement') phrase += 'son appartement';
+        else if (type === 'Maison') phrase += 'sa maison';
+        else phrase += `son ${type.toLowerCase()}`;
+      } else if (type) {
+        phrase += ` en ${type.toLowerCase()}`;
+      }
+      if (type === 'Appartement' && etage) {
+        phrase += ` au ${etage}${/^\d+$/.test(etage) ? 'e' : ''} étage`;
+      }
+      phrase += '.';
+      lieu.push(phrase);
+    }
+
+    // --- Situation conjugale ---
+    const situ = d.situationConj;
+    const situCom = d.situationConjCom;
+    let situText = '';
+    if (situ === 'Concubinage') situText = withCom('En concubinage', situCom);
+    else if (situ === 'Mariage') situText = withCom(accord(sexe, 'Marié', 'Mariée'), situCom);
+    else if (situ === 'Pacs') situText = withCom(accord(sexe, 'Pacsé', 'Pacsée'), situCom);
+    else if (situ === 'Célibataire') situText = withCom('Célibataire', situCom);
+    else if (situ === 'Divorcé.e') situText = withCom(accord(sexe, 'Divorcé', 'Divorcée'), situCom);
+    else if (situ === 'Veuf / veuve') situText = withCom(accord(sexe, 'Veuf', 'Veuve'), situCom);
+    if (situText) lieu.push(situText + '.');
+
+    // --- Composition familiale ---
+    const fam = [];
+    if (d.enfants) {
+      if (d.enfants === 'Aucun') fam.push('Pas d\'enfant');
+      else fam.push(withCom(`${d.enfants} enfant${d.enfants === '1' ? '' : 's'}`, d.enfantsCom));
+    }
+    if (d.conjoint === 'Oui') fam.push(withCom('vie de couple', d.conjointCom));
+    if (d.fratrie) {
+      if (d.fratrie === 'Aucune') fam.push('pas de fratrie');
+      else fam.push(withCom(`fratrie de ${d.fratrie}`, d.fratrieCom));
+    }
+    if (d.aidantPrincipal) fam.push(`aidant principal : ${d.aidantPrincipal}`);
+    if (d.isolement === 'Oui') fam.push('isolement social');
+    else if (d.isolement === 'Non') fam.push('entourage présent');
+
+    if (fam.length) {
+      // Première lettre en majuscule
+      let t = fam.join('. ');
+      t = t.charAt(0).toUpperCase() + t.slice(1) + '.';
+      lieu.push(t);
+    }
+
+    if (lieu.length) {
+      lines.push('**Mode de vie**\n' + lieu.join('\n'));
+    }
+
+    // --- Loisirs ---
+    if (d.loisirs) {
+      lines.push(`**Loisirs**\n${d.loisirs}`);
+    }
+
+    // --- Autonomie (aides & appareillages) ---
+    const autonomie = [];
+    if (d.aideDomicile === 'Oui') {
+      autonomie.push(withCom('Aide à domicile', d.aideDomicileCom));
+    } else if (d.aideDomicile === 'Non') {
+      autonomie.push('Pas d\'aide à domicile');
+    }
+    const aides = [];
+    if (d.ide) aides.push(`IDE (${d.ide})`);
+    if (d.aideMenagere) aides.push(`aide-ménagère (${d.aideMenagere})`);
+    if (d.auxiliaireVie) aides.push(`auxiliaire de vie (${d.auxiliaireVie})`);
+    if (d.portageRepas) aides.push(`portage des repas (${d.portageRepas})`);
+    if (d.autresAides) aides.push(d.autresAides);
+    if (aides.length) autonomie.push(`Intervenants : ${joinList(aides)}`);
+
+    const app = [];
+    if (d.appVisuel) app.push(`visuel (${d.appVisuel})`);
+    if (d.appAuditif) app.push(`auditif (${d.appAuditif})`);
+    if (d.appDentaire) app.push(`dentaire (${d.appDentaire})`);
+    if (d.appMarche) app.push(`aide à la marche (${d.appMarche})`);
+    if (app.length) autonomie.push(`Appareillages : ${joinList(app)}`);
+
+    if (autonomie.length) {
+      lines.push('**Autonomie — aides et appareillages**\n' + autonomie.join('.\n') + '.');
+    }
+
+    // --- Sphère socio-professionnelle ---
+    const socio = [];
+    const sp = [];
+    if (d.socioStatut) sp.push(d.socioStatut);
+    if (d.profession) sp.push(d.profession);
+    if (sp.length) socio.push(sp.join(', '));
+    if (d.niveauEtude) socio.push(`Niveau d'étude : ${d.niveauEtude}`);
+    if (d.prestations) socio.push(`Prestations sociales : ${d.prestations}`);
+
+    if (d.protection) {
+      if (d.protection === 'Aucune') {
+        socio.push('Aucune mesure de protection juridique');
+      } else {
+        let prot = d.protection;
+        if (d.protection === 'Autre' && d.protectionCom) prot = d.protectionCom;
+        socio.push(`Mesure de protection : ${prot}`);
+      }
+    }
+    if (d.social) socio.push(`Accompagnement social : ${d.social}`);
+
+    if (socio.length) {
+      lines.push('**Sphère socio-professionnelle**\n' + socio.join('.\n') + '.');
+    }
+
+    // --- Prémorbide et éléments de vie ---
+    const premo = [];
+    if (d.premorbide) premo.push(`Éléments prémorbides : ${d.premorbide}`);
+    if (d.elementsVie) premo.push(`Éléments de vie marquants : ${d.elementsVie}`);
+    if (premo.length) lines.push('**Parcours de vie**\n' + premo.join('.\n') + '.');
+
+    return lines.join('\n\n');
+  }
+
+  /* ===========================================================
+     ADL / IADL (intégré dans Autonomie/biographie ou séparé)
+     =========================================================== */
+  function computeADL(d) {
+    let total = 0, filled = 0;
+    ADL_ITEMS.forEach(it => {
+      if (d[it.key] !== undefined && d[it.key] !== null) {
+        total += d[it.key]; filled++;
+      }
+    });
+    return { total, filled, max: ADL_ITEMS.length };
+  }
+  function computeIADL(d) {
+    let total = 0, filled = 0;
+    IADL_ITEMS.forEach(it => {
+      if (d[it.key] !== undefined && d[it.key] !== null) {
+        total += d[it.key]; filled++;
+      }
+    });
+    return { total, filled, max: IADL_ITEMS.length };
+  }
+  function fmtScore(n) {
+    if (Number.isInteger(n)) return String(n);
+    return String(n).replace('.', ',');
+  }
+  function autonomieScores(entretien) {
+    const adl = entretien.data && entretien.data.adl ? entretien.data.adl : {};
+    const iadl = entretien.data && entretien.data.iadl ? entretien.data.iadl : {};
+    const a = computeADL(adl);
+    const i = computeIADL(iadl);
+    const parts = [];
+    if (a.filled > 0) {
+      parts.push(`Score ADL de Katz : ${fmtScore(a.total)}/${a.max}`);
+    }
+    if (i.filled > 0) {
+      parts.push(`Score IADL de Lawton : ${fmtScore(i.total)}/${i.max}`);
+    }
+    if (!parts.length) return '';
+
+    const adlDef = ADL_ITEMS.filter(it => adl[it.key] !== undefined && adl[it.key] < 1)
+      .map(it => it.label.toLowerCase());
+    const iadlDef = IADL_ITEMS.filter(it => iadl[it.key] !== undefined && iadl[it.key] < 1)
+      .map(it => it.label.toLowerCase());
+
+    let s = parts.join('. ') + '.';
+    if (adlDef.length) s += `\nDifficultés ADL : ${joinList(adlDef)}.`;
+    if (iadlDef.length) s += `\nDifficultés IADL : ${joinList(iadlDef)}.`;
+    return s;
+  }
+
+  /* ===========================================================
+     II. ANTÉCÉDENTS MÉDICO-CHIRURGICAUX
+     =========================================================== */
+  function atcdMedchir(d) {
+    const lines = [];
+
+    // Médicaux
+    const med = d.medical || {};
+    const medList = [];
+    MEDICAL_ITEMS.forEach(item => {
+      const row = med[item];
+      if (row && row.checked) {
+        if (row.details) medList.push(`${item} (${row.details})`);
+        else medList.push(item);
+      }
+    });
+    if (d.medOther) medList.push(d.medOther);
+
+    lines.push('**Antécédents médicaux**');
+    if (!medList.length) lines.push('Aucun');
+    else medList.forEach(x => lines.push('- ' + x));
+
+    // Chirurgicaux
+    const chir = d.chir || {};
+    const chirList = [];
+    SURGICAL_ITEMS.forEach(item => {
+      const row = chir[item];
+      if (row && row.checked) {
+        if (row.details) chirList.push(`${item} (${row.details})`);
+        else chirList.push(item);
+      }
+    });
+    if (d.chirOther) chirList.push(d.chirOther);
+
+    lines.push('');
+    lines.push('**Antécédents chirurgicaux**');
+    if (!chirList.length) lines.push('Aucun');
+    else chirList.forEach(x => lines.push('- ' + x));
+
+    return lines.join('\n');
+  }
+
+  /* ===========================================================
+     III. ANTÉCÉDENTS PSYCHIATRIQUES
+     =========================================================== */
+  function atcdPsy(d) {
+    const lines = [];
+
+    // Diagnostic
+    if (d.diag === 'Aucun') {
+      lines.push('Diagnostic psychiatrique : aucun.');
+    } else if (d.diag) {
+      let t = `Diagnostic psychiatrique : ${d.diag}`;
+      if (d.diagCom) t += ` (${d.diagCom})`;
+      lines.push(t + '.');
+    } else if (d.diagCom) {
+      lines.push(`Diagnostic psychiatrique : ${d.diagCom}.`);
+    }
+
+    // Hospitalisations / suivi
+    if (d.hospitalisations) {
+      lines.push(`Hospitalisations et suivi : ${d.hospitalisations}.`);
+    }
+
+    // Psychotropes antérieurs
+    if (d.psychotropesAnt) {
+      lines.push(`Traitements psychotropes antérieurs : ${d.psychotropesAnt}.`);
+    }
+
+    // Conduites suicidaires
+    if (d.nbTS) {
+      let t;
+      if (d.nbTS === '0') t = 'Pas d\'antécédent de tentative de suicide';
+      else if (d.nbTS === 'Multiples') t = 'Multiples tentatives de suicide';
+      else t = `${d.nbTS} tentative${d.nbTS === '1' ? '' : 's'} de suicide`;
+      if (d.tsDetails) t += ` (${d.tsDetails})`;
+      lines.push(t + '.');
+    }
+    if (d.heteroAgressivite) {
+      lines.push(`Conduites hétéro-agressives : ${d.heteroAgressivite}.`);
+    }
+
+    // ATCD familiaux
+    if (d.atcdFam) {
+      lines.push(`Antécédents psychiatriques familiaux : ${d.atcdFam}.`);
+    }
+
+    // Addictions
+    const addicLines = [];
+    let anyAddic = false;
+
+    if (d.tabac && d.tabac !== 'Non') {
+      anyAddic = true;
+      let t = `Consommation tabagique ${d.tabac.toLowerCase()}`;
+      const extras = [];
+      if (d.tabacPA) extras.push(`${d.tabacPA} PA`);
+      if (d.tabacCom) extras.push(d.tabacCom);
+      if (extras.length) t += ` (${extras.join(', ')})`;
+      addicLines.push(t);
+    }
+    if (d.alcool && d.alcool !== 'Non') {
+      anyAddic = true;
+      let t = `Trouble de l'usage de l'alcool ${d.alcool.toLowerCase()}`;
+      if (d.alcoolCom) t += ` (${d.alcoolCom})`;
+      addicLines.push(t);
+    }
+    if (d.substances && d.substances !== 'Non') {
+      anyAddic = true;
+      let t = `Trouble de l'usage de substances ${d.substances.toLowerCase()}`;
+      const extras = [];
+      if (d.substancesType) extras.push(d.substancesType);
+      if (d.substancesCom) extras.push(d.substancesCom);
+      if (extras.length) t += ` (${extras.join(', ')})`;
+      addicLines.push(t);
+    }
+
+    if (anyAddic) {
+      lines.push('Comorbidités addictologiques :');
+      addicLines.forEach(x => lines.push('- ' + x + '.'));
+    } else if (d.tabac === 'Non' || d.alcool === 'Non' || d.substances === 'Non') {
+      lines.push('Pas de consommation alcoolo-tabagique ni d\'autre substance rapportée.');
+    }
+
+    // TNC
+    if (d.tnc === 'Aucun') {
+      lines.push('Aucune pathologie neurocognitive connue.');
+    } else if (d.tnc) {
+      let phrase = d.tnc;
+      if (d.etiologie) {
+        const etiTxt = d.etiologie === 'Autre' ? d.etiologieCom : d.etiologie;
+        if (etiTxt) phrase += ` de type ${etiTxt}`;
+      }
+      if (d.tncCom) phrase += ` (${d.tncCom})`;
+      lines.push(phrase + '.');
+    }
+
+    // Examens
+    if (d.imagerie) lines.push(`Imagerie cérébrale : ${d.imagerie}.`);
+    if (d.bilanNP) lines.push(`Bilan neuropsychologique : ${d.bilanNP}.`);
+
+    return lines.join('\n');
+  }
+
+  /* ===========================================================
+     IV. HISTOIRE RÉCENTE DE LA MALADIE
+     =========================================================== */
+  function histoireMaladie(d) {
+    if (!d.histoire) return '';
+    return d.histoire;
+  }
+
+  /* ===========================================================
+     V. TRAITEMENTS
+     =========================================================== */
+  function traitements(d) {
+    if (d.traitementsActuels) return d.traitementsActuels;
+    return '';
+  }
+
+  /* ===========================================================
+     VI. ÉVALUATION PSYCHIATRIQUE (repris de Claude v1)
+     =========================================================== */
+  function evalPsy(d, patient) {
+    const sexe = patient ? patient.sexe : null;
+    const sujet = sujetPatient(sexe);
+    const blocks = [];
+
+    // --- Présentation ---
+    const present = [];
+    if (d.tenue) {
+      if (d.tenue === 'spl') present.push('une tenue vestimentaire sans particularité');
+      else present.push(`une tenue vestimentaire ${humanize('evalPsy', 'tenue', d.tenue)}`);
+    }
+    if (d.hygiene) {
+      if (d.hygiene === 'bonne') present.push('une bonne hygiène corporelle');
+      else present.push(`une hygiène corporelle ${humanize('evalPsy', 'hygiene', d.hygiene)}`);
+    }
+    if (d.contact && d.contact.length) {
+      const ctxt = humanizeMulti('evalPsy', 'contact', d.contact);
+      const pure = d.contact.length === 1 && d.contact[0] === 'spl';
+      present.push(pure ? 'un contact sans particularité' : `un contact marqué par ${joinList(ctxt)}`);
+    }
+    if (d.comportement && d.comportement.length) {
+      const ctxt = humanizeMulti('evalPsy', 'comportement', d.comportement);
+      const coop = d.comportement.length === 1 && d.comportement[0] === 'coop';
+      present.push(coop ? 'un comportement coopérant' : `un comportement ${joinList(ctxt)}`);
+    }
+    if (d.mimique && d.mimique.length) {
+      const ctxt = humanizeMulti('evalPsy', 'mimique', d.mimique);
+      present.push(`une mimique faciale ${joinList(ctxt)}`);
+    }
+    if (d.psychomot && d.psychomot.length) {
+      const ctxt = humanizeMulti('evalPsy', 'psychomot', d.psychomot);
+      present.push(`une activité psychomotrice ${joinList(ctxt)}`);
+    }
+    if (present.length) {
+      const verbe = accord(sexe, 'présente', 'présente');
+      blocks.push(`À l'examen, ${sujet} ${verbe} ${joinList(present)}.`);
+    }
+
+    // --- Langage ---
+    const lang = [];
+    if (d.prosodie) {
+      if (d.prosodie === 'normale') lang.push('une prosodie normale');
+      else lang.push(`une prosodie ${humanize('evalPsy', 'prosodie', d.prosodie)}`);
+    }
+    if (d.rythmeLangage && d.rythmeLangage.length) {
+      const ctxt = humanizeMulti('evalPsy', 'rythmeLangage', d.rythmeLangage);
+      lang.push(`un rythme et une quantité de langage ${joinList(ctxt)}`);
+    }
+    if (d.intensite) {
+      if (d.intensite === 'normale') lang.push('une intensité sonore normale');
+      else lang.push(`une intensité sonore ${humanize('evalPsy', 'intensite', d.intensite)}`);
+    }
+    if (d.signification) {
+      if (d.signification === 'normale') lang.push('une signification du langage préservée');
+      else lang.push(`une signification du langage ${humanize('evalPsy', 'signification', d.signification)}`);
+    }
+    if (lang.length) blocks.push(`Sur le plan du langage, on note ${joinList(lang)}.`);
+
+    // --- Pensée ---
+    const pens = [];
+    if (d.rythmePensee) {
+      if (d.rythmePensee === 'normal') pens.push('un rythme de pensée normal');
+      else pens.push(`un rythme de pensée ${humanize('evalPsy', 'rythmePensee', d.rythmePensee)}`);
+    }
+    if (d.coursPensee) {
+      pens.push(d.coursPensee === 'logique'
+        ? 'un cours de pensée logique et cohérent'
+        : `un cours de pensée ${humanize('evalPsy', 'coursPensee', d.coursPensee)}`);
+    }
+    if (d.contenuPensee && d.contenuPensee.length) {
+      const ctxt = humanizeMulti('evalPsy', 'contenuPensee', d.contenuPensee);
+      pens.push(`un contenu marqué par ${joinList(ctxt)}`);
+    }
+    if (pens.length) {
+      let s = `Concernant la pensée : ${joinList(pens)}.`;
+      if (d.contenuPenseeDetails) s += ' ' + d.contenuPenseeDetails;
+      blocks.push(s);
+    } else if (d.contenuPenseeDetails) {
+      blocks.push(`Concernant la pensée : ${d.contenuPenseeDetails}`);
+    }
+
+    // --- Affectivité ---
+    const aff = [];
+    if (d.emotions && d.emotions.length) {
+      const ctxt = humanizeMulti('evalPsy', 'emotions', d.emotions);
+      aff.push(`des émotions ${joinList(ctxt)}`);
+    }
+    if (d.humeur) {
+      if (d.humeur === 'euthymie') aff.push('une humeur euthymique');
+      else aff.push(`une humeur ${humanize('evalPsy', 'humeur', d.humeur)}`);
+    }
+    if (d.motivation) {
+      if (d.motivation === 'normale') aff.push('une motivation conservée');
+      else aff.push(`une motivation ${humanize('evalPsy', 'motivation', d.motivation)}`);
+    }
+    if (aff.length) blocks.push(`Sur le plan thymique et affectif : ${joinList(aff)}.`);
+
+    // --- Auto-agressivité ---
+    const autoA = [];
+    if (d.ideesNoires === true) autoA.push('idées noires présentes');
+    else if (d.ideesNoires === false) autoA.push('pas d\'idées noires');
+    if (d.ideesSuicidaires === true) autoA.push('idées suicidaires présentes');
+    else if (d.ideesSuicidaires === false) autoA.push('pas d\'idées suicidaires');
+    if (autoA.length) {
+      let s = `Auto-agressivité : ${joinList(autoA)}.`;
+      if (d.auto_details) s += ' ' + d.auto_details;
+      blocks.push(s);
+    }
+
+    // --- Hallucinations ---
+    const halluPos = [];
+    const halluNeg = [];
+    const halluMap = [
+      ['hallu_vis', 'visuelles'], ['hallu_aud', 'auditives'],
+      ['hallu_ip', 'intrapsychiques'], ['hallu_cen', 'cénesthésiques'],
+      ['hallu_olf', 'olfactives']
+    ];
+    halluMap.forEach(([k, label]) => {
+      if (d[k] === true) halluPos.push(label);
+      else if (d[k] === false) halluNeg.push(label);
+    });
+    if (halluPos.length) {
+      let s = `Présence d'hallucinations ${joinList(halluPos)}.`;
+      if (d.hallu_details) s += ' ' + d.hallu_details;
+      blocks.push(s);
+    } else if (halluNeg.length === halluMap.length) {
+      blocks.push('Pas d\'éléments hallucinatoires retrouvés (ni visuels, auditifs, intrapsychiques, cénesthésiques, ni olfactifs).');
+    }
+
+    // --- Cognitions ---
+    const cog = [];
+    if (d.ots) {
+      cog.push(d.ots === 'normale' ? 'une orientation temporo-spatiale normale' : 'une désorientation temporo-spatiale');
+    }
+    if (d.vigilance) {
+      cog.push(d.vigilance === 'normaux' ? 'une vigilance et un niveau de conscience normaux' : `une vigilance ${humanize('evalPsy', 'vigilance', d.vigilance)}`);
+    }
+    if (d.attention) {
+      if (d.attention === 'normale') cog.push('une attention normale');
+      else cog.push(`une attention ${humanize('evalPsy', 'attention', d.attention)}`);
+    }
+    if (cog.length) blocks.push(`Sur le plan cognitif, on note ${joinList(cog)}.`);
+
+    // --- Fonctions physiologiques ---
+    const phys = [];
+    if (d.alimentation) {
+      phys.push(d.alimentation === 'normale' ? 'une alimentation normale' : `une ${humanize('evalPsy', 'alimentation', d.alimentation)}`);
+    }
+    if (d.sommeil && d.sommeil.length) {
+      const ctxt = humanizeMulti('evalPsy', 'sommeil', d.sommeil);
+      phys.push(`un sommeil ${joinList(ctxt)}`);
+    }
+    if (d.sexualite) {
+      phys.push(d.sexualite === 'normale' ? 'une sexualité sans particularité rapportée' : `une sexualité : ${humanize('evalPsy', 'sexualite', d.sexualite)}`);
+    }
+    if (phys.length) blocks.push(`Fonctions physiologiques : ${joinList(phys)}.`);
+
+    // --- Jugement ---
+    if (d.conscienceTrouble) {
+      blocks.push(`Conscience du trouble : ${humanize('evalPsy', 'conscienceTrouble', d.conscienceTrouble)}.`);
+    }
+
+    return blocks.join(' ');
+  }
+
+  /* ===========================================================
+     ASSEMBLAGE FINAL
+     =========================================================== */
+  function generate(entretien, patient) {
+    const d = entretien.data || {};
+    const header = identite(patient, entretien);
+
+    const sections = [];
+
+    const bio = biographie(d.biographie || {}, patient);
+    if (bio) sections.push({ title: 'I. Éléments de biographie', body: bio });
+
+    const ap = atcdMedchir(d.atcdMedchir || {});
+    if (ap) sections.push({ title: 'II. Antécédents médico-chirurgicaux', body: ap });
+
+    const app = atcdPsy(d.atcdPsy || {});
+    if (app) sections.push({ title: 'III. Antécédents psychiatriques', body: app });
+
+    const hist = histoireMaladie(d.histoireMaladie || {});
+    if (hist) sections.push({ title: 'IV. Histoire récente de la maladie', body: hist });
+
+    const tr = traitements(d.traitements || {});
+    if (tr) sections.push({ title: 'V. Traitements actuels', body: tr });
+
+    const ep = evalPsy(d.evalPsy || {}, patient);
+    if (ep) sections.push({ title: 'VI. Évaluation psychiatrique', body: ep });
+
+    const au = autonomieScores(entretien);
+    if (au) sections.push({ title: 'VII. Scores d\'autonomie', body: au });
+
+    if (entretien.synthese) {
+      sections.push({ title: 'Synthèse / Conclusion', body: entretien.synthese });
+    }
+
+    let out = 'OBSERVATION — Équipe Mobile de Psychiatrie du Sujet Âgé (EMPSA 94)\n';
+    out += '─'.repeat(60) + '\n';
+    out += header + '\n\n';
+    sections.forEach(s => {
+      out += s.title + '\n';
+      out += '─'.repeat(s.title.length) + '\n';
+      out += s.body + '\n\n';
+    });
+
+    // Nettoyer : enlever les ** markdown qui sont restés (headers internes)
+    out = out.replace(/\*\*(.+?)\*\*/g, '$1');
+    return out.trim();
+  }
+
+  /* ===========================================================
+     APERÇU PAR SECTION (pour affichage dans le formulaire)
+     =========================================================== */
+  function preview(sectionKey, entretien, patient) {
+    const d = entretien.data || {};
+    const sd = d[sectionKey] || {};
+    let text = '';
+    if (sectionKey === 'biographie') text = biographie(sd, patient);
+    else if (sectionKey === 'atcdMedchir') text = atcdMedchir(sd);
+    else if (sectionKey === 'atcdPsy') text = atcdPsy(sd);
+    else if (sectionKey === 'histoireMaladie') text = histoireMaladie(sd);
+    else if (sectionKey === 'traitements') text = traitements(sd);
+    else if (sectionKey === 'evalPsy') text = evalPsy(sd, patient);
+    // Nettoyer les marqueurs markdown
+    text = text.replace(/\*\*(.+?)\*\*/g, '$1');
+    return text;
+  }
+
+  return { generate, preview, computeADL, computeIADL, fmtScore, autonomieScores };
+})();
+/* =====================================================================
+   UI — ÉTAT APPLICATIF & RENDU
+===================================================================== */
+const State = {
+  patients: [],
+  entretiens: [],
+  currentEntretienId: null,
+  currentSection: 'meta'
+};
+
+// ===== Écran de verrouillage =====
+async function initLock() {
+  const lockEl = document.getElementById('lockScreen');
+  const unlockBtn = document.getElementById('unlockBtn');
+  const pinInput = document.getElementById('pinInput');
+  const errEl = document.getElementById('lockError');
+
+  if (!CryptoBox.hasSetup()) {
+    // Premier lancement : on crée automatiquement le code 0000
+    unlockBtn.textContent = 'Démarrer (créer code 0000)';
+    unlockBtn.onclick = async () => {
+      const pin = pinInput.value.trim() || '0000';
+      if (pin.length < 4) { errEl.textContent = 'Code trop court (4 chiffres minimum).'; return; }
+      await CryptoBox.setup(pin);
+      await Store.open();
+      onUnlocked();
+    };
+  } else {
+    unlockBtn.onclick = async () => {
+      const pin = pinInput.value.trim();
+      if (!pin) return;
+      const ok = await CryptoBox.unlock(pin);
+      if (!ok) {
+        errEl.textContent = 'Code incorrect.';
+        pinInput.value = '';
+        return;
+      }
+      errEl.textContent = '';
+      await Store.open();
+      onUnlocked();
+    };
+  }
+
+  pinInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') unlockBtn.click();
+  });
+  setTimeout(() => pinInput.focus(), 200);
+}
+
+function onUnlocked() {
+  document.getElementById('lockScreen').style.display = 'none';
+  document.getElementById('app').style.display = '';
+  refreshPatientList();
+}
+
+document.getElementById('lockNowBtn').onclick = () => {
+  CryptoBox.lock();
+  location.reload();
+};
+
+// ===== Liste patients =====
+async function refreshPatientList() {
+  State.patients = await Store.allEnc('patients');
+  State.entretiens = await Store.allEnc('entretiens');
+  renderPatientList();
+}
+
+function renderPatientList() {
+  const c = document.getElementById('patientList');
+  c.innerHTML = '';
+  const patients = [...State.patients].sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+
+  if (!patients.length) {
+    c.appendChild(h('div', { class: 'empty-state' },
+      h('div', { class: 'glyph' }, '℮'),
+      h('p', {}, 'Aucun patient enregistré pour le moment.'),
+      h('p', {}, 'Touche « Nouveau patient » pour commencer un entretien.')
+    ));
+    return;
+  }
+
+  patients.forEach(p => {
+    const last = [...State.entretiens].filter(e => e.patientId === p.id).sort((a, b) => (b.date || 0) - (a.date || 0))[0];
+    const count = State.entretiens.filter(e => e.patientId === p.id).length;
+    const sexeLbl = p.sexe === 'f' ? '♀' : p.sexe === 'm' ? '♂' : '';
+    c.appendChild(
+      h('div', { class: 'patient-item', onclick: () => openPatientDetail(p.id) },
+        h('div', { class: 'ident' },
+          h('span', { class: 'pid' }, `#${p.shortId}${p.birthYear ? ' · ' + p.birthYear : ''}${sexeLbl ? ' · ' + sexeLbl : ''}`),
+          h('span', { class: 'pname' }, p.initials || '—'),
+          h('span', { class: 'pmeta' },
+            `${count} entretien${count > 1 ? 's' : ''}` +
+            (last ? ' · dernier le ' + new Date(last.date).toLocaleDateString('fr-FR') : '')
+          )
+        ),
+        h('span', { class: 'arrow' }, '›')
+      )
+    );
+  });
+}
+
+document.getElementById('newPatientFab').onclick = () => openNewPatientModal();
+
+// ===== Modale nouveau patient =====
+function openNewPatientModal() {
+  openModal('Nouveau patient', (body, close) => {
+    const initialsEl = h('input', { type: 'text', placeholder: 'Ex. M.D. ou J.B.', maxlength: 8 });
+    const sexeEl = h('select', {},
+      h('option', { value: '' }, '—'),
+      h('option', { value: 'f' }, 'Femme'),
+      h('option', { value: 'm' }, 'Homme')
+    );
+    const birthDateEl = h('input', { type: 'text', placeholder: 'JJ/MM/AAAA (optionnel)', inputmode: 'numeric' });
+    const birthYearEl = h('input', { type: 'text', placeholder: 'Année seule (ex. 1942)', inputmode: 'numeric', pattern: '[0-9]{4}', maxlength: 4 });
+    const contactEl = h('input', { type: 'text', placeholder: 'Personne à contacter (prénom + lien)' });
+    const noteEl = h('textarea', { placeholder: 'Note libre (non identifiante)', rows: 3 });
+
+    body.appendChild(h('div', { class: 'helpbar' },
+      h('strong', {}, 'Pseudonymisation — '),
+      'utilise uniquement les initiales. Le nom complet ne doit pas être saisi ici. L\'année ou la date de naissance sert uniquement aux accords grammaticaux et au rappel d\'âge dans l\'observation.'
+    ));
+    body.appendChild(h('div', { class: 'field' },
+      h('label', { class: 'lbl' }, 'Initiales *'),
+      initialsEl));
+    body.appendChild(h('div', { class: 'field' },
+      h('label', { class: 'lbl' }, 'Sexe *'),
+      sexeEl));
+    body.appendChild(h('div', { class: 'field' },
+      h('label', { class: 'lbl' }, 'Date de naissance complète'),
+      birthDateEl));
+    body.appendChild(h('div', { class: 'field' },
+      h('label', { class: 'lbl' }, 'Ou année de naissance seule'),
+      birthYearEl));
+    body.appendChild(h('div', { class: 'field' },
+      h('label', { class: 'lbl' }, 'Personne à contacter'),
+      contactEl));
+    body.appendChild(h('div', { class: 'field' },
+      h('label', { class: 'lbl' }, 'Note libre'),
+      noteEl));
+
+    return [
+      h('button', { class: 'btn', onclick: close }, 'Annuler'),
+      h('button', { class: 'btn primary', onclick: async () => {
+        const initials = initialsEl.value.trim();
+        const sexe = sexeEl.value;
+        if (!initials) { toast('Initiales requises', 'err'); return; }
+        if (!sexe) { toast('Sexe requis (pour les accords grammaticaux)', 'err'); return; }
+        const patient = {
+          id: uid(),
+          shortId: shortId(),
+          initials,
+          sexe,
+          birthDate: birthDateEl.value.trim() || null,
+          birthYear: birthYearEl.value.trim() || null,
+          contact: contactEl.value.trim() || null,
+          note: noteEl.value.trim() || null,
+          createdAt: Date.now(),
+          updatedAt: Date.now()
+        };
+        await Store.putEnc('patients', patient.id, patient);
+        close();
+        await refreshPatientList();
+        openPatientDetail(patient.id);
+      }}, 'Créer')
+    ];
+  });
+}
+
+// ===== Détail patient : choix ouvrir existant / créer nouveau =====
+async function openPatientDetail(patientId) {
+  const patient = State.patients.find(p => p.id === patientId);
+  if (!patient) return;
+  const entretiens = State.entretiens.filter(e => e.patientId === patientId).sort((a, b) => (b.date || 0) - (a.date || 0));
+
+  openModal(`${patient.initials} · #${patient.shortId}`, (body, close) => {
+    const infoLine = [];
+    if (patient.sexe === 'f') infoLine.push('Femme');
+    else if (patient.sexe === 'm') infoLine.push('Homme');
+    if (patient.birthDate) infoLine.push(`${accord(patient.sexe, 'né le', 'née le')} ${patient.birthDate}`);
+    else if (patient.birthYear) infoLine.push(`${accord(patient.sexe, 'né', 'née')} en ${patient.birthYear}`);
+    if (patient.contact) infoLine.push(`contact : ${patient.contact}`);
+
+    body.appendChild(h('div', { style: 'margin-bottom: 16px; font-size: 14px; color: var(--ink-faint); font-family: -apple-system, sans-serif;' },
+      infoLine.join(' · ')
+    ));
+    if (patient.note) {
+      body.appendChild(h('div', { style: 'padding: 10px 12px; background: var(--paper-warm); border-radius: 6px; font-size: 14px; margin-bottom: 16px; font-family: -apple-system, sans-serif;' }, patient.note));
+    }
+
+    body.appendChild(h('div', { class: 'sub-head' }, 'Entretiens'));
+    if (!entretiens.length) {
+      body.appendChild(h('div', { style: 'color: var(--ink-faint); font-size: 14px; font-family: -apple-system, sans-serif; padding: 8px 0;' }, 'Aucun entretien pour ce patient.'));
+    } else {
+      entretiens.forEach(e => {
+        const row = h('div', {
+          style: 'padding: 12px 14px; border: 1px solid var(--rule-soft); border-radius: 6px; margin-bottom: 6px; cursor: pointer; font-family: -apple-system, sans-serif; font-size: 14px; display: flex; justify-content: space-between; align-items: center;',
+          onclick: () => { close(); openEntretien(e.id); }
+        },
+          h('div', {},
+            h('div', { style: 'font-weight: 600;' }, new Date(e.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })),
+            h('div', { style: 'color: var(--ink-faint); font-size: 12px;' }, e.motif || '— sans motif —')
+          ),
+          h('span', { style: 'color: var(--ink-faint);' }, '›')
+        );
+        body.appendChild(row);
+      });
+    }
+
+    return [
+      h('button', { class: 'btn danger', onclick: async () => {
+        if (!confirm(`Supprimer ${patient.initials} et tous ses entretiens ?`)) return;
+        for (const e of entretiens) await Store.del('entretiens', e.id);
+        await Store.del('patients', patient.id);
+        close();
+        await refreshPatientList();
+        toast('Patient supprimé', 'ok');
+      } }, 'Supprimer'),
+      h('button', { class: 'btn primary', onclick: async () => {
+        const entretien = {
+          id: uid(), patientId: patient.id,
+          date: Date.now(), motif: '', synthese: '', data: {}
+        };
+        await Store.putEnc('entretiens', entretien.id, entretien);
+        State.entretiens.push(entretien);
+        patient.updatedAt = Date.now();
+        await Store.putEnc('patients', patient.id, patient);
+        close();
+        openEntretien(entretien.id);
+      } }, 'Nouvel entretien')
+    ];
+  });
+}
+
+// ===== Écran formulaire entretien =====
+async function openEntretien(entretienId) {
+  State.currentEntretienId = entretienId;
+  State.currentSection = 'meta';
+  document.getElementById('listScreen').style.display = 'none';
+  document.getElementById('newPatientFab').style.display = 'none';
+  const scr = document.getElementById('formScreen');
+  scr.style.display = '';
+  renderForm();
+}
+
+function closeEntretien() {
+  State.currentEntretienId = null;
+  document.getElementById('formScreen').style.display = 'none';
+  document.getElementById('formScreen').innerHTML = '';
+  document.getElementById('listScreen').style.display = '';
+  document.getElementById('newPatientFab').style.display = '';
+  refreshPatientList();
+}
+
+async function saveCurrentEntretien(updates = {}) {
+  if (!State.currentEntretienId) return;
+  const e = State.entretiens.find(x => x.id === State.currentEntretienId);
+  if (!e) return;
+  Object.assign(e, updates);
+  e.updatedAt = Date.now();
+  await Store.putEnc('entretiens', e.id, e);
+}
+
+function getCurrentEntretien() {
+  return State.entretiens.find(x => x.id === State.currentEntretienId);
+}
+function getCurrentPatient() {
+  const e = getCurrentEntretien();
+  if (!e) return null;
+  return State.patients.find(p => p.id === e.patientId);
+}
+
+function renderForm() {
+  const scr = document.getElementById('formScreen');
+  scr.innerHTML = '';
+  const e = getCurrentEntretien();
+  const patient = getCurrentPatient();
+  if (!e || !patient) { closeEntretien(); return; }
+
+  // Lien retour
+  scr.appendChild(h('button', { class: 'back-link', onclick: closeEntretien }, '‹  Retour aux patients'));
+
+  // En-tête
+  const sexeLbl = patient.sexe === 'f' ? 'Femme' : patient.sexe === 'm' ? 'Homme' : '';
+  scr.appendChild(h('div', { class: 'form-header' },
+    h('div', { class: 'h-left' },
+      h('h1', {}, `Entretien · ${patient.initials}`),
+      h('div', { class: 'h-sub' },
+        `#${patient.shortId}${sexeLbl ? ' · ' + sexeLbl : ''} · ${new Date(e.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`)
+    ),
+    h('div', { class: 'h-right' },
+      h('button', { class: 'btn primary', onclick: () => openGenerateModal() }, 'Générer l\'observation')
+    )
+  ));
+
+  // Nav sections
+  const sections = [
+    { key: 'meta', label: 'Visite' },
+    { key: 'biographie', label: 'I. Biographie' },
+    { key: 'atcdMedchir', label: 'II. ATCD méd/chir' },
+    { key: 'atcdPsy', label: 'III. ATCD psy' },
+    { key: 'histoireMaladie', label: 'IV. Histoire' },
+    { key: 'traitements', label: 'V. Traitements' },
+    { key: 'evalPsy', label: 'VI. Éval psy' },
+    { key: 'adl', label: 'VII. ADL' },
+    { key: 'iadl', label: 'VII. IADL' },
+    { key: 'synthese', label: 'Synthèse' }
+  ];
+  const nav = h('div', { class: 'section-nav' });
+  sections.forEach(s => {
+    nav.appendChild(h('button', {
+      class: State.currentSection === s.key ? 'active' : '',
+      onclick: () => { State.currentSection = s.key; renderForm(); window.scrollTo({ top: 0 }); }
+    }, s.label));
+  });
+  scr.appendChild(nav);
+
+  // Section active
+  if (State.currentSection === 'meta') scr.appendChild(renderMeta(e));
+  else if (State.currentSection === 'adl') scr.appendChild(renderADL(e));
+  else if (State.currentSection === 'iadl') scr.appendChild(renderIADL(e));
+  else if (State.currentSection === 'synthese') scr.appendChild(renderSynthese(e));
+  else if (FORM_SCHEMA[State.currentSection]) scr.appendChild(renderSchemaSection(e, State.currentSection));
+}
+
+// ===== Sous-composants =====
+
+function renderMeta(e) {
+  const block = h('section', { class: 'block' },
+    h('header', {},
+      h('span', { class: 'roman' }, 'Méta'),
+      h('h3', {}, 'Informations sur la visite')
+    )
+  );
+  const body = h('div', { class: 'body' });
+  block.appendChild(body);
+
+  const dateISO = new Date(e.date || Date.now()).toISOString().slice(0, 10);
+  body.appendChild(h('div', { class: 'field' },
+    h('label', { class: 'lbl' }, 'Date de la visite'),
+    h('input', {
+      type: 'date', value: dateISO,
+      onchange: (ev) => saveCurrentEntretien({ date: new Date(ev.target.value).getTime() })
+    })
+  ));
+
+  body.appendChild(h('div', { class: 'field' },
+    h('label', { class: 'lbl' }, 'Motif de visite'),
+    h('textarea', {
+      value: e.motif || '',
+      oninput: (ev) => saveCurrentEntretien({ motif: ev.target.value }),
+      rows: 2,
+      placeholder: 'Motif de la demande de visite EMPSA'
+    })
+  ));
+
+  return block;
+}
+
+/* ===== Rendu d'une section du schéma ===== */
+function renderSchemaSection(e, sectionKey) {
+  const schema = FORM_SCHEMA[sectionKey];
+  e.data = e.data || {};
+  e.data[sectionKey] = e.data[sectionKey] || {};
+  const data = e.data[sectionKey];
+  const patient = getCurrentPatient();
+
+  const wrapper = h('div', {}); // on met section + preview dedans
+
+  const block = h('section', { class: 'block' },
+    h('header', {},
+      h('span', { class: 'roman' }, schema.roman),
+      h('h3', {}, schema.title)
+    )
+  );
+  const body = h('div', { class: 'body' });
+  block.appendChild(body);
+
+  // Conteneur de l'aperçu
+  const previewEl = h('div', { class: 'section-preview' });
+
+  function updatePreview() {
+    previewEl.innerHTML = '';
+    const text = ObsEngine.preview(sectionKey, e, patient);
+    if (text) {
+      previewEl.appendChild(h('span', { class: 'preview-label' }, 'Aperçu de cette section'));
+      previewEl.appendChild(document.createTextNode(text));
+    }
+  }
+
+  function rerender() {
+    // Au lieu de tout recomposer, on re-rend la section sur place
+    const newWrap = renderSchemaSection(e, sectionKey);
+    wrapper.parentNode.replaceChild(newWrap, wrapper);
+  }
+
+  function isVisible(f) {
+    if (!f.showIf) return true;
+    if (typeof f.showIf === 'function') return f.showIf(data);
+    return data[f.showIf.key] === f.showIf.val;
+  }
+
+  schema.fields.forEach(f => {
+    if (!isVisible(f)) return;
+
+    if (f.type === 'subhead') {
+      body.appendChild(h('div', { class: 'sub-head' }, f.label));
+      return;
+    }
+
+    const field = h('div', { class: 'field' });
+    if (f.label) field.appendChild(h('label', { class: 'lbl' }, f.label));
+
+    if (f.type === 'text') {
+      field.appendChild(h('input', {
+        type: 'text',
+        value: data[f.key] || '',
+        placeholder: f.placeholder || '',
+        oninput: (ev) => {
+          data[f.key] = ev.target.value;
+          saveCurrentEntretien();
+          updatePreview();
+        }
+      }));
+    } else if (f.type === 'textarea') {
+      field.appendChild(h('textarea', {
+        value: data[f.key] || '',
+        placeholder: f.placeholder || '',
+        rows: f.rows || 3,
+        oninput: (ev) => {
+          data[f.key] = ev.target.value;
+          saveCurrentEntretien();
+          updatePreview();
+        }
+      }));
+    } else if (f.type === 'select') {
+      // Liste déroulante avec options chaîne simples
+      const sel = h('select', {
+        onchange: (ev) => {
+          data[f.key] = ev.target.value;
+          saveCurrentEntretien();
+          // On doit re-rendre car certains select contrôlent showIf
+          rerender();
+        }
+      });
+      sel.appendChild(h('option', { value: '' }, '—'));
+      (f.options || []).forEach(opt => {
+        const val = typeof opt === 'string' ? opt : opt.v;
+        const lbl = typeof opt === 'string' ? opt : opt.t;
+        const o = h('option', { value: val }, lbl);
+        if (data[f.key] === val) o.setAttribute('selected', '');
+        sel.appendChild(o);
+      });
+      // Assurer la sélection après appendChild (certains navigateurs)
+      sel.value = data[f.key] || '';
+      field.appendChild(sel);
+    } else if (f.type === 'bool') {
+      const row = h('div', { class: 'toggle-row' },
+        h('span', { class: 'toggle-label' }, 'Présence :')
+      );
+      ['oui', 'non'].forEach((lbl, i) => {
+        const val = i === 0;
+        const checked = data[f.key] === val;
+        row.appendChild(h('label', {
+          class: `chip ${checked ? 'checked' : ''} ${checked && f.warn && val ? 'warn' : ''}`,
+          onclick: () => {
+            data[f.key] = checked ? null : val;
+            saveCurrentEntretien();
+            rerender();
+          }
+        }, lbl));
+      });
+      field.appendChild(row);
+    } else if (f.type === 'choice' || f.type === 'radio') {
+      const row = h('div', { class: 'choices' });
+      f.options.forEach(o => {
+        const checked = data[f.key] === o.v;
+        row.appendChild(h('label', {
+          class: `chip ${checked ? 'checked' : ''} ${checked && o.warn ? 'warn' : ''}`,
+          onclick: () => {
+            data[f.key] = checked ? null : o.v;
+            saveCurrentEntretien();
+            rerender();
+          }
+        }, o.t));
+      });
+      field.appendChild(row);
+    } else if (f.type === 'multi') {
+      const row = h('div', { class: 'choices' });
+      data[f.key] = data[f.key] || [];
+      f.options.forEach(o => {
+        const checked = data[f.key].includes(o.v);
+        row.appendChild(h('label', {
+          class: `chip ${checked ? 'checked' : ''} ${checked && o.warn ? 'warn' : ''}`,
+          onclick: () => {
+            if (checked) data[f.key] = data[f.key].filter(v => v !== o.v);
+            else data[f.key] = [...data[f.key], o.v];
+            saveCurrentEntretien();
+            rerender();
+          }
+        }, o.t));
+      });
+      field.appendChild(row);
+    } else if (f.type === 'atcdList') {
+      // Liste de cases à cocher avec détails individuels
+      data[f.key] = data[f.key] || {};
+      const listEl = h('div', { class: 'atcd-list' });
+      (f.items || []).forEach(item => {
+        const rowData = data[f.key][item] || {};
+        const isChecked = !!rowData.checked;
+        const row = h('div', { class: `atcd-row ${isChecked ? 'checked' : ''}` });
+        const chk = h('input', {
+          type: 'checkbox',
+          onchange: (ev) => {
+            data[f.key][item] = data[f.key][item] || {};
+            data[f.key][item].checked = ev.target.checked;
+            saveCurrentEntretien();
+            rerender();
+          }
+        });
+        if (isChecked) chk.setAttribute('checked', '');
+        const lbl = h('label', {
+          class: 'atcd-label',
+          onclick: () => {
+            chk.checked = !chk.checked;
+            chk.dispatchEvent(new Event('change'));
+          }
+        }, item);
+        row.appendChild(chk);
+        const right = h('div', {});
+        right.appendChild(lbl);
+        if (isChecked) {
+          const detail = h('input', {
+            type: 'text',
+            class: 'atcd-detail',
+            value: rowData.details || '',
+            placeholder: 'Précisions éventuelles',
+            oninput: (ev) => {
+              data[f.key][item].details = ev.target.value;
+              saveCurrentEntretien();
+              updatePreview();
+            }
+          });
+          right.appendChild(detail);
+        }
+        row.appendChild(right);
+        listEl.appendChild(row);
+      });
+      field.appendChild(listEl);
+    }
+
+    body.appendChild(field);
+  });
+
+  wrapper.appendChild(block);
+  wrapper.appendChild(previewEl);
+  // Calcul initial de l'aperçu
+  updatePreview();
+  return wrapper;
+}
+
+/* ===== Rendu ADL ===== */
+function renderADL(e) {
+  e.data = e.data || {};
+  e.data.adl = e.data.adl || {};
+  const data = e.data.adl;
+
+  const block = h('section', { class: 'block' },
+    h('header', {},
+      h('span', { class: 'roman' }, 'VII · A'),
+      h('h3', {}, 'ADL — Échelle d\'activités de la vie quotidienne (Katz)')
+    )
+  );
+  const body = h('div', { class: 'body' });
+  block.appendChild(body);
+
+  const list = h('div', { class: 'score-list' });
+  ADL_ITEMS.forEach((it, idx) => {
+    const cur = data[it.key];
+    const row = h('div', { class: 'score-item' },
+      h('div', { class: 's-title' },
+        h('span', {}, it.label),
+        h('span', { class: 's-num' }, `${idx + 1}/${ADL_ITEMS.length}`))
+    );
+    const opts = h('div', { class: 'score-options' });
+    it.options.forEach(o => {
+      const sel = cur === o.v;
+      opts.appendChild(h('div', {
+        class: `score-option ${sel ? 'selected' : ''}`,
+        onclick: () => {
+          data[it.key] = sel ? null : o.v;
+          saveCurrentEntretien();
+          renderForm();
+        }
+      },
+        h('input', { type: 'radio', checked: sel, readonly: true }),
+        h('span', {}, o.t),
+        h('span', { class: 'pt' }, o.v)
+      ));
+    });
+    row.appendChild(opts);
+    list.appendChild(row);
+  });
+  body.appendChild(list);
+
+  const { total, filled, max } = ObsEngine.computeADL(data);
+  body.appendChild(h('div', { class: 'score-total' },
+    h('span', { class: 'lbl-tot' }, `Total ADL — ${filled}/${max} items`),
+    h('span', { class: 'val' }, `${ObsEngine.fmtScore(total)} / ${max}`)
+  ));
+  return block;
+}
+
+/* ===== Rendu IADL ===== */
+function renderIADL(e) {
+  e.data = e.data || {};
+  e.data.iadl = e.data.iadl || {};
+  const data = e.data.iadl;
+
+  const block = h('section', { class: 'block' },
+    h('header', {},
+      h('span', { class: 'roman' }, 'VII · B'),
+      h('h3', {}, 'IADL — Activités instrumentales (Lawton)')
+    )
+  );
+  const body = h('div', { class: 'body' });
+  block.appendChild(body);
+
+  const list = h('div', { class: 'score-list' });
+  IADL_ITEMS.forEach((it, idx) => {
+    const curIdx = data[`${it.key}__idx`];
+    const row = h('div', { class: 'score-item' },
+      h('div', { class: 's-title' },
+        h('span', {}, it.label),
+        h('span', { class: 's-num' }, `${idx + 1}/${IADL_ITEMS.length}`))
+    );
+    const opts = h('div', { class: 'score-options' });
+    it.options.forEach((o, i) => {
+      const sel = curIdx === i;
+      opts.appendChild(h('div', {
+        class: `score-option ${sel ? 'selected' : ''}`,
+        onclick: () => {
+          if (sel) { data[it.key] = null; data[`${it.key}__idx`] = null; }
+          else { data[it.key] = o.v; data[`${it.key}__idx`] = i; }
+          saveCurrentEntretien();
+          renderForm();
+        }
+      },
+        h('input', { type: 'radio', checked: sel, readonly: true }),
+        h('span', {}, o.t),
+        h('span', { class: 'pt' }, o.v)
+      ));
+    });
+    row.appendChild(opts);
+    list.appendChild(row);
+  });
+  body.appendChild(list);
+
+  const { total, filled, max } = ObsEngine.computeIADL(data);
+  body.appendChild(h('div', { class: 'score-total' },
+    h('span', { class: 'lbl-tot' }, `Total IADL — ${filled}/${max} items`),
+    h('span', { class: 'val' }, `${ObsEngine.fmtScore(total)} / ${max}`)
+  ));
+  return block;
+}
+
+/* ===== Rendu Synthèse ===== */
+function renderSynthese(e) {
+  const block = h('section', { class: 'block' },
+    h('header', {},
+      h('span', { class: 'roman' }, 'Conclusion'),
+      h('h3', {}, 'Synthèse & conclusion de la visite')
+    )
+  );
+  const body = h('div', { class: 'body' });
+  block.appendChild(body);
+
+  body.appendChild(h('div', { class: 'field' },
+    h('label', { class: 'lbl' }, 'Synthèse libre'),
+    h('textarea', {
+      value: e.synthese || '', rows: 10,
+      placeholder: 'Hypothèses diagnostiques, conduite à tenir, proposition thérapeutique, orientation, rendez-vous de suivi...',
+      oninput: (ev) => saveCurrentEntretien({ synthese: ev.target.value })
+    })
+  ));
+
+  body.appendChild(h('div', { class: 'helpbar' },
+    h('strong', {}, 'Astuce — '),
+    'Cette synthèse sera ajoutée à la fin de l\'observation générée. Vous pouvez aussi l\'écrire après avoir généré le brouillon.'
+  ));
+
+  return block;
+}
+
+/* ===== Génération de l'observation ===== */
+function openGenerateModal() {
+  const e = getCurrentEntretien();
+  const patient = getCurrentPatient();
+  if (!e) return;
+  const text = ObsEngine.generate(e, patient);
+
+  openModal('Observation rédigée', (body, close) => {
+    body.appendChild(h('div', { style: 'font-family: -apple-system, sans-serif; font-size: 13px; color: var(--ink-faint); margin-bottom: 12px;' },
+      'Brouillon généré automatiquement. Relisez et ajustez avant de coller dans le SIH.'
+    ));
+    const obsEl = h('div', { class: 'obs-text' }, text);
+    body.appendChild(obsEl);
+
+    body.appendChild(h('div', { class: 'obs-actions' },
+      h('button', { class: 'btn primary', onclick: async () => {
+        try {
+          await navigator.clipboard.writeText(text);
+          toast('Observation copiée dans le presse-papier', 'ok');
+        } catch {
+          toast('Copie impossible — sélectionnez le texte manuellement', 'err');
+        }
+      } }, '📋 Copier dans le presse-papier'),
+      h('button', { class: 'btn', onclick: () => {
+        const range = document.createRange();
+        range.selectNodeContents(obsEl);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      } }, 'Sélectionner tout')
+    ));
+
+    return [
+      h('button', { class: 'btn', onclick: close }, 'Fermer')
+    ];
+  }, { wide: true });
+}
+
+/* ===== Modales génériques ===== */
+function openModal(title, builder, opts = {}) {
+  const root = document.getElementById('modalRoot');
+  root.innerHTML = '';
+  const backdrop = h('div', { class: 'modal-backdrop' });
+  const modal = h('div', { class: 'modal', style: opts.wide ? 'max-width: 820px;' : '' });
+  const header = h('header', {},
+    h('h3', {}, title),
+    h('button', { class: 'close-x', onclick: () => close() }, '×')
+  );
+  const bodyEl = h('div', { class: 'modal-body' });
+  const footEl = h('div', { class: 'modal-foot' });
+
+  function close() { root.innerHTML = ''; }
+  backdrop.addEventListener('click', (ev) => { if (ev.target === backdrop) close(); });
+
+  const footButtons = builder(bodyEl, close) || [];
+  footButtons.forEach(b => footEl.appendChild(b));
+
+  modal.appendChild(header);
+  modal.appendChild(bodyEl);
+  if (footButtons.length) modal.appendChild(footEl);
+  backdrop.appendChild(modal);
+  root.appendChild(backdrop);
+}
+
+/* ===== Export sauvegarde ===== */
+document.getElementById('exportAllBtn').onclick = async () => {
+  const out = await new Promise((res, rej) => {
+    const r = indexedDB.open('empsa-db');
+    r.onsuccess = () => {
+      const db = r.result;
+      const tx = db.transaction(['patients', 'entretiens']);
+      const o = { patients: [], entretiens: [] };
+      tx.objectStore('patients').getAll().onsuccess = (e) => {
+        o.patients = e.target.result;
+        tx.objectStore('entretiens').getAll().onsuccess = (e2) => {
+          o.entretiens = e2.target.result;
+          res(o);
+        };
+      };
+    };
+  });
+  const payload = {
+    version: 2,
+    salt: JSON.parse(localStorage.getItem('empsa.salt')),
+    canary: JSON.parse(localStorage.getItem('empsa.canary')),
+    data: out,
+    exportedAt: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `empsa-sauvegarde-${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Sauvegarde chiffrée téléchargée', 'ok');
+};
+
+/* ===== Service Worker ===== */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    const swCode = `
+      const CACHE = 'empsa-v2';
+      self.addEventListener('install', (e) => { self.skipWaiting(); });
+      self.addEventListener('activate', (e) => { self.clients.claim(); });
+      self.addEventListener('fetch', (e) => {
+        e.respondWith(
+          caches.open(CACHE).then(cache =>
+            cache.match(e.request).then(resp =>
+              resp || fetch(e.request).then(r => {
+                if (e.request.method === 'GET' && r.status === 200) cache.put(e.request, r.clone());
+                return r;
+              }).catch(() => cache.match('/'))
+            )
+          )
+        );
+      });
+    `;
+    try {
+      const blob = new Blob([swCode], { type: 'application/javascript' });
+      const url = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(url).catch(() => {});
+    } catch {}
+  });
+}
+
+/* ===== Démarrage ===== */
+initLock();
+
+/* ===== Auto-lock ===== */
+let idleTimer = null;
+function resetIdle() {
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => {
+    if (CryptoBox.isUnlocked()) {
+      CryptoBox.lock();
+      location.reload();
+    }
+  }, 15 * 60 * 1000); // 15 minutes
+}
+['click', 'touchstart', 'keydown', 'scroll'].forEach(ev =>
+  document.addEventListener(ev, resetIdle, { passive: true }));
+resetIdle();
+
+</script>
+</body>
+</html>
