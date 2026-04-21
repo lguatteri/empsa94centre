@@ -809,10 +809,12 @@ const Store = (() => {
 // ========== Helpers généraux ==========
 function h(tag, attrs = {}, ...children) {
   const el = document.createElement(tag);
+  const t = String(tag).toLowerCase();
   Object.entries(attrs || {}).forEach(([k, v]) => {
     if (k === 'class') el.className = v;
     else if (k === 'style') el.setAttribute('style', v);
     else if (k.startsWith('on')) el.addEventListener(k.slice(2).toLowerCase(), v);
+    else if (k === 'value' && (t === 'input' || t === 'textarea')) el.value = v == null ? '' : v;
     else if (v === true) el.setAttribute(k, '');
     else if (v !== false && v !== null && v !== undefined) el.setAttribute(k, v);
   });
@@ -1066,6 +1068,8 @@ const FORM_SCHEMA = {
       { type: 'subhead', label: 'Prestations sociales' },
       { type: 'multi', key: 'prestations', label: 'Prestations perçues',
         options: PRESTATIONS_OPTIONS },
+      { type: 'text', key: 'prestationsOther', label: 'Autre prestation',
+        placeholder: 'Hors liste' },
       { type: 'select', key: 'protection', label: 'Mesure de protection juridique',
         options: ['Aucune', 'Curatelle simple', 'Curatelle renforcée', 'Tutelle', 'Sauvegarde de justice', 'Autre'] },
       { type: 'text', key: 'protectionCom', label: 'Préciser (si autre)',
@@ -1899,6 +1903,8 @@ const ObsEngine = (() => {
     }
     if (d.fratrie) {
       if (d.fratrie === 'Aucune') fam.push('pas de fratrie');
+      else if (d.fratrie === '1') fam.push(withCom('1 frère ou sœur', d.fratrieCom));
+      else if (d.fratrie === '3+') fam.push(withCom('fratrie de 3 ou plus', d.fratrieCom));
       else fam.push(withCom(`fratrie de ${d.fratrie}`, d.fratrieCom));
     }
     if (d.aidantPrincipal) fam.push(`aidant principal : ${d.aidantPrincipal}`);
@@ -1967,10 +1973,9 @@ const ObsEngine = (() => {
     if (sp.length) socio.push(sp.join(', '));
     if (d.niveauEtude) socio.push(`Niveau d'étude : ${d.niveauEtude}`);
     const prestArr = Array.isArray(d.prestations) ? d.prestations : [];
-    if (prestArr.length) {
-      const prestList = prestArr.map(v => PRESTATIONS_LABELS[v] || v);
-      socio.push(`Prestations sociales : ${prestList.join(', ')}`);
-    }
+    const prestList = prestArr.map(v => PRESTATIONS_LABELS[v] || v);
+    if (d.prestationsOther) prestList.push(d.prestationsOther);
+    if (prestList.length) socio.push(`Prestations sociales : ${prestList.join(', ')}`);
 
     if (d.protection) {
       if (d.protection === 'Aucune') {
@@ -2594,6 +2599,10 @@ const ObsEngine = (() => {
       out += s.body + '\n\n';
     });
 
+    // Capitalisation automatique : majuscule après . ! ? et après saut de ligne,
+    // mais PAS après ":" (règle: colon = continuation, pas nouvelle phrase).
+    out = capitalizeSentences(out);
+
     // Conversion des marqueurs en HTML :
     //   __texte__ → gras + souligné
     //   **texte** → gras
@@ -2602,6 +2611,16 @@ const ObsEngine = (() => {
     // Conserver les retours à la ligne en HTML
     out = out.replace(/\n/g, '<br>');
     return out.trim();
+  }
+
+  function capitalizeSentences(text) {
+    // Capitalise la toute première lettre (éventuellement précédée d'espaces/tags markdown)
+    text = text.replace(/^((?:\s|[*_])*)([a-zàâéèêëîïôöùûüÿç])/u,
+      (m, pre, ch) => pre + ch.toUpperCase());
+    // Majuscule après . ! ? ou retour à la ligne (et caractères non-lettres qui suivent)
+    text = text.replace(/([.!?\n](?:[\s)*_"»]|<[^>]+>)*)([a-zàâéèêëîïôöùûüÿç])/gu,
+      (m, pre, ch) => pre + ch.toUpperCase());
+    return text;
   }
 
   /* ===========================================================
@@ -2617,7 +2636,8 @@ const ObsEngine = (() => {
     else if (sectionKey === 'histoireMaladie') text = histoireMaladie(sd);
     else if (sectionKey === 'traitements') text = traitements(sd);
     else if (sectionKey === 'evalPsy') text = evalPsy(sd, patient, entretien);
-    // Nettoyer les marqueurs (préview : texte brut)
+    // Capitalisation puis nettoyage des marqueurs (preview : texte brut)
+    text = capitalizeSentences(text);
     text = text.replace(/__(.+?)__/g, '$1');
     text = text.replace(/\*\*(.+?)\*\*/g, '$1');
     return text;
