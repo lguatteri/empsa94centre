@@ -9,7 +9,9 @@
 <meta name="theme-color" content="#1a2942">
 <title>EMPSA 94 — Entretien gérontopsychiatrie</title>
 
-<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231a2942"/><text y="68" x="50" text-anchor="middle" font-family="Georgia" font-size="52" fill="%23e8e4dc" font-style="italic">e</text></svg>'>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
 
 <style>
 :root {
@@ -28,6 +30,10 @@
   --shadow-sm: 0 1px 2px rgba(26, 41, 66, 0.06);
   --shadow-md: 0 2px 8px rgba(26, 41, 66, 0.08), 0 1px 2px rgba(26, 41, 66, 0.04);
   --shadow-lg: 0 10px 30px rgba(26, 41, 66, 0.12), 0 4px 8px rgba(26, 41, 66, 0.06);
+
+  --font-serif: var(--font-serif);
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: var(--font-mono);
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -36,7 +42,7 @@ html, body {
   margin: 0; padding: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+  font-family: var(--font-serif);
   font-size: 16px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
@@ -51,13 +57,13 @@ body {
 
 /* ===== Typographie ===== */
 h1, h2, h3, h4 {
-  font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  font-family: var(--font-serif);
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--ink);
 }
-.sans { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; }
-.mono { font-family: 'SF Mono', 'Menlo', 'Consolas', monospace; }
+.sans { font-family: var(--font-sans); }
+.mono { font-family: var(--font-mono); }
 .smallcaps { font-variant: small-caps; letter-spacing: 0.08em; font-weight: 500; }
 
 /* ===== Layout principal ===== */
@@ -74,14 +80,14 @@ h1, h2, h3, h4 {
 .topbar .brand .mark { font-style: italic; font-size: 22px; font-weight: 500; }
 .topbar .brand .title {
   font-size: 13px; opacity: 0.75; letter-spacing: 0.05em; text-transform: uppercase;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-sans);
 }
 .topbar .actions { display: flex; gap: 8px; }
 .topbar button {
   background: rgba(255,255,255,0.08); color: var(--paper);
   border: 1px solid rgba(255,255,255,0.15);
   padding: 8px 14px; border-radius: 6px; font-size: 13px;
-  font-family: -apple-system, sans-serif; cursor: pointer;
+  font-family: var(--font-sans); cursor: pointer;
   transition: background 0.15s;
 }
 .topbar button:hover, .topbar button:active { background: rgba(255,255,255,0.15); }
@@ -94,21 +100,21 @@ h1, h2, h3, h4 {
 }
 .lock-card { max-width: 380px; width: 100%; text-align: center; }
 .lock-card .seal {
-  font-family: Georgia, serif; font-style: italic;
+  font-family: var(--font-serif); font-style: italic;
   font-size: 64px; line-height: 1;
   margin-bottom: 24px; color: var(--paper-warm);
 }
 .lock-card h1 { color: var(--paper); font-size: 22px; margin: 0 0 8px; font-weight: 500; }
 .lock-card .sub {
   color: rgba(245, 242, 234, 0.6); font-size: 14px;
-  margin-bottom: 40px; font-family: -apple-system, sans-serif;
+  margin-bottom: 40px; font-family: var(--font-sans);
 }
 .pin-input {
   width: 100%; padding: 18px;
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;
   color: var(--paper); font-size: 24px; text-align: center;
-  letter-spacing: 0.5em; font-family: 'SF Mono', monospace;
+  letter-spacing: 0.5em; font-family: var(--font-mono);
   margin-bottom: 16px; -webkit-appearance: none;
 }
 .pin-input:focus {
@@ -118,23 +124,23 @@ h1, h2, h3, h4 {
 .lock-card button {
   width: 100%; padding: 14px; background: var(--paper); color: var(--ink);
   border: none; border-radius: 8px; font-size: 15px; font-weight: 600;
-  font-family: -apple-system, sans-serif; cursor: pointer; margin-bottom: 12px;
+  font-family: var(--font-sans); cursor: pointer; margin-bottom: 12px;
 }
 .lock-card button:active { opacity: 0.8; }
 .lock-card .hint {
   color: rgba(245, 242, 234, 0.5); font-size: 12px;
-  font-family: -apple-system, sans-serif; margin-top: 20px;
+  font-family: var(--font-sans); margin-top: 20px;
 }
 .lock-card .error {
   color: #ff9b9b; font-size: 13px;
-  font-family: -apple-system, sans-serif; min-height: 18px; margin-bottom: 12px;
+  font-family: var(--font-sans); min-height: 18px; margin-bottom: 12px;
 }
 .dev-notice {
   background: rgba(255, 200, 100, 0.15);
   border: 1px solid rgba(255, 200, 100, 0.3);
   color: #ffd98a;
   padding: 10px 14px; border-radius: 6px;
-  font-size: 12px; font-family: -apple-system, sans-serif;
+  font-size: 12px; font-family: var(--font-sans);
   margin-bottom: 16px; text-align: left;
 }
 
@@ -144,7 +150,7 @@ h1, h2, h3, h4 {
   font-size: 14px; text-transform: uppercase; letter-spacing: 0.12em;
   color: var(--ink-faint); margin: 0 0 20px; padding-bottom: 12px;
   border-bottom: 1px solid var(--rule);
-  font-family: -apple-system, sans-serif; font-weight: 600;
+  font-family: var(--font-sans); font-weight: 600;
 }
 .patient-list { display: flex; flex-direction: column; gap: 2px; }
 .patient-item {
@@ -161,13 +167,17 @@ h1, h2, h3, h4 {
 .patient-item:active { transform: scale(0.995); }
 .patient-item .ident { display: flex; flex-direction: column; gap: 4px; }
 .patient-item .pid {
-  font-family: 'SF Mono', monospace; font-size: 11px;
+  font-family: var(--font-mono); font-size: 11px;
   color: var(--ink-faint); letter-spacing: 0.05em;
 }
-.patient-item .pname { font-size: 17px; font-weight: 500; }
+.patient-item .pname { font-size: 17px; font-weight: 500; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.patient-item .pbadge {
+  font-size: 13px; color: var(--ink-faint);
+  font-family: var(--font-sans); font-weight: 400;
+}
 .patient-item .pmeta {
   font-size: 13px; color: var(--ink-faint);
-  font-family: -apple-system, sans-serif;
+  font-family: var(--font-sans);
 }
 .patient-item .arrow { color: var(--ink-faint); font-size: 20px; }
 
@@ -175,10 +185,10 @@ h1, h2, h3, h4 {
   text-align: center; padding: 60px 20px; color: var(--ink-faint);
 }
 .empty-state .glyph {
-  font-family: Georgia, serif; font-style: italic;
+  font-family: var(--font-serif); font-style: italic;
   font-size: 56px; color: var(--rule); margin-bottom: 16px;
 }
-.empty-state p { font-family: -apple-system, sans-serif; font-size: 14px; margin: 4px 0; }
+.empty-state p { font-family: var(--font-sans); font-size: 14px; margin: 4px 0; }
 
 /* ===== Bouton principal flottant ===== */
 .fab {
@@ -187,7 +197,7 @@ h1, h2, h3, h4 {
   background: var(--ink); color: var(--paper); border: none;
   padding: 14px 22px; border-radius: 999px;
   font-size: 14px; font-weight: 600;
-  font-family: -apple-system, sans-serif;
+  font-family: var(--font-sans);
   cursor: pointer; box-shadow: var(--shadow-lg);
   z-index: 40; display: flex; align-items: center; gap: 8px;
 }
@@ -202,13 +212,13 @@ h1, h2, h3, h4 {
 }
 .form-header .h-left h1 { font-size: 24px; margin: 0 0 4px; font-weight: 500; }
 .form-header .h-left .h-sub {
-  font-family: -apple-system, sans-serif; font-size: 13px; color: var(--ink-faint);
+  font-family: var(--font-sans); font-size: 13px; color: var(--ink-faint);
 }
 .form-header .h-right { display: flex; gap: 8px; }
 
 .back-link {
   background: none; border: none; color: var(--ink-faint);
-  font-family: -apple-system, sans-serif; font-size: 13px;
+  font-family: var(--font-sans); font-size: 13px;
   padding: 4px 0; margin-bottom: 8px; cursor: pointer;
 }
 .back-link:hover { color: var(--ink); }
@@ -228,7 +238,7 @@ h1, h2, h3, h4 {
   background: transparent; border: 1px solid var(--rule);
   color: var(--ink-soft); padding: 6px 14px;
   border-radius: 999px; font-size: 12px;
-  font-family: -apple-system, sans-serif;
+  font-family: var(--font-sans);
   white-space: nowrap; cursor: pointer; transition: all 0.15s;
 }
 .section-nav button.active {
@@ -246,7 +256,7 @@ section.block > header {
   background: var(--paper-warm);
 }
 section.block > header .roman {
-  font-family: Georgia, serif; font-style: italic;
+  font-family: var(--font-serif); font-style: italic;
   color: var(--accent); font-size: 13px;
   letter-spacing: 0.1em; display: block;
 }
@@ -257,7 +267,7 @@ section.block .body { padding: 18px 22px 22px; }
 .field { margin-bottom: 18px; }
 .field:last-child { margin-bottom: 0; }
 .field label.lbl {
-  display: block; font-family: -apple-system, sans-serif;
+  display: block; font-family: var(--font-sans);
   font-size: 12px; font-weight: 600;
   color: var(--ink-soft); text-transform: uppercase;
   letter-spacing: 0.08em; margin-bottom: 6px;
@@ -289,7 +299,7 @@ section.block .body { padding: 18px 22px 22px; }
 }
 
 .sub-head {
-  font-family: -apple-system, sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px; font-weight: 700; color: var(--ink);
   margin: 20px 0 12px; padding-bottom: 6px;
   border-bottom: 1px dashed var(--rule); letter-spacing: 0.02em;
@@ -304,7 +314,7 @@ section.block .body { padding: 18px 22px 22px; }
   display: inline-flex; align-items: center;
   padding: 7px 12px; border: 1px solid var(--rule);
   border-radius: 999px; background: var(--paper-card);
-  font-size: 13px; font-family: -apple-system, sans-serif;
+  font-size: 13px; font-family: var(--font-sans);
   cursor: pointer; user-select: none;
   transition: all 0.1s; line-height: 1.2;
 }
@@ -321,7 +331,7 @@ section.block .body { padding: 18px 22px 22px; }
   display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
 }
 .toggle-row .toggle-label {
-  font-size: 14px; font-family: -apple-system, sans-serif;
+  font-size: 14px; font-family: var(--font-sans);
   color: var(--ink-soft); margin-right: 8px;
 }
 
@@ -343,7 +353,7 @@ section.block .body { padding: 18px 22px 22px; }
   accent-color: var(--ink); cursor: pointer;
 }
 .atcd-row .atcd-label {
-  font-family: -apple-system, sans-serif; font-size: 14px;
+  font-family: var(--font-sans); font-size: 14px;
   font-weight: 500; cursor: pointer;
 }
 .atcd-row .atcd-detail {
@@ -357,6 +367,30 @@ section.block .body { padding: 18px 22px 22px; }
   outline: none; border-color: var(--ink);
 }
 
+/* Galerie de photos (traitements) */
+.photo-gallery {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 10px; margin-bottom: 12px;
+}
+.photo-thumb {
+  position: relative; aspect-ratio: 1;
+  border: 1px solid var(--rule); border-radius: 6px; overflow: hidden;
+  background: var(--paper-warm);
+}
+.photo-thumb img {
+  width: 100%; height: 100%; object-fit: cover;
+  cursor: zoom-in; display: block;
+}
+.photo-rm {
+  position: absolute; top: 4px; right: 4px;
+  width: 24px; height: 24px; padding: 0;
+  background: rgba(26, 41, 66, 0.85); color: #fff;
+  border: none; border-radius: 50%;
+  font-size: 16px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.photo-rm:hover { background: var(--accent); }
+
 /* Scores ADL/IADL */
 .score-list { display: flex; flex-direction: column; gap: 0; }
 .score-item {
@@ -368,18 +402,20 @@ section.block .body { padding: 18px 22px 22px; }
   display: flex; justify-content: space-between; align-items: baseline;
 }
 .score-item .s-num {
-  font-family: 'SF Mono', monospace; font-size: 11px;
+  font-family: var(--font-mono); font-size: 11px;
   color: var(--ink-faint); background: var(--paper-warm);
   padding: 2px 6px; border-radius: 3px;
 }
 .score-options {
   display: flex; flex-direction: column; gap: 4px; margin-top: 4px;
 }
+.score-options.inline { flex-direction: row; }
+.score-options.inline .score-option { flex: 1; justify-content: center; }
 .score-option {
   display: flex; align-items: flex-start;
   padding: 8px 10px; border: 1px solid var(--rule-soft);
   border-radius: 6px; cursor: pointer;
-  font-size: 13px; font-family: -apple-system, sans-serif;
+  font-size: 13px; font-family: var(--font-sans);
   line-height: 1.4; gap: 10px; transition: background 0.1s;
 }
 .score-option:hover { background: var(--paper-warm); }
@@ -388,22 +424,51 @@ section.block .body { padding: 18px 22px 22px; }
   background: var(--ink); color: var(--paper); border-color: var(--ink);
 }
 .score-option .pt {
-  font-family: 'SF Mono', monospace;
+  font-family: var(--font-mono);
   margin-left: auto; font-weight: 600; opacity: 0.7;
 }
 .score-total {
   background: var(--ink); color: var(--paper);
   padding: 12px 16px; border-radius: 6px; margin-top: 16px;
   display: flex; justify-content: space-between; align-items: center;
-  font-family: -apple-system, sans-serif;
+  font-family: var(--font-sans);
 }
 .score-total .lbl-tot {
   font-size: 13px; letter-spacing: 0.08em;
   text-transform: uppercase; opacity: 0.7;
 }
 .score-total .val {
-  font-family: 'Iowan Old Style', Georgia, serif;
+  font-family: var(--font-serif);
   font-size: 22px; font-weight: 600;
+}
+
+/* Cartes d'échelles cliniques */
+.scale-card .scale-header {
+  display: flex; justify-content: space-between; align-items: center;
+  cursor: pointer; user-select: none;
+  padding: 14px 22px;
+}
+.scale-card .scale-header:hover { background: var(--paper-warm); }
+.scale-card .scale-header h3 { margin: 0; font-size: 16px; }
+.scale-card .scale-desc {
+  font-size: 12px; color: var(--ink-faint);
+  font-family: var(--font-sans); margin-top: 2px;
+}
+.scale-meta {
+  display: flex; align-items: baseline; gap: 10px;
+  font-family: var(--font-sans);
+}
+.scale-meta .scale-score {
+  font-family: var(--font-serif);
+  font-size: 18px; font-weight: 600; color: var(--ink);
+}
+.scale-meta .scale-filled {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--ink-faint); background: var(--paper-warm);
+  padding: 2px 6px; border-radius: 3px;
+}
+.scale-meta .scale-chev {
+  font-size: 14px; color: var(--ink-faint); width: 14px; text-align: center;
 }
 
 /* Modales */
@@ -449,7 +514,7 @@ button.btn {
   background: var(--paper-card); color: var(--ink);
   border: 1px solid var(--rule);
   padding: 10px 18px; border-radius: 6px;
-  font-family: -apple-system, sans-serif;
+  font-family: var(--font-sans);
   font-size: 14px; font-weight: 500; cursor: pointer;
 }
 button.btn:hover { background: var(--paper-warm); }
@@ -461,17 +526,26 @@ button.btn.danger { color: var(--accent); border-color: var(--rule); }
 button.btn.danger:hover {
   background: var(--accent); color: var(--paper); border-color: var(--accent);
 }
+.btn-icon {
+  background: transparent; border: 1px solid var(--rule-soft);
+  padding: 6px 10px; border-radius: 6px; font-size: 14px;
+  cursor: pointer; color: var(--ink-faint);
+  font-family: var(--font-sans);
+}
+.btn-icon:hover { color: var(--accent); border-color: var(--accent); }
 
 /* Observation générée */
 .obs-text {
   background: var(--paper-warm);
   padding: 20px 22px; border-radius: 6px;
   border: 1px solid var(--rule);
-  font-family: 'Iowan Old Style', Georgia, serif;
+  font-family: var(--font-serif);
   font-size: 15px; line-height: 1.7;
-  white-space: pre-wrap; color: var(--ink);
+  color: var(--ink);
   max-height: 60vh; overflow-y: auto;
 }
+.obs-text[contenteditable="true"]:focus { outline: 2px solid var(--ink); outline-offset: 2px; }
+.obs-text u { text-underline-offset: 2px; }
 .obs-actions {
   display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;
 }
@@ -482,13 +556,13 @@ button.btn.danger:hover {
   background: rgba(26, 41, 66, 0.04);
   border-left: 3px solid var(--ink-faint);
   border-radius: 0 6px 6px 0;
-  font-family: 'Iowan Old Style', Georgia, serif;
+  font-family: var(--font-serif);
   font-size: 14px; line-height: 1.6;
   white-space: pre-wrap; color: var(--ink-soft);
 }
 .section-preview:empty { display: none; }
 .section-preview .preview-label {
-  font-family: -apple-system, sans-serif;
+  font-family: var(--font-sans);
   font-size: 11px; font-weight: 700;
   letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--ink-faint); margin-bottom: 8px;
@@ -500,7 +574,7 @@ button.btn.danger:hover {
   transform: translateX(-50%);
   background: var(--ink); color: var(--paper);
   padding: 12px 22px; border-radius: 999px;
-  font-family: -apple-system, sans-serif;
+  font-family: var(--font-sans);
   font-size: 14px; z-index: 200;
   box-shadow: var(--shadow-lg); animation: toastIn 0.2s ease;
 }
@@ -514,7 +588,7 @@ button.btn.danger:hover {
 /* divider */
 .divider {
   text-align: center; color: var(--ink-faint);
-  font-family: Georgia, serif; font-style: italic;
+  font-family: var(--font-serif); font-style: italic;
   font-size: 14px; margin: 32px 0 12px;
   display: flex; align-items: center; gap: 12px;
 }
@@ -527,7 +601,7 @@ button.btn.danger:hover {
   margin-top: 24px; padding: 14px 18px;
   background: var(--paper-warm);
   border-left: 3px solid var(--accent);
-  font-family: -apple-system, sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px; color: var(--ink-soft);
   border-radius: 0 6px 6px 0;
 }
@@ -777,12 +851,63 @@ function neLe(sexe) {
   return accord(sexe, 'né le', 'née le', 'né·e le');
 }
 
+// Âge à partir de birthDate (ISO ou JJ/MM/AAAA) ou birthYear
+function computeAge(patient) {
+  if (!patient) return null;
+  if (patient.birthDate) {
+    const parts = patient.birthDate.split(/[-/]/).map(x => parseInt(x, 10));
+    let y, m, d;
+    if (String(parts[0]).length === 4) { y = parts[0]; m = parts[1]; d = parts[2]; }
+    else { d = parts[0]; m = parts[1]; y = parts[2]; }
+    if (!y) return null;
+    const today = new Date();
+    let age = today.getFullYear() - y;
+    const mNow = today.getMonth() + 1, dNow = today.getDate();
+    if (m && (mNow < m || (mNow === m && d && dNow < d))) age--;
+    return isNaN(age) ? null : age;
+  }
+  if (patient.birthYear) {
+    const age = new Date().getFullYear() - parseInt(patient.birthYear, 10);
+    return isNaN(age) ? null : age;
+  }
+  return null;
+}
+
 // Joindre une liste de chaînes avec virgules et "et" final
 function joinList(arr) {
   arr = (arr || []).filter(Boolean);
   if (!arr.length) return '';
   if (arr.length === 1) return arr[0];
   return arr.slice(0, -1).join(', ') + ' et ' + arr[arr.length - 1];
+}
+
+// Redimensionne une image (File) en data URL JPEG
+function resizeImageToDataUrl(file, maxDim = 1600, quality = 0.75) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+        const w = Math.round(img.width * scale);
+        const hPx = Math.round(img.height * scale);
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = hPx;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, hPx);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = reject;
+      img.src = reader.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function openPhotoViewer(dataUrl) {
+  openModal('Photo', (body) => {
+    body.appendChild(h('img', { src: dataUrl, style: 'max-width:100%;height:auto;display:block;margin:0 auto;' }));
+  }, { wide: true });
 }
 /* =====================================================================
    SCHÉMAS DE DONNÉES
@@ -806,10 +931,40 @@ const SURGICAL_ITEMS = [
   'Chirurgie carcinologique', 'Pacemaker'
 ];
 
+// Appareillages — labels pour génération d'observation
+const APP_LABELS = {
+  appVisuel: { lunettes: 'lunettes', lentilles: 'lentilles', aucun: 'aucun' },
+  appAuditif: { audio_uni: 'appareil auditif (1 oreille)', audio_bi: 'appareil auditif (2 oreilles)', aucun: 'aucun' },
+  appDentaire: { complete: 'prothèse complète', partielle: 'prothèse partielle', aucun: 'aucun' },
+  appMarche: { canne: 'canne', deambulateur: 'déambulateur', fauteuil: 'fauteuil roulant', aucun: 'aucun' }
+};
+
+// Prestations sociales — options (format multi / bulles)
+const PRESTATIONS_OPTIONS = [
+  { v: 'apa', t: 'APA' },
+  { v: 'pch', t: 'PCH' },
+  { v: 'aah', t: 'AAH' },
+  { v: 'aspa', t: 'ASPA' },
+  { v: 'invalidite', t: 'Pension d\'invalidité' },
+  { v: 'actp', t: 'ACTP' },
+  { v: 'mtp', t: 'MTP' },
+  { v: 'als_apl', t: 'ALS / APL' },
+  { v: 'rsa', t: 'RSA' },
+  { v: 'css', t: 'CSS' }
+];
+const PRESTATIONS_LABELS = Object.fromEntries(PRESTATIONS_OPTIONS.map(o => [o.v, o.t]));
+
 // Villes couvertes par l'EMPSA 94
 const VILLES = [
   'Maisons-Alfort', 'Créteil', 'Santeny', 'Bonneuil-sur-Marne',
   'Sucy-en-Brie', 'Marolles-en-Brie', 'Boissy-Saint-Léger'
+];
+
+// Intervenants de l'équipe
+const INTERVENANTS = [
+  'Dre GUATTERI',
+  'Mme BOURDIN (IDE)',
+  'Mme ROCHE (IDE)'
 ];
 
 const FORM_SCHEMA = {
@@ -817,22 +972,22 @@ const FORM_SCHEMA = {
      I. BIOGRAPHIE (très enrichie)
      ========================================================= */
   biographie: {
-    roman: 'I',
+    roman: '',
     title: 'Éléments de biographie',
     fields: [
       // --- Lieu de vie ---
       { type: 'subhead', label: 'Lieu de vie' },
       { type: 'select', key: 'modeVie', label: 'Mode de vie',
-        options: ['Seul', 'En couple', 'En colocation', 'Avec enfants', 'Avec famille'] },
+        options: ['Seul', 'En couple', 'En colocation', 'Avec enfants', 'Chez un enfant', 'Avec famille'] },
       { type: 'select', key: 'ville', label: 'Ville', options: VILLES, allowCustom: true },
       { type: 'select', key: 'statut', label: 'Statut',
         options: ['Locataire', 'Propriétaire', 'Résident', 'Hébergé'] },
       { type: 'select', key: 'typeLogement', label: 'Type de logement',
-        options: ['Appartement', 'Maison', 'EHPAD', 'Résidence autonomie'] },
+        options: ['Appartement', 'Maison', 'EHPAD', 'Résidence autonomie', 'Foyer logement', 'USLD', 'MAS', 'FAM'] },
       { type: 'text', key: 'etage', label: 'Étage',
         showIf: { key: 'typeLogement', val: 'Appartement' } },
       { type: 'text', key: 'structure', label: 'Nom de la structure',
-        showIf: (d) => d.typeLogement === 'EHPAD' || d.typeLogement === 'Résidence autonomie' },
+        showIf: (d) => ['EHPAD', 'Résidence autonomie', 'Foyer logement', 'USLD', 'MAS', 'FAM'].includes(d.typeLogement) },
 
       // --- Situation conjugale ---
       { type: 'subhead', label: 'Situation conjugale' },
@@ -846,9 +1001,6 @@ const FORM_SCHEMA = {
         options: ['Aucun', '1', '2', '3', '4+'] },
       { type: 'text', key: 'enfantsCom', label: 'Précisions sur les enfants',
         placeholder: 'Ex : vit à Lyon, en contact régulier' },
-      { type: 'select', key: 'conjoint', label: 'Conjoint(e) présent(e)',
-        options: ['Oui', 'Non'] },
-      { type: 'text', key: 'conjointCom', label: 'Précisions sur le conjoint' },
       { type: 'select', key: 'fratrie', label: 'Fratrie',
         options: ['Aucune', '1', '2', '3+'] },
       { type: 'text', key: 'fratrieCom', label: 'Précisions sur la fratrie' },
@@ -865,18 +1017,43 @@ const FORM_SCHEMA = {
       { type: 'subhead', label: 'Autonomie — aides et appareillages' },
       { type: 'select', key: 'aideDomicile', label: 'Aide à domicile', options: ['Oui', 'Non'] },
       { type: 'text', key: 'aideDomicileCom', label: 'Précisions',
-        placeholder: 'Fréquence, type d\'aide...' },
-      { type: 'text', key: 'ide', label: 'IDE (passage infirmier)' },
-      { type: 'text', key: 'aideMenagere', label: 'Aide-ménagère' },
-      { type: 'text', key: 'auxiliaireVie', label: 'Auxiliaire de vie' },
-      { type: 'text', key: 'portageRepas', label: 'Portage des repas' },
-      { type: 'text', key: 'autresAides', label: 'Autres aides' },
-      { type: 'text', key: 'appVisuel', label: 'Appareillage visuel',
-        placeholder: 'Ex : lunettes, lentilles' },
-      { type: 'text', key: 'appAuditif', label: 'Appareillage auditif' },
-      { type: 'text', key: 'appDentaire', label: 'Appareil dentaire' },
-      { type: 'text', key: 'appMarche', label: 'Aide à la marche',
-        placeholder: 'Ex : canne, déambulateur, fauteuil' },
+        placeholder: 'Fréquence, type d\'aide...',
+        showIf: (d) => d.aideDomicile === 'Oui' },
+      { type: 'text', key: 'ide', label: 'IDE (passage infirmier)',
+        showIf: (d) => d.aideDomicile === 'Oui' },
+      { type: 'text', key: 'aideMenagere', label: 'Aide-ménagère',
+        showIf: (d) => d.aideDomicile === 'Oui' },
+      { type: 'text', key: 'auxiliaireVie', label: 'Auxiliaire de vie',
+        showIf: (d) => d.aideDomicile === 'Oui' },
+      { type: 'text', key: 'portageRepas', label: 'Portage des repas',
+        showIf: (d) => d.aideDomicile === 'Oui' },
+      { type: 'text', key: 'autresAides', label: 'Autres aides',
+        showIf: (d) => d.aideDomicile === 'Oui' },
+      { type: 'multi', key: 'appVisuel', label: 'Appareillage visuel',
+        options: [
+          { v: 'lunettes', t: 'Lunettes' },
+          { v: 'lentilles', t: 'Lentilles' },
+          { v: 'aucun', t: 'Aucun' }
+        ]},
+      { type: 'multi', key: 'appAuditif', label: 'Appareillage auditif',
+        options: [
+          { v: 'audio_uni', t: 'Appareil auditif (1 oreille)' },
+          { v: 'audio_bi', t: 'Appareil auditif (2 oreilles)' },
+          { v: 'aucun', t: 'Aucun' }
+        ]},
+      { type: 'multi', key: 'appDentaire', label: 'Appareil dentaire',
+        options: [
+          { v: 'complete', t: 'Prothèse complète' },
+          { v: 'partielle', t: 'Prothèse partielle' },
+          { v: 'aucun', t: 'Aucun' }
+        ]},
+      { type: 'multi', key: 'appMarche', label: 'Aide à la marche',
+        options: [
+          { v: 'canne', t: 'Canne' },
+          { v: 'deambulateur', t: 'Déambulateur' },
+          { v: 'fauteuil', t: 'Fauteuil roulant' },
+          { v: 'aucun', t: 'Aucun' }
+        ]},
 
       // --- Sphère socio-professionnelle ---
       { type: 'subhead', label: 'Sphère socio-professionnelle' },
@@ -884,9 +1061,11 @@ const FORM_SCHEMA = {
         options: ['Retraité(e)', 'En activité', 'Sans activité'] },
       { type: 'text', key: 'profession', label: 'Profession',
         placeholder: 'Ex : ancien menuisier, infirmière...' },
-      { type: 'text', key: 'niveauEtude', label: 'Niveau d\'étude' },
-      { type: 'textarea', key: 'prestations', label: 'Prestations sociales',
-        placeholder: 'Ex : APA, AAH, pension d\'invalidité...' },
+      { type: 'select', key: 'niveauEtude', label: 'Niveau d\'étude',
+        options: ['Sans scolarisation', 'Primaire', 'Collège', 'CAP / BEP', 'Bac', 'Bac +2 / +3', 'Bac +5 et plus'] },
+      { type: 'subhead', label: 'Prestations sociales' },
+      { type: 'multi', key: 'prestations', label: 'Prestations perçues',
+        options: PRESTATIONS_OPTIONS },
       { type: 'select', key: 'protection', label: 'Mesure de protection juridique',
         options: ['Aucune', 'Curatelle simple', 'Curatelle renforcée', 'Tutelle', 'Sauvegarde de justice', 'Autre'] },
       { type: 'text', key: 'protectionCom', label: 'Préciser (si autre)',
@@ -906,7 +1085,7 @@ const FORM_SCHEMA = {
      (liste à cocher + autre libre)
      ========================================================= */
   atcdMedchir: {
-    roman: 'II',
+    roman: '',
     title: 'Antécédents médico-chirurgicaux',
     fields: [
       { type: 'subhead', label: 'Antécédents médicaux' },
@@ -924,7 +1103,7 @@ const FORM_SCHEMA = {
      III. ANTÉCÉDENTS PSYCHIATRIQUES
      ========================================================= */
   atcdPsy: {
-    roman: 'III',
+    roman: '',
     title: 'Antécédents psychiatriques',
     fields: [
       { type: 'select', key: 'diag', label: 'Diagnostic principal',
@@ -997,7 +1176,7 @@ const FORM_SCHEMA = {
      IV. HISTOIRE RÉCENTE DE LA MALADIE
      ========================================================= */
   histoireMaladie: {
-    roman: 'IV',
+    roman: '',
     title: 'Histoire récente de la maladie',
     fields: [
       { type: 'textarea', key: 'histoire', label: 'Histoire récente de la maladie',
@@ -1010,12 +1189,13 @@ const FORM_SCHEMA = {
      V. TRAITEMENTS ACTUELS
      ========================================================= */
   traitements: {
-    roman: 'V',
+    roman: '',
     title: 'Traitements actuels',
     fields: [
       { type: 'textarea', key: 'traitementsActuels', label: 'Traitements actuels',
         placeholder: 'Molécule — posologie — horaire',
-        rows: 8 }
+        rows: 8 },
+      { type: 'photos', key: 'photosTraitement', label: 'Photos d\'ordonnance ou de pilulier' }
     ]
   },
 
@@ -1023,7 +1203,7 @@ const FORM_SCHEMA = {
      VI. ÉVALUATION PSYCHIATRIQUE (repris de Claude)
      ========================================================= */
   evalPsy: {
-    roman: 'VI',
+    roman: '',
     title: 'Évaluation psychiatrique',
     fields: [
       { type: 'subhead', label: 'Présentation & description générale' },
@@ -1041,109 +1221,107 @@ const FORM_SCHEMA = {
         ]},
       { type: 'multi', key: 'contact', label: 'Contact',
         options: [
-          { v: 'spl', t: 'Sans particularité' },
+          { v: 'spl', t: 'Sans particularité', exclusive: true },
           { v: 'reticence', t: 'Réticence', warn: true },
-          { v: 'familiarite', t: 'Familiarité', warn: true },
-          { v: 'bizarrerie', t: 'Bizarrerie', warn: true }
-        ]},
-      { type: 'multi', key: 'comportement', label: 'Comportement interpersonnel',
-        options: [
-          { v: 'coop', t: 'Coopérant' },
-          { v: 'diminue', t: 'Diminué (non-coopérant, clinophilie, retrait)', warn: true },
-          { v: 'desinhibe', t: 'Désinhibé (ludisme, familiarité, agressivité)', warn: true },
-          { v: 'inadapte', t: 'Inadapté (bizarrerie, acte insolite)', warn: true }
+          { v: 'desinhibe', t: 'Désinhibé', warn: true },
+          { v: 'etrange', t: 'Étrange', warn: true },
+          { v: 'froideur', t: 'Froideur', warn: true }
         ]},
       { type: 'multi', key: 'mimique', label: 'Mimique faciale',
         options: [
-          { v: 'normale', t: 'Normale' },
-          { v: 'diminuee', t: 'Diminuée (hypomimie, amimie, fixité)', warn: true },
-          { v: 'augmentee', t: 'Augmentée (hypermimie)', warn: true },
-          { v: 'alteree', t: 'Altérée qualitativement (grimaces, paramimies)', warn: true }
+          { v: 'normale', t: 'Normale', exclusive: true },
+          { v: 'hypomimie', t: 'Hypomimie', warn: true },
+          { v: 'amimie', t: 'Amimie', warn: true },
+          { v: 'fixite', t: 'Fixité', warn: true },
+          { v: 'grimaces', t: 'Grimaces', warn: true },
+          { v: 'paramimies', t: 'Paramimies', warn: true }
         ]},
-      { type: 'multi', key: 'psychomot', label: 'Activité psychomotrice globale',
+      { type: 'multi', key: 'psychomot', label: 'Activité psychomotrice',
         options: [
-          { v: 'normale', t: 'Normale' },
-          { v: 'diminuee', t: 'Diminuée (RPM, bradykinésie, stupeur)', warn: true },
-          { v: 'augmentee', t: 'Augmentée (accélération PM, hyperkinésie, agitation)', warn: true },
-          { v: 'alteree', t: 'Altérée (parakinésies, catalepsie, maniérisme, stéréotypies)', warn: true }
-        ]},
-
-      { type: 'subhead', label: 'Langage' },
-      { type: 'choice', key: 'prosodie', label: 'Prosodie',
-        options: [
-          { v: 'normale', t: 'Normale' },
-          { v: 'diminuee', t: 'Diminuée (monocorde)', warn: true },
-          { v: 'augmentee', t: 'Augmentée', warn: true },
-          { v: 'alteree', t: 'Altérée (dysprosodie)', warn: true }
-        ]},
-      { type: 'multi', key: 'rythmeLangage', label: 'Rythme & quantité de langage',
-        options: [
-          { v: 'normaux', t: 'Normaux' },
-          { v: 'alteres', t: 'Altérés (fading, barrages)', warn: true },
-          { v: 'diminues', t: 'Diminués (bradyphémie, latences, alogie, mutisme)', warn: true },
-          { v: 'augmentes', t: 'Augmentés (tachyphémie, logorrhée)', warn: true }
-        ]},
-      { type: 'choice', key: 'intensite', label: 'Intensité sonore',
-        options: [
-          { v: 'normale', t: 'Normale' },
-          { v: 'diminuee', t: 'Diminuée (hypophonie)', warn: true },
-          { v: 'augmentee', t: 'Augmentée (hyperphonie, cris)', warn: true }
-        ]},
-      { type: 'choice', key: 'signification', label: 'Signification du langage',
-        options: [
-          { v: 'normale', t: 'Normale' },
-          { v: 'alteree', t: 'Altérée (néologismes, écholalie, stéréotypies)', warn: true }
+          { v: 'normale', t: 'Normale', exclusive: true },
+          { v: 'ralentissement', t: 'Ralentissement psychomoteur', warn: true },
+          { v: 'stupeur', t: 'Stupeur', warn: true },
+          { v: 'acceleration', t: 'Accélération psychomotrice', warn: true },
+          { v: 'agitation', t: 'Agitation', warn: true },
+          { v: 'manierisme', t: 'Maniérisme', warn: true },
+          { v: 'stereotypies', t: 'Stéréotypies', warn: true }
         ]},
 
-      { type: 'subhead', label: 'Pensée' },
-      { type: 'choice', key: 'rythmePensee', label: 'Rythme de la pensée',
+      { type: 'subhead', label: 'Langage et pensée' },
+      { type: 'multi', key: 'discours', label: 'Discours',
         options: [
-          { v: 'normal', t: 'Normal' },
-          { v: 'diminue', t: 'Diminué (bradypsychie, monoïdéisme)', warn: true },
-          { v: 'augmente', t: 'Augmenté', warn: true }
+          { v: 'fluide', t: 'Fluide' },
+          { v: 'coherent', t: 'Cohérent' },
+          { v: 'incoherent', t: 'Incohérent', warn: true },
+          { v: 'desorganise', t: 'Désorganisé', warn: true },
+          { v: 'flou', t: 'Flou', warn: true },
+          { v: 'monoideique', t: 'Monoïdéique', warn: true },
+          { v: 'tangentiel', t: 'Tangentiel', warn: true },
+          { v: 'digressif', t: 'Digressif', warn: true },
+          { v: 'circonlocutoire', t: 'Circonlocutoire', warn: true }
         ]},
-      { type: 'choice', key: 'coursPensee', label: 'Cours de la pensée',
+      { type: 'multi', key: 'qrp', label: 'Quantité, rythme et prosodie du discours',
         options: [
-          { v: 'logique', t: 'Logique et cohérent' },
-          { v: 'illogique', t: 'Illogique / incohérent (digressif, diffluent)', warn: true }
+          { v: 'normal', t: 'Normal', exclusive: true },
+          { v: 'logorrhee', t: 'Logorrhée', warn: true },
+          { v: 'pauvrete', t: 'Pauvreté du discours', warn: true },
+          { v: 'mutisme', t: 'Mutisme', warn: true },
+          { v: 'latences', t: 'Latences', warn: true },
+          { v: 'tachyphemie', t: 'Tachyphémie', warn: true },
+          { v: 'bradyphemie', t: 'Bradyphémie', warn: true },
+          { v: 'monocorde', t: 'Ton monocorde', warn: true },
+          { v: 'dysprosodie', t: 'Dysprosodie', warn: true },
+          { v: 'hypophonie', t: 'Hypophonie', warn: true },
+          { v: 'hyperphonie', t: 'Hyperphonie', warn: true },
+          { v: 'cris', t: 'Cris', warn: true }
         ]},
-      { type: 'multi', key: 'contenuPensee', label: 'Contenu de la pensée',
+      { type: 'multi', key: 'desorganisation', label: 'Éléments de désorganisation',
+        showIf: (d) => Array.isArray(d.discours) && d.discours.includes('desorganise'),
         options: [
-          { v: 'delire', t: 'Idées délirantes', warn: true },
-          { v: 'obsess', t: 'Soucis / idées obsessionnelles', warn: true },
-          { v: 'reviv', t: 'Reviviscences, remémorations, flashbacks', warn: true },
-          { v: 'phobie', t: 'Idées phobiques', warn: true },
-          { v: 'anxiete', t: 'Idées liées à l\'anxiété anticipatoire', warn: true },
-          { v: 'depressif', t: 'Idées dépressives (dévalorisation, incurabilité)', warn: true },
-          { v: 'exalte', t: 'Idées exaltées (grandeur, optimisme démesuré)', warn: true }
+          { v: 'neologismes', t: 'Néologismes', warn: true },
+          { v: 'echolalies', t: 'Écholalies', warn: true },
+          { v: 'stereotypies', t: 'Stéréotypies', warn: true },
+          { v: 'barrages', t: 'Barrages', warn: true },
+          { v: 'fadings', t: 'Fadings', warn: true },
+          { v: 'rationalisme', t: 'Rationalismes morbides', warn: true },
+          { v: 'coq_ane', t: 'Coq à l\'âne', warn: true },
+          { v: 'rep_cote', t: 'Réponses à côté', warn: true }
         ]},
-      { type: 'textarea', key: 'contenuPenseeDetails', label: 'Précisions (thématiques, mécanismes)' },
-
-      { type: 'subhead', label: 'Affectivité' },
-      { type: 'multi', key: 'emotions', label: 'Émotions',
+      { type: 'subhead', label: 'Humeur et émotions' },
+      { type: 'multi', key: 'humeur', label: 'Humeur',
         options: [
-          { v: 'normales', t: 'Normales' },
-          { v: 'diminuees', t: 'Diminuées (hypoesthésie / anesthésie affective)', warn: true },
-          { v: 'anhedonie', t: 'Anhédonie', warn: true },
-          { v: 'augmentees', t: 'Augmentées (hyperréactivité)', warn: true },
-          { v: 'labiles', t: 'Labiles', warn: true },
-          { v: 'hyperhedonie', t: 'Hyperhédonie', warn: true },
-          { v: 'inadaptees', t: 'Inadaptées (discordance, ambivalence)', warn: true },
-          { v: 'anxiete', t: 'Anxiété', warn: true }
-        ]},
-      { type: 'choice', key: 'humeur', label: 'Humeur',
-        options: [
-          { v: 'euthymie', t: 'Euthymie' },
-          { v: 'diminuee', t: 'Diminuée (hypothymie, dépressive, dysphorique)', warn: true },
-          { v: 'augmentee', t: 'Augmentée (hyperthymie, exaltée, euphorique)', warn: true },
+          { v: 'euthymie', t: 'Euthymie', exclusive: true },
+          { v: 'tristesse', t: 'Tristesse', warn: true },
+          { v: 'elation', t: 'Élation', warn: true },
+          { v: 'euphorie', t: 'Euphorie', warn: true },
+          { v: 'dysphorie', t: 'Dysphorie', warn: true },
           { v: 'labile', t: 'Labile', warn: true }
         ]},
-      { type: 'choice', key: 'motivation', label: 'Motivation',
+      { type: 'multi', key: 'emotions', label: 'Émotions',
         options: [
-          { v: 'normale', t: 'Normale' },
-          { v: 'diminuee', t: 'Diminuée (aboulie, procrastination)', warn: true },
-          { v: 'augmentee', t: 'Augmentée', warn: true }
+          { v: 'normales', t: 'Normales', exclusive: true },
+          { v: 'emoussement', t: 'Émoussement affectif', warn: true },
+          { v: 'labilite', t: 'Labilité émotionnelle', warn: true },
+          { v: 'discordance', t: 'Discordance affective', warn: true },
+          { v: 'hypohedonie', t: 'Hypohédonie', warn: true },
+          { v: 'anhedonie', t: 'Anhédonie', warn: true }
         ]},
+      { type: 'multi', key: 'motivation', label: 'Motivation',
+        options: [
+          { v: 'normale', t: 'Normale', exclusive: true },
+          { v: 'aboulie', t: 'Aboulie', warn: true }
+        ]},
+
+      { type: 'subhead', label: 'Anxiété' },
+      { type: 'multi', key: 'anxiete', label: 'Anxiété',
+        options: [
+          { v: 'diffuse', t: 'Anxiété diffuse', warn: true },
+          { v: 'ruminations', t: 'Ruminations anxieuses', warn: true },
+          { v: 'panique', t: 'Attaques de panique', warn: true }
+        ]},
+      { type: 'text', key: 'paniqueFreq', label: 'Fréquence des attaques de panique',
+        placeholder: 'Ex : plusieurs fois par semaine...',
+        showIf: (d) => Array.isArray(d.anxiete) && d.anxiete.includes('panique') },
 
       { type: 'subhead', label: 'Auto-agressivité' },
       { type: 'bool', key: 'ideesNoires', label: 'Idées noires', warn: true },
@@ -1151,13 +1329,42 @@ const FORM_SCHEMA = {
       { type: 'textarea', key: 'auto_details', label: 'Précisions (scénario, moyen, date, facteurs de protection)',
         showIf: (d) => d.ideesNoires || d.ideesSuicidaires },
 
-      { type: 'subhead', label: 'Perception' },
-      { type: 'bool', key: 'hallu_vis', label: 'Hallucinations visuelles', warn: true },
-      { type: 'bool', key: 'hallu_aud', label: 'Hallucinations auditives', warn: true },
-      { type: 'bool', key: 'hallu_ip', label: 'Hallucinations intrapsychiques', warn: true },
-      { type: 'bool', key: 'hallu_cen', label: 'Hallucinations cénesthésiques', warn: true },
-      { type: 'bool', key: 'hallu_olf', label: 'Hallucinations olfactives', warn: true },
-      { type: 'textarea', key: 'hallu_details', label: 'Précisions (thématique, critique, retentissement)' },
+      { type: 'subhead', label: 'Contenu de la pensée' },
+      { type: 'multi', key: 'contenuPensee', label: 'Contenu de la pensée',
+        options: [
+          { v: 'obsess', t: 'Idées obsessionnelles', warn: true },
+          { v: 'reviv', t: 'Reviviscences', warn: true },
+          { v: 'depressif', t: 'Idées dépressives', warn: true },
+          { v: 'grandeur', t: 'Idées de grandeur', warn: true }
+        ]},
+      { type: 'multi', key: 'idDepressivesType', label: 'Type d\'idées dépressives',
+        showIf: (d) => Array.isArray(d.contenuPensee) && d.contenuPensee.includes('depressif'),
+        options: [
+          { v: 'devalorisation', t: 'Dévalorisation', warn: true },
+          { v: 'culpabilisation', t: 'Culpabilisation', warn: true },
+          { v: 'pessimisme', t: 'Pessimisme', warn: true },
+          { v: 'incurabilite', t: 'Incurabilité', warn: true }
+        ]},
+      { type: 'textarea', key: 'contenuPenseeDetails', label: 'Précisions' },
+
+      { type: 'subhead', label: 'Symptômes psychotiques' },
+      { type: 'bool', key: 'idDelirantes', label: 'Idées délirantes', warn: true },
+      { type: 'textarea', key: 'idDelirantesDetails', label: 'Précisions sur les idées délirantes',
+        placeholder: 'Thématique, mécanisme, adhésion...',
+        showIf: (d) => d.idDelirantes === true },
+      { type: 'bool', key: 'hallucinations', label: 'Hallucinations', warn: true },
+      { type: 'multi', key: 'halluModal', label: 'Modalités',
+        showIf: (d) => d.hallucinations === true,
+        options: [
+          { v: 'vis', t: 'Visuelles', warn: true },
+          { v: 'aud', t: 'Auditives', warn: true },
+          { v: 'ip', t: 'Intrapsychiques', warn: true },
+          { v: 'cen', t: 'Cénesthésiques', warn: true },
+          { v: 'olf', t: 'Olfactives', warn: true }
+        ]},
+      { type: 'textarea', key: 'hallu_details', label: 'Précisions sur les hallucinations',
+        placeholder: 'Thématique, critique, retentissement...',
+        showIf: (d) => d.hallucinations === true },
 
       { type: 'subhead', label: 'Cognitions' },
       { type: 'choice', key: 'ots', label: 'Orientation temporo-spatiale',
@@ -1176,22 +1383,37 @@ const FORM_SCHEMA = {
           { v: 'diminuee', t: 'Diminuée (hypoprosexie, distractibilité)', warn: true },
           { v: 'augmentee', t: 'Augmentée (hyperprosexie)', warn: true }
         ]},
+      { type: 'choice', key: 'memoire', label: 'Mémoire',
+        options: [
+          { v: 'normale', t: 'Normale' },
+          { v: 'troubles', t: 'Troubles mnésiques', warn: true }
+        ]},
 
       { type: 'subhead', label: 'Fonctions physiologiques' },
       { type: 'choice', key: 'alimentation', label: 'Alimentation',
         options: [
           { v: 'normale', t: 'Normale' },
           { v: 'anorexie', t: 'Anorexie', warn: true },
+          { v: 'hyporexie', t: 'Hyporexie', warn: true },
           { v: 'hyperphagie', t: 'Hyperphagie', warn: true }
         ]},
       { type: 'multi', key: 'sommeil', label: 'Sommeil',
         options: [
-          { v: 'normal', t: 'Normal' },
+          { v: 'normal', t: 'Normal', exclusive: true },
           { v: 'insomnie', t: 'Insomnie', warn: true },
           { v: 'hypersomnie', t: 'Hypersomnie', warn: true },
           { v: 'som_diurne', t: 'Somnolence diurne excessive', warn: true },
           { v: 'cauchemars', t: 'Cauchemars', warn: true }
         ]},
+      { type: 'multi', key: 'insomnieType', label: 'Type d\'insomnie',
+        showIf: (d) => Array.isArray(d.sommeil) && d.sommeil.includes('insomnie'),
+        options: [
+          { v: 'endorm', t: 'Difficultés d\'endormissement', warn: true },
+          { v: 'nocturne', t: 'Réveils nocturnes', warn: true },
+          { v: 'precoce', t: 'Réveil précoce', warn: true }
+        ]},
+      { type: 'text', key: 'insomnieDetails', label: 'Précisions sur l\'insomnie',
+        showIf: (d) => Array.isArray(d.sommeil) && d.sommeil.includes('insomnie') },
       { type: 'choice', key: 'sexualite', label: 'Sexualité',
         options: [
           { v: 'normale', t: 'Normale' },
@@ -1212,37 +1434,37 @@ const FORM_SCHEMA = {
 
 // Items ADL (Katz)
 const ADL_ITEMS = [
-  { key: 'toilette', label: 'Toilette (lavabo, bain, douche)',
+  { key: 'toilette', label: 'Toilette (lavabo, bain, douche)', short: 'toilette',
     options: [
       { t: 'Besoin d\'aucune aide.', v: 1 },
       { t: 'Aide pour une seule partie du corps.', v: 0.5 },
       { t: 'Aide plusieurs parties du corps, ou toilette impossible.', v: 0 }
     ]},
-  { key: 'habillage', label: 'Habillage',
+  { key: 'habillage', label: 'Habillage', short: 'habillage',
     options: [
       { t: 'Besoin d\'aucune aide.', v: 1 },
       { t: 'Aide uniquement pour lacer, boutonner, fermer Éclair.', v: 0.5 },
       { t: 'Aide pour s\'habiller, ou reste partiellement déshabillé(e).', v: 0 }
     ]},
-  { key: 'wc', label: 'Aller aux W.-C.',
+  { key: 'wc', label: 'Aller aux W.-C.', short: 'WC',
     options: [
       { t: 'Besoin d\'aucune aide (canne, fauteuil possible).', v: 1 },
       { t: 'Besoin d\'une aide.', v: 0.5 },
       { t: 'Ne va pas aux W.-C.', v: 0 }
     ]},
-  { key: 'locomotion', label: 'Locomotion',
+  { key: 'locomotion', label: 'Locomotion', short: 'locomotion',
     options: [
       { t: 'Aucune aide pour entrer/sortir du lit, s\'asseoir, se lever.', v: 1 },
       { t: 'Besoin d\'une aide.', v: 0.5 },
       { t: 'Ne quitte pas le lit.', v: 0 }
     ]},
-  { key: 'continence', label: 'Continence',
+  { key: 'continence', label: 'Continence', short: 'continence',
     options: [
       { t: 'Contrôle complet des urines et des selles.', v: 1 },
       { t: 'Accidents occasionnels.', v: 0.5 },
       { t: 'Incontinence totale, sondage / surveillance permanente.', v: 0 }
     ]},
-  { key: 'alimADL', label: 'Alimentation',
+  { key: 'alimADL', label: 'Alimentation', short: 'alimentation',
     options: [
       { t: 'Besoin d\'aucune aide.', v: 1 },
       { t: 'Aide pour couper la viande / beurrer le pain.', v: 0.5 },
@@ -1252,7 +1474,7 @@ const ADL_ITEMS = [
 
 // Items IADL (Lawton) — forme simplifiée autonome/dépendant compatible Lawton
 const IADL_ITEMS = [
-  { key: 'telephone', label: 'Aptitude à utiliser le téléphone',
+  { key: 'telephone', label: 'Aptitude à utiliser le téléphone', short: 'téléphone',
     options: [
       { t: 'Se sert normalement du téléphone.', v: 1 },
       { t: 'Compose quelques numéros très connus.', v: 1 },
@@ -1260,21 +1482,21 @@ const IADL_ITEMS = [
       { t: 'N\'utilise pas du tout le téléphone spontanément.', v: 0 },
       { t: 'Incapable d\'utiliser le téléphone.', v: 0 }
     ]},
-  { key: 'courses', label: 'Courses',
+  { key: 'courses', label: 'Courses', short: 'courses',
     options: [
       { t: 'Fait les courses.', v: 1 },
       { t: 'Fait quelques courses (nombre limité).', v: 0 },
       { t: 'Doit être accompagné(e) pour faire ses courses.', v: 0 },
       { t: 'Complètement incapable de faire ses courses.', v: 0 }
     ]},
-  { key: 'repas', label: 'Préparation des aliments',
+  { key: 'repas', label: 'Préparation des aliments', short: 'repas',
     options: [
       { t: 'Prévoit, prépare et sert normalement les repas.', v: 1 },
       { t: 'Prépare si les ingrédients sont fournis.', v: 0 },
       { t: 'Réchauffe / sert / prépare de façon inadéquate.', v: 0 },
       { t: 'Nécessaire de lui préparer et servir les repas.', v: 0 }
     ]},
-  { key: 'menage', label: 'Entretien ménager',
+  { key: 'menage', label: 'Entretien ménager', short: 'ménage',
     options: [
       { t: 'Entretient sa maison seul(e) ou avec aide occasionnelle.', v: 1 },
       { t: 'Tâches quotidiennes légères (lits, vaisselle).', v: 1 },
@@ -1282,32 +1504,263 @@ const IADL_ITEMS = [
       { t: 'A besoin d\'aide pour tous les travaux ménagers.', v: 1 },
       { t: 'Incapable de participer à quelque tâche ménagère.', v: 0 }
     ]},
-  { key: 'blanchisserie', label: 'Blanchisserie',
+  { key: 'blanchisserie', label: 'Blanchisserie', short: 'blanchisserie',
     options: [
       { t: 'Effectue totalement sa blanchisserie.', v: 1 },
       { t: 'Lave des petits articles (chaussettes, bas).', v: 1 },
       { t: 'Toute la blanchisserie est faite par d\'autres.', v: 0 }
     ]},
-  { key: 'transport', label: 'Moyens de transport',
+  { key: 'transport', label: 'Moyens de transport', short: 'transport',
     options: [
       { t: 'Utilise les transports de façon indépendante ou conduit.', v: 1 },
       { t: 'Organise ses déplacements en taxi.', v: 1 },
       { t: 'Utilise les transports publics avec aide.', v: 1 },
       { t: 'Déplacement limité en taxi / voiture avec aide.', v: 0 }
     ]},
-  { key: 'traitement', label: 'Responsabilité à l\'égard de son traitement',
+  { key: 'traitement', label: 'Responsabilité à l\'égard de son traitement', short: 'traitement',
     options: [
       { t: 'Responsable de la prise (doses et rythmes corrects).', v: 1 },
       { t: 'Responsable si les doses sont préparées à l\'avance.', v: 0 },
       { t: 'Incapable de prendre seul, même préparé.', v: 0 }
     ]},
-  { key: 'argent', label: 'Aptitude à manipuler l\'argent',
+  { key: 'argent', label: 'Aptitude à manipuler l\'argent', short: 'argent',
     options: [
       { t: 'Gère ses finances de façon autonome.', v: 1 },
       { t: 'Achats quotidiens ok, aide pour banque / gros achats.', v: 1 },
       { t: 'Incapable de manipuler l\'argent.', v: 0 }
     ]}
 ];
+
+/* =====================================================================
+   ÉCHELLES CLINIQUES
+===================================================================== */
+const DEFAULT_BINARY = [{ t: '✓', v: 1 }, { t: '✗', v: 0 }];
+
+const SCALES = [
+  {
+    key: 'moca',
+    name: 'MoCA',
+    description: 'Montreal Cognitive Assessment (v. 7.1)',
+    max: 30,
+    threshold: '< 26',
+    bonus: { key: 'scolarite_basse', label: 'Scolarité ≤ 12 ans (+1 point)', value: 1 },
+    sections: [
+      { label: 'Visuospatial / Exécutif (/5)', items: [
+        { key: 'tmt', label: 'Alternance chiffres–lettres (TMT)' },
+        { key: 'cube', label: 'Copie du cube' },
+        { key: 'horloge_contour', label: 'Horloge – contour' },
+        { key: 'horloge_chiffres', label: 'Horloge – chiffres' },
+        { key: 'horloge_aiguilles', label: 'Horloge – aiguilles' }
+      ]},
+      { label: 'Dénomination (/3)', items: [
+        { key: 'lion', label: 'Lion' },
+        { key: 'rhino', label: 'Rhinocéros' },
+        { key: 'chameau', label: 'Chameau' }
+      ]},
+      { label: 'Attention (/6)', items: [
+        { key: 'chiffres_endroit', label: '5 chiffres à l\'endroit' },
+        { key: 'chiffres_envers', label: '3 chiffres à l\'envers' },
+        { key: 'lettres_a', label: 'Taper sur les A (≤ 1 erreur)' },
+        { key: 'soustractions', label: 'Soustractions série de 7', options: [
+          { t: '4–5 correctes', v: 3 }, { t: '2–3 correctes', v: 2 },
+          { t: '1 correcte', v: 1 }, { t: '0 correcte', v: 0 }
+        ]}
+      ]},
+      { label: 'Langage (/3)', items: [
+        { key: 'phrase_colibri', label: 'Phrase : colibri' },
+        { key: 'phrase_avocat', label: 'Phrase : avocat' },
+        { key: 'fluence_f', label: 'Fluence F (≥ 11 mots)' }
+      ]},
+      { label: 'Abstraction (/2)', items: [
+        { key: 'train_bicyclette', label: 'Train — bicyclette' },
+        { key: 'montre_regle', label: 'Montre — règle' }
+      ]},
+      { label: 'Rappel (/5, sans indices)', items: [
+        { key: 'rap_visage', label: 'Visage' },
+        { key: 'rap_velours', label: 'Velours' },
+        { key: 'rap_eglise', label: 'Église' },
+        { key: 'rap_marguerite', label: 'Marguerite' },
+        { key: 'rap_rouge', label: 'Rouge' }
+      ]},
+      { label: 'Orientation (/6)', items: [
+        { key: 'date', label: 'Date' },
+        { key: 'mois', label: 'Mois' },
+        { key: 'annee', label: 'Année' },
+        { key: 'jour', label: 'Jour de la semaine' },
+        { key: 'endroit', label: 'Endroit' },
+        { key: 'ville', label: 'Ville' }
+      ]}
+    ]
+  },
+  {
+    key: 'mmse',
+    name: 'MMSE',
+    description: 'Mini-Mental State Examination (GRECO)',
+    max: 30,
+    threshold: '< 24',
+    sections: [
+      { label: 'Orientation (/10)', items: [
+        { key: 'annee', label: 'Année' },
+        { key: 'saison', label: 'Saison' },
+        { key: 'mois', label: 'Mois' },
+        { key: 'jour_mois', label: 'Jour du mois' },
+        { key: 'jour_sem', label: 'Jour de la semaine' },
+        { key: 'hopital', label: 'Nom de l\'hôpital / lieu' },
+        { key: 'ville', label: 'Ville' },
+        { key: 'departement', label: 'Département' },
+        { key: 'region', label: 'Région / province' },
+        { key: 'etage', label: 'Étage' }
+      ]},
+      { label: 'Apprentissage (/3)', items: [
+        { key: 'appr1', label: 'Mot 1 (cigare / fleur / porte)' },
+        { key: 'appr2', label: 'Mot 2 (citron / clé / ballon)' },
+        { key: 'appr3', label: 'Mot 3 (fauteuil / tulipe / canard)' }
+      ]},
+      { label: 'Attention et calcul (/5)', items: [
+        { key: 'calc93', label: '100 − 7 = 93' },
+        { key: 'calc86', label: '93 − 7 = 86' },
+        { key: 'calc79', label: '86 − 7 = 79' },
+        { key: 'calc72', label: '79 − 7 = 72' },
+        { key: 'calc65', label: '72 − 7 = 65' }
+      ]},
+      { label: 'Rappel (/3)', items: [
+        { key: 'rap1', label: 'Mot 1 (rappel)' },
+        { key: 'rap2', label: 'Mot 2 (rappel)' },
+        { key: 'rap3', label: 'Mot 3 (rappel)' }
+      ]},
+      { label: 'Langage (/8)', items: [
+        { key: 'crayon', label: 'Dénomination : crayon' },
+        { key: 'montre', label: 'Dénomination : montre' },
+        { key: 'repete', label: 'Répéter : « Pas de mais, de si, ni de et »' },
+        { key: 'ordre1', label: 'Prendre la feuille (main droite)' },
+        { key: 'ordre2', label: 'Plier en deux' },
+        { key: 'ordre3', label: 'Jeter par terre' },
+        { key: 'ferme_yeux', label: 'Fermer les yeux (lecture)' },
+        { key: 'ecrire', label: 'Écrire une phrase' }
+      ]},
+      { label: 'Praxies constructives (/1)', items: [
+        { key: 'dessin', label: 'Copier le dessin (pentagones)' }
+      ]}
+    ]
+  },
+  {
+    key: 'gds',
+    name: 'GDS-15',
+    description: 'Geriatric Depression Scale (Yesavage)',
+    max: 15,
+    threshold: '> 5',
+    sections: [
+      { label: '', items: [
+        { key: 'q1', label: 'Êtes-vous satisfait de votre vie ?', options: [{ t: 'Oui', v: 0 }, { t: 'Non', v: 1 }] },
+        { key: 'q2', label: 'Avez-vous renoncé à nombre de vos activités ?', options: [{ t: 'Oui', v: 1 }, { t: 'Non', v: 0 }] },
+        { key: 'q3', label: 'Votre vie est-elle vide ?', options: [{ t: 'Oui', v: 1 }, { t: 'Non', v: 0 }] },
+        { key: 'q4', label: 'Vous ennuyez-vous souvent ?', options: [{ t: 'Oui', v: 1 }, { t: 'Non', v: 0 }] },
+        { key: 'q5', label: 'De bonne humeur la plupart du temps ?', options: [{ t: 'Oui', v: 0 }, { t: 'Non', v: 1 }] },
+        { key: 'q6', label: 'Peur qu\'il vous arrive quelque chose de mauvais ?', options: [{ t: 'Oui', v: 1 }, { t: 'Non', v: 0 }] },
+        { key: 'q7', label: 'Heureux la plupart du temps ?', options: [{ t: 'Oui', v: 0 }, { t: 'Non', v: 1 }] },
+        { key: 'q8', label: 'Sentez-vous souvent faible et dépendant ?', options: [{ t: 'Oui', v: 1 }, { t: 'Non', v: 0 }] },
+        { key: 'q9', label: 'Préférez rester chez vous plutôt que sortir ?', options: [{ t: 'Oui', v: 1 }, { t: 'Non', v: 0 }] },
+        { key: 'q10', label: 'Plus de troubles mnésiques que les autres ?', options: [{ t: 'Oui', v: 1 }, { t: 'Non', v: 0 }] },
+        { key: 'q11', label: 'Merveilleux d\'être vivant ?', options: [{ t: 'Oui', v: 0 }, { t: 'Non', v: 1 }] },
+        { key: 'q12', label: 'Vous sentez-vous inutile tel que vous êtes ?', options: [{ t: 'Oui', v: 1 }, { t: 'Non', v: 0 }] },
+        { key: 'q13', label: 'Plein d\'énergie ?', options: [{ t: 'Oui', v: 0 }, { t: 'Non', v: 1 }] },
+        { key: 'q14', label: 'Situation désespérée ?', options: [{ t: 'Oui', v: 1 }, { t: 'Non', v: 0 }] },
+        { key: 'q15', label: 'Les gens sont-ils plus à l\'aise que vous ?', options: [{ t: 'Oui', v: 1 }, { t: 'Non', v: 0 }] }
+      ]}
+    ]
+  },
+  {
+    key: 'bref',
+    name: 'BREF',
+    description: 'Batterie Rapide d\'Efficience Frontale',
+    max: 18,
+    threshold: '< 16',
+    sections: [
+      { label: '', items: [
+        { key: 'similitudes', label: 'Similitudes', options: [
+          { t: '3 correctes', v: 3 }, { t: '2 correctes', v: 2 },
+          { t: '1 correcte', v: 1 }, { t: '0 correcte', v: 0 }
+        ]},
+        { key: 'fluence', label: 'Fluence verbale "S" (1 min)', options: [
+          { t: '> 10 mots', v: 3 }, { t: '5–10 mots', v: 2 },
+          { t: '3–5 mots', v: 1 }, { t: '< 3 mots', v: 0 }
+        ]},
+        { key: 'prehension', label: 'Comportement de préhension', options: [
+          { t: 'Ne saisit pas', v: 3 }, { t: 'Hésite', v: 2 },
+          { t: 'Saisit sans hésiter', v: 1 }, { t: 'Saisit malgré consigne', v: 0 }
+        ]},
+        { key: 'luria', label: 'Séquences motrices de Luria', options: [
+          { t: 'Seul : 6 séquences consécutives', v: 3 },
+          { t: 'Seul : ≥ 3 séquences', v: 2 },
+          { t: 'Avec l\'examinateur seulement', v: 1 },
+          { t: 'Incapable même aidé', v: 0 }
+        ]},
+        { key: 'conflit', label: 'Consignes conflictuelles', options: [
+          { t: 'Aucune erreur', v: 3 }, { t: '1–2 erreurs', v: 2 },
+          { t: '> 2 erreurs', v: 1 }, { t: 'Suit votre rythme', v: 0 }
+        ]},
+        { key: 'gonogo', label: 'Go / No-Go', options: [
+          { t: 'Aucune erreur', v: 3 }, { t: '1–2 erreurs', v: 2 },
+          { t: '> 2 erreurs', v: 1 }, { t: 'Perdu / suit votre rythme', v: 0 }
+        ]}
+      ]}
+    ]
+  },
+  {
+    key: 'gai',
+    name: 'GAI',
+    description: 'Geriatric Anxiety Inventory (version longue, 20 items)',
+    max: 20,
+    threshold: '> 10',
+    sections: [
+      { label: '', items: [
+        { key: 'q1', label: 'Je vis beaucoup dans l\'inquiétude.', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q2', label: 'J\'ai du mal à prendre des décisions.', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q3', label: 'Je me sens souvent agité(e).', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q4', label: 'Il m\'est difficile de me détendre.', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q5', label: 'Mes inquiétudes m\'empêchent souvent de jouir des plaisirs de la vie.', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q6', label: 'Un rien me dérange.', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q7', label: 'Je me sens souvent tendu(e).', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q8', label: 'Je me considère comme étant de nature inquiète.', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q9', label: 'Je ne peux m\'empêcher de m\'inquiéter, même de choses insignifiantes.', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q10', label: 'Je me sens souvent nerveux(se).', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q11', label: 'Il arrive souvent que mes propres pensées suscitent de l\'anxiété chez moi.', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q12', label: 'J\'ai mal au ventre à cause de mes inquiétudes.', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q13', label: 'Je me considère comme étant de nature nerveuse.', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q14', label: 'J\'anticipe toujours le pire.', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q15', label: 'Je me sens souvent fragile.', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q16', label: 'Je crois que mes inquiétudes perturbent ma vie.', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q17', label: 'Il arrive souvent que mes inquiétudes m\'accablent.', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q18', label: 'Il m\'arrive d\'avoir un gros nœud à l\'estomac.', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q19', label: 'Je rate des occasions parce que je m\'inquiète trop.', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] },
+        { key: 'q20', label: 'Je me sens souvent bouleversé(e).', options: [{ t: 'D\'accord', v: 1 }, { t: 'Pas d\'accord', v: 0 }] }
+      ]}
+    ]
+  }
+];
+
+function getScaleItems(scale) {
+  const all = [];
+  (scale.sections || []).forEach(sec => {
+    (sec.items || []).forEach(it => all.push(it));
+  });
+  return all;
+}
+
+function computeScaleScore(scale, data) {
+  let total = 0, filled = 0;
+  const items = getScaleItems(scale);
+  items.forEach(it => {
+    const v = data[it.key];
+    if (v !== undefined && v !== null) {
+      total += v;
+      filled++;
+    }
+  });
+  if (scale.bonus && data[scale.bonus.key]) total += scale.bonus.value;
+  return { total, filled, max: scale.max, totalItems: items.length };
+}
+
 /* =====================================================================
    MOTEUR DE GÉNÉRATION D'OBSERVATIONS
    À partir des données saisies, produit un texte en français lisible.
@@ -1359,8 +1812,13 @@ const ObsEngine = (() => {
 
     parts.push(`Patient : ${ligne1}.`);
     parts.push(`Identifiant interne : #${patient.shortId}.`);
-    parts.push(`Visite à domicile du ${today}.`);
-    if (entretien.motif) parts.push(`Motif de visite : ${entretien.motif}`);
+    const lieuTxt = entretien.lieu === 'EHPAD' ? 'Visite en EHPAD' : 'Visite à domicile';
+    const intervList = Array.isArray(entretien.intervenants) ? entretien.intervenants : [];
+    if (intervList.length) {
+      parts.push(`${lieuTxt} du ${today} : ${intervList.join(', ')}.`);
+    } else {
+      parts.push(`${lieuTxt} du ${today}.`);
+    }
 
     return parts.join('\n');
   }
@@ -1376,7 +1834,7 @@ const ObsEngine = (() => {
      - Sphère socio-pro
      - Prémorbide
      =========================================================== */
-  function biographie(d, patient) {
+  function biographie(d, patient, entretien) {
     const sexe = patient ? patient.sexe : null;
     const lines = [];
 
@@ -1439,7 +1897,6 @@ const ObsEngine = (() => {
       if (d.enfants === 'Aucun') fam.push('Pas d\'enfant');
       else fam.push(withCom(`${d.enfants} enfant${d.enfants === '1' ? '' : 's'}`, d.enfantsCom));
     }
-    if (d.conjoint === 'Oui') fam.push(withCom('vie de couple', d.conjointCom));
     if (d.fratrie) {
       if (d.fratrie === 'Aucune') fam.push('pas de fratrie');
       else fam.push(withCom(`fratrie de ${d.fratrie}`, d.fratrieCom));
@@ -1480,24 +1937,40 @@ const ObsEngine = (() => {
     if (aides.length) autonomie.push(`Intervenants : ${joinList(aides)}`);
 
     const app = [];
-    if (d.appVisuel) app.push(`visuel (${d.appVisuel})`);
-    if (d.appAuditif) app.push(`auditif (${d.appAuditif})`);
-    if (d.appDentaire) app.push(`dentaire (${d.appDentaire})`);
-    if (d.appMarche) app.push(`aide à la marche (${d.appMarche})`);
+    const appDesc = (key, prefix) => {
+      const arr = Array.isArray(d[key]) ? d[key] : [];
+      if (!arr.length) return;
+      if (arr.length === 1 && arr[0] === 'aucun') return;
+      const labels = arr.filter(v => v !== 'aucun').map(v => APP_LABELS[key][v] || v);
+      if (labels.length) app.push(`${prefix} (${joinList(labels)})`);
+    };
+    appDesc('appVisuel', 'visuel');
+    appDesc('appAuditif', 'auditif');
+    appDesc('appDentaire', 'dentaire');
+    appDesc('appMarche', 'aide à la marche');
     if (app.length) autonomie.push(`Appareillages : ${joinList(app)}`);
 
+    if (entretien) {
+      autonomieScoreLines(entretien).forEach(l => autonomie.push(l));
+    }
+
     if (autonomie.length) {
-      lines.push('**Autonomie — aides et appareillages**\n' + autonomie.join('.\n') + '.');
+      lines.push('**Autonomie**\n' + autonomie.join('.\n') + '.');
     }
 
     // --- Sphère socio-professionnelle ---
     const socio = [];
     const sp = [];
-    if (d.socioStatut) sp.push(d.socioStatut);
+    if (d.socioStatut === 'Retraité(e)') sp.push(accord(sexe, 'Retraité', 'Retraitée'));
+    else if (d.socioStatut) sp.push(d.socioStatut);
     if (d.profession) sp.push(d.profession);
     if (sp.length) socio.push(sp.join(', '));
     if (d.niveauEtude) socio.push(`Niveau d'étude : ${d.niveauEtude}`);
-    if (d.prestations) socio.push(`Prestations sociales : ${d.prestations}`);
+    const prestArr = Array.isArray(d.prestations) ? d.prestations : [];
+    if (prestArr.length) {
+      const prestList = prestArr.map(v => PRESTATIONS_LABELS[v] || v);
+      socio.push(`Prestations sociales : ${prestList.join(', ')}`);
+    }
 
     if (d.protection) {
       if (d.protection === 'Aucune') {
@@ -1548,29 +2021,27 @@ const ObsEngine = (() => {
     if (Number.isInteger(n)) return String(n);
     return String(n).replace('.', ',');
   }
-  function autonomieScores(entretien) {
-    const adl = entretien.data && entretien.data.adl ? entretien.data.adl : {};
-    const iadl = entretien.data && entretien.data.iadl ? entretien.data.iadl : {};
+  function autonomieScoreLines(entretien) {
+    const adl = entretien && entretien.data && entretien.data.adl ? entretien.data.adl : {};
+    const iadl = entretien && entretien.data && entretien.data.iadl ? entretien.data.iadl : {};
     const a = computeADL(adl);
     const i = computeIADL(iadl);
-    const parts = [];
+    const lines = [];
     if (a.filled > 0) {
-      parts.push(`Score ADL de Katz : ${fmtScore(a.total)}/${a.max}`);
+      const detail = ADL_ITEMS
+        .filter(it => adl[it.key] !== undefined && adl[it.key] !== null)
+        .map(it => `${it.short} ${fmtScore(adl[it.key])}`)
+        .join(', ');
+      lines.push(`ADL : ${fmtScore(a.total)}/${a.max}${detail ? ` (${detail})` : ''}`);
     }
     if (i.filled > 0) {
-      parts.push(`Score IADL de Lawton : ${fmtScore(i.total)}/${i.max}`);
+      const detail = IADL_ITEMS
+        .filter(it => iadl[it.key] !== undefined && iadl[it.key] !== null)
+        .map(it => `${it.short} ${fmtScore(iadl[it.key])}`)
+        .join(', ');
+      lines.push(`IADL : ${fmtScore(i.total)}/${i.max}${detail ? ` (${detail})` : ''}`);
     }
-    if (!parts.length) return '';
-
-    const adlDef = ADL_ITEMS.filter(it => adl[it.key] !== undefined && adl[it.key] < 1)
-      .map(it => it.label.toLowerCase());
-    const iadlDef = IADL_ITEMS.filter(it => iadl[it.key] !== undefined && iadl[it.key] < 1)
-      .map(it => it.label.toLowerCase());
-
-    let s = parts.join('. ') + '.';
-    if (adlDef.length) s += `\nDifficultés ADL : ${joinList(adlDef)}.`;
-    if (iadlDef.length) s += `\nDifficultés IADL : ${joinList(iadlDef)}.`;
-    return s;
+    return lines;
   }
 
   /* ===========================================================
@@ -1622,19 +2093,24 @@ const ObsEngine = (() => {
     const lines = [];
 
     // Diagnostic
+    lines.push('**Diagnostic**');
     if (d.diag === 'Aucun') {
-      lines.push('Diagnostic psychiatrique : aucun.');
+      lines.push('Aucun.');
     } else if (d.diag) {
-      let t = `Diagnostic psychiatrique : ${d.diag}`;
+      let t = d.diag;
       if (d.diagCom) t += ` (${d.diagCom})`;
       lines.push(t + '.');
     } else if (d.diagCom) {
-      lines.push(`Diagnostic psychiatrique : ${d.diagCom}.`);
+      lines.push(d.diagCom + '.');
+    } else {
+      lines.push('Non renseigné.');
     }
 
-    // Hospitalisations / suivi
+    // Hospitalisations / suivi (ligne vide avant)
     if (d.hospitalisations) {
-      lines.push(`Hospitalisations et suivi : ${d.hospitalisations}.`);
+      lines.push('');
+      lines.push('**Hospitalisations et suivi**');
+      lines.push(d.hospitalisations + '.');
     }
 
     // Psychotropes antérieurs
@@ -1642,17 +2118,21 @@ const ObsEngine = (() => {
       lines.push(`Traitements psychotropes antérieurs : ${d.psychotropesAnt}.`);
     }
 
-    // Conduites suicidaires
-    if (d.nbTS) {
-      let t;
-      if (d.nbTS === '0') t = 'Pas d\'antécédent de tentative de suicide';
-      else if (d.nbTS === 'Multiples') t = 'Multiples tentatives de suicide';
-      else t = `${d.nbTS} tentative${d.nbTS === '1' ? '' : 's'} de suicide`;
-      if (d.tsDetails) t += ` (${d.tsDetails})`;
-      lines.push(t + '.');
-    }
-    if (d.heteroAgressivite) {
-      lines.push(`Conduites hétéro-agressives : ${d.heteroAgressivite}.`);
+    // Conduites suicidaires (titre + ligne vide avant)
+    if (d.nbTS || d.heteroAgressivite) {
+      lines.push('');
+      lines.push('**Conduites suicidaires**');
+      if (d.nbTS) {
+        let t;
+        if (d.nbTS === '0') t = 'Pas d\'antécédent de tentative de suicide';
+        else if (d.nbTS === 'Multiples') t = 'Multiples tentatives de suicide';
+        else t = `${d.nbTS} tentative${d.nbTS === '1' ? '' : 's'} de suicide`;
+        if (d.tsDetails) t += ` (${d.tsDetails})`;
+        lines.push(t + '.');
+      }
+      if (d.heteroAgressivite) {
+        lines.push(`Conduites hétéro-agressives : ${d.heteroAgressivite}.`);
+      }
     }
 
     // ATCD familiaux
@@ -1660,45 +2140,46 @@ const ObsEngine = (() => {
       lines.push(`Antécédents psychiatriques familiaux : ${d.atcdFam}.`);
     }
 
-    // Addictions
+    // Comorbidités addictologiques (ligne vide avant, pas de tirets)
     const addicLines = [];
-    let anyAddic = false;
-
-    if (d.tabac && d.tabac !== 'Non') {
-      anyAddic = true;
+    if (d.tabac === 'Actuel' || d.tabac === 'Sevré') {
       let t = `Consommation tabagique ${d.tabac.toLowerCase()}`;
       const extras = [];
       if (d.tabacPA) extras.push(`${d.tabacPA} PA`);
       if (d.tabacCom) extras.push(d.tabacCom);
       if (extras.length) t += ` (${extras.join(', ')})`;
-      addicLines.push(t);
+      addicLines.push(t + '.');
+    } else if (d.tabac === 'Non') {
+      addicLines.push('Pas de consommation tabagique.');
     }
-    if (d.alcool && d.alcool !== 'Non') {
-      anyAddic = true;
+    if (d.alcool === 'Actuel' || d.alcool === 'Sevré') {
       let t = `Trouble de l'usage de l'alcool ${d.alcool.toLowerCase()}`;
       if (d.alcoolCom) t += ` (${d.alcoolCom})`;
-      addicLines.push(t);
+      addicLines.push(t + '.');
+    } else if (d.alcool === 'Non') {
+      addicLines.push('Pas de conso alcoolique.');
     }
-    if (d.substances && d.substances !== 'Non') {
-      anyAddic = true;
+    if (d.substances === 'Actuel' || d.substances === 'Sevré') {
       let t = `Trouble de l'usage de substances ${d.substances.toLowerCase()}`;
       const extras = [];
       if (d.substancesType) extras.push(d.substancesType);
       if (d.substancesCom) extras.push(d.substancesCom);
       if (extras.length) t += ` (${extras.join(', ')})`;
-      addicLines.push(t);
+      addicLines.push(t + '.');
+    } else if (d.substances === 'Non') {
+      addicLines.push('Pas de conso d\'autre substance.');
+    }
+    if (addicLines.length) {
+      lines.push('');
+      lines.push('**Comorbidités addictologiques**');
+      addicLines.forEach(x => lines.push(x));
     }
 
-    if (anyAddic) {
-      lines.push('Comorbidités addictologiques :');
-      addicLines.forEach(x => lines.push('- ' + x + '.'));
-    } else if (d.tabac === 'Non' || d.alcool === 'Non' || d.substances === 'Non') {
-      lines.push('Pas de consommation alcoolo-tabagique ni d\'autre substance rapportée.');
-    }
-
-    // TNC
+    // Trouble neurocognitif (titre gras + souligné + ligne vide avant)
+    lines.push('');
+    lines.push('__Trouble neurocognitif__');
     if (d.tnc === 'Aucun') {
-      lines.push('Aucune pathologie neurocognitive connue.');
+      lines.push('Pas de trouble neurocognitif.');
     } else if (d.tnc) {
       let phrase = d.tnc;
       if (d.etiologie) {
@@ -1707,11 +2188,11 @@ const ObsEngine = (() => {
       }
       if (d.tncCom) phrase += ` (${d.tncCom})`;
       lines.push(phrase + '.');
+    } else {
+      lines.push('Pas de trouble neurocognitif.');
     }
-
-    // Examens
-    if (d.imagerie) lines.push(`Imagerie cérébrale : ${d.imagerie}.`);
-    if (d.bilanNP) lines.push(`Bilan neuropsychologique : ${d.bilanNP}.`);
+    lines.push(`Imagerie : ${d.imagerie ? d.imagerie : 'aucune'}.`);
+    lines.push(`BNP : ${d.bilanNP ? d.bilanNP : 'aucun'}.`);
 
     return lines.join('\n');
   }
@@ -1728,223 +2209,398 @@ const ObsEngine = (() => {
      V. TRAITEMENTS
      =========================================================== */
   function traitements(d) {
-    if (d.traitementsActuels) return d.traitementsActuels;
-    return '';
+    let out = d.traitementsActuels || '';
+    const nb = Array.isArray(d.photosTraitement) ? d.photosTraitement.length : 0;
+    if (nb > 0) {
+      if (out) out += '\n\n';
+      out += `📎 ${nb} photo${nb > 1 ? 's' : ''} d'ordonnance/pilulier jointe${nb > 1 ? 's' : ''}.`;
+    }
+    return out;
   }
 
   /* ===========================================================
      VI. ÉVALUATION PSYCHIATRIQUE (repris de Claude v1)
      =========================================================== */
-  function evalPsy(d, patient) {
+  function evalPsy(d, patient, entretien) {
     const sexe = patient ? patient.sexe : null;
     const sujet = sujetPatient(sexe);
     const blocks = [];
 
-    // --- Présentation ---
-    const present = [];
-    if (d.tenue) {
-      if (d.tenue === 'spl') present.push('une tenue vestimentaire sans particularité');
-      else present.push(`une tenue vestimentaire ${humanize('evalPsy', 'tenue', d.tenue)}`);
-    }
-    if (d.hygiene) {
-      if (d.hygiene === 'bonne') present.push('une bonne hygiène corporelle');
-      else present.push(`une hygiène corporelle ${humanize('evalPsy', 'hygiene', d.hygiene)}`);
-    }
+    // --- Contact ---
     if (d.contact && d.contact.length) {
-      const ctxt = humanizeMulti('evalPsy', 'contact', d.contact);
-      const pure = d.contact.length === 1 && d.contact[0] === 'spl';
-      present.push(pure ? 'un contact sans particularité' : `un contact marqué par ${joinList(ctxt)}`);
-    }
-    if (d.comportement && d.comportement.length) {
-      const ctxt = humanizeMulti('evalPsy', 'comportement', d.comportement);
-      const coop = d.comportement.length === 1 && d.comportement[0] === 'coop';
-      present.push(coop ? 'un comportement coopérant' : `un comportement ${joinList(ctxt)}`);
-    }
-    if (d.mimique && d.mimique.length) {
-      const ctxt = humanizeMulti('evalPsy', 'mimique', d.mimique);
-      present.push(`une mimique faciale ${joinList(ctxt)}`);
-    }
-    if (d.psychomot && d.psychomot.length) {
-      const ctxt = humanizeMulti('evalPsy', 'psychomot', d.psychomot);
-      present.push(`une activité psychomotrice ${joinList(ctxt)}`);
-    }
-    if (present.length) {
-      const verbe = accord(sexe, 'présente', 'présente');
-      blocks.push(`À l'examen, ${sujet} ${verbe} ${joinList(present)}.`);
+      const positives = d.contact.filter(v => v !== 'spl');
+      if (positives.length === 0) {
+        blocks.push('De bon contact.');
+      } else {
+        const contactMap = {
+          reticence: 'réticent',
+          desinhibe: 'désinhibé',
+          familiarite: 'désinhibé', // legacy
+          etrange: 'étrange',
+          bizarrerie: 'étrange',    // legacy
+          froideur: 'froid'
+        };
+        const adjs = positives.map(v => contactMap[v]).filter(Boolean);
+        if (adjs.length) blocks.push(`Contact ${joinList(adjs)}.`);
+      }
     }
 
-    // --- Langage ---
-    const lang = [];
-    if (d.prosodie) {
-      if (d.prosodie === 'normale') lang.push('une prosodie normale');
-      else lang.push(`une prosodie ${humanize('evalPsy', 'prosodie', d.prosodie)}`);
+    // --- Présentation (tenue vestimentaire + hygiène) ---
+    const presAdj = [];
+    let incurie = false;
+    if (d.tenue === 'extrav') presAdj.push('extravagante');
+    if (d.hygiene === 'negligee') presAdj.push('négligée');
+    if (d.hygiene === 'incurie') incurie = true;
+    if (!presAdj.length && !incurie) {
+      if (d.tenue || d.hygiene) blocks.push('Présentation sans particularité.');
+    } else {
+      let s = 'Présentation';
+      if (presAdj.length) s += ' ' + joinList(presAdj);
+      if (incurie) s += ' avec incurie';
+      blocks.push(s + '.');
     }
-    if (d.rythmeLangage && d.rythmeLangage.length) {
-      const ctxt = humanizeMulti('evalPsy', 'rythmeLangage', d.rythmeLangage);
-      lang.push(`un rythme et une quantité de langage ${joinList(ctxt)}`);
-    }
-    if (d.intensite) {
-      if (d.intensite === 'normale') lang.push('une intensité sonore normale');
-      else lang.push(`une intensité sonore ${humanize('evalPsy', 'intensite', d.intensite)}`);
-    }
-    if (d.signification) {
-      if (d.signification === 'normale') lang.push('une signification du langage préservée');
-      else lang.push(`une signification du langage ${humanize('evalPsy', 'signification', d.signification)}`);
-    }
-    if (lang.length) blocks.push(`Sur le plan du langage, on note ${joinList(lang)}.`);
 
-    // --- Pensée ---
-    const pens = [];
-    if (d.rythmePensee) {
-      if (d.rythmePensee === 'normal') pens.push('un rythme de pensée normal');
-      else pens.push(`un rythme de pensée ${humanize('evalPsy', 'rythmePensee', d.rythmePensee)}`);
+    // --- Orientation (si tout est normal : phrase courte en début) ---
+    const allCogNormal = d.ots === 'normale' && d.vigilance === 'normaux' && d.attention === 'normale' && d.memoire === 'normale';
+    if (allCogNormal) {
+      blocks.push(`${accord(sexe, 'Orienté', 'Orientée')} dans le temps et l'espace.`);
     }
-    if (d.coursPensee) {
-      pens.push(d.coursPensee === 'logique'
-        ? 'un cours de pensée logique et cohérent'
-        : `un cours de pensée ${humanize('evalPsy', 'coursPensee', d.coursPensee)}`);
+
+    // --- Mimique + activité psychomotrice (même ligne) ---
+    const mimiqueMap = {
+      hypomimie: 'hypomimie', amimie: 'amimie', fixite: 'fixité',
+      grimaces: 'grimaces', paramimies: 'paramimies',
+      // legacy (anciennes options groupées)
+      diminuee: 'hypomimie', augmentee: 'hypermimie', alteree: 'paramimies'
+    };
+    const psychomotMap = {
+      ralentissement: 'ralentissement psychomoteur', stupeur: 'stupeur',
+      acceleration: 'accélération psychomotrice', agitation: 'agitation',
+      manierisme: 'maniérisme', stereotypies: 'stéréotypies',
+      // legacy
+      diminuee: 'ralentissement psychomoteur', augmentee: 'agitation', alteree: 'maniérisme'
+    };
+    const mimiquePos = (d.mimique || []).filter(v => v !== 'normale').map(v => mimiqueMap[v]).filter(Boolean);
+    const psychomotPos = (d.psychomot || []).filter(v => v !== 'normale').map(v => psychomotMap[v]).filter(Boolean);
+    const motorParts = [];
+    const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+    if (mimiquePos.length) motorParts.push(cap(joinList(mimiquePos)) + '.');
+    if (psychomotPos.length) motorParts.push(cap(joinList(psychomotPos)) + '.');
+    if (motorParts.length) blocks.push(motorParts.join(' '));
+
+    // --- Langage et pensée ---
+    const langpens = [];
+    const capFirst = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+    // Discours
+    if (Array.isArray(d.discours) && d.discours.length) {
+      const discoursMap = {
+        fluide: 'fluide', coherent: 'cohérent', incoherent: 'incohérent',
+        desorganise: 'désorganisé', flou: 'flou', monoideique: 'monoïdéique',
+        tangentiel: 'tangentiel', digressif: 'digressif', circonlocutoire: 'circonlocutoire'
+      };
+      const adjs = d.discours.map(v => discoursMap[v]).filter(Boolean);
+      if (adjs.length) langpens.push(`Discours ${joinList(adjs)}.`);
     }
-    if (d.contenuPensee && d.contenuPensee.length) {
-      const ctxt = humanizeMulti('evalPsy', 'contenuPensee', d.contenuPensee);
-      pens.push(`un contenu marqué par ${joinList(ctxt)}`);
+
+    // Quantité, rythme et prosodie
+    if (Array.isArray(d.qrp) && d.qrp.length) {
+      if (d.qrp.length === 1 && d.qrp[0] === 'normal') {
+        langpens.push('Discours de rythme, quantité et prosodie normales.');
+      } else {
+        const qrpMap = {
+          logorrhee: 'logorrhée', pauvrete: 'pauvreté du discours', mutisme: 'mutisme',
+          latences: 'latences', tachyphemie: 'tachyphémie', bradyphemie: 'bradyphémie',
+          monocorde: 'ton monocorde', dysprosodie: 'dysprosodie',
+          hypophonie: 'hypophonie', hyperphonie: 'hyperphonie', cris: 'cris'
+        };
+        const items = d.qrp.filter(v => v !== 'normal').map(v => qrpMap[v]).filter(Boolean);
+        if (items.length) langpens.push(capFirst(joinList(items)) + '.');
+      }
     }
-    if (pens.length) {
-      let s = `Concernant la pensée : ${joinList(pens)}.`;
-      if (d.contenuPenseeDetails) s += ' ' + d.contenuPenseeDetails;
+
+    // Éléments de désorganisation
+    if (Array.isArray(d.desorganisation) && d.desorganisation.length) {
+      const desMap = {
+        neologismes: 'néologismes', echolalies: 'écholalies', stereotypies: 'stéréotypies',
+        barrages: 'barrages', fadings: 'fadings', rationalisme: 'rationalismes morbides',
+        coq_ane: 'coq à l\'âne', rep_cote: 'réponses à côté'
+      };
+      const items = d.desorganisation.map(v => desMap[v]).filter(Boolean);
+      if (items.length) langpens.push(`Éléments de désorganisation : ${joinList(items)}.`);
+    }
+
+    if (langpens.length) blocks.push(langpens.join(' '));
+
+    // --- Humeur, émotions, motivation, anxiété ---
+    const affect = [];
+
+    // Humeur
+    if (Array.isArray(d.humeur) && d.humeur.length) {
+      const humeurPhrases = {
+        tristesse: 'Tristesse de l\'humeur.',
+        elation: 'Élation de l\'humeur.',
+        euphorie: 'Euphorie.',
+        dysphorie: 'Dysphorie de l\'humeur.',
+        labile: 'Labilité de l\'humeur.'
+      };
+      d.humeur.filter(v => v !== 'euthymie').forEach(v => {
+        if (humeurPhrases[v]) affect.push(humeurPhrases[v]);
+      });
+    }
+
+    // Émotions
+    if (Array.isArray(d.emotions) && d.emotions.length) {
+      const emoMap = {
+        emoussement: 'émoussement affectif',
+        labilite: 'labilité émotionnelle',
+        discordance: 'discordance affective',
+        hypohedonie: 'hypohédonie',
+        anhedonie: 'anhédonie'
+      };
+      const items = d.emotions.filter(v => v !== 'normales').map(v => emoMap[v]).filter(Boolean);
+      if (items.length) affect.push(capFirst(joinList(items)) + '.');
+    }
+
+    // Motivation
+    if (Array.isArray(d.motivation) && d.motivation.includes('aboulie')) {
+      affect.push('Aboulie.');
+    }
+
+    if (affect.length) blocks.push(affect.join(' '));
+
+    // --- Anxiété (bloc séparé) ---
+    if (Array.isArray(d.anxiete) && d.anxiete.length) {
+      const anxMap = {
+        diffuse: 'anxiété diffuse',
+        ruminations: 'ruminations anxieuses',
+        panique: 'attaques de panique'
+      };
+      const items = d.anxiete.map(v => {
+        let base = anxMap[v];
+        if (!base) return null;
+        if (v === 'panique' && d.paniqueFreq) base = `${base} (${d.paniqueFreq})`;
+        return base;
+      }).filter(Boolean);
+      if (items.length) blocks.push(capFirst(joinList(items)) + '.');
+    }
+
+    // --- Auto-agressivité (idées noires et suicidaires sur deux lignes) ---
+    if (d.ideesNoires === true) blocks.push('Présence d\'idées noires.');
+    else if (d.ideesNoires === false) blocks.push('Pas d\'idées noires.');
+    if (d.ideesSuicidaires === true) {
+      let s = 'Rapporte des idées suicidaires.';
+      if (d.auto_details) s += ' ' + d.auto_details;
       blocks.push(s);
-    } else if (d.contenuPenseeDetails) {
-      blocks.push(`Concernant la pensée : ${d.contenuPenseeDetails}`);
-    }
-
-    // --- Affectivité ---
-    const aff = [];
-    if (d.emotions && d.emotions.length) {
-      const ctxt = humanizeMulti('evalPsy', 'emotions', d.emotions);
-      aff.push(`des émotions ${joinList(ctxt)}`);
-    }
-    if (d.humeur) {
-      if (d.humeur === 'euthymie') aff.push('une humeur euthymique');
-      else aff.push(`une humeur ${humanize('evalPsy', 'humeur', d.humeur)}`);
-    }
-    if (d.motivation) {
-      if (d.motivation === 'normale') aff.push('une motivation conservée');
-      else aff.push(`une motivation ${humanize('evalPsy', 'motivation', d.motivation)}`);
-    }
-    if (aff.length) blocks.push(`Sur le plan thymique et affectif : ${joinList(aff)}.`);
-
-    // --- Auto-agressivité ---
-    const autoA = [];
-    if (d.ideesNoires === true) autoA.push('idées noires présentes');
-    else if (d.ideesNoires === false) autoA.push('pas d\'idées noires');
-    if (d.ideesSuicidaires === true) autoA.push('idées suicidaires présentes');
-    else if (d.ideesSuicidaires === false) autoA.push('pas d\'idées suicidaires');
-    if (autoA.length) {
-      let s = `Auto-agressivité : ${joinList(autoA)}.`;
+    } else if (d.ideesSuicidaires === false) {
+      let s = 'Pas d\'idées suicidaires.';
       if (d.auto_details) s += ' ' + d.auto_details;
       blocks.push(s);
     }
 
-    // --- Hallucinations ---
-    const halluPos = [];
-    const halluNeg = [];
-    const halluMap = [
-      ['hallu_vis', 'visuelles'], ['hallu_aud', 'auditives'],
-      ['hallu_ip', 'intrapsychiques'], ['hallu_cen', 'cénesthésiques'],
-      ['hallu_olf', 'olfactives']
-    ];
-    halluMap.forEach(([k, label]) => {
-      if (d[k] === true) halluPos.push(label);
-      else if (d[k] === false) halluNeg.push(label);
-    });
-    if (halluPos.length) {
-      let s = `Présence d'hallucinations ${joinList(halluPos)}.`;
-      if (d.hallu_details) s += ' ' + d.hallu_details;
-      blocks.push(s);
-    } else if (halluNeg.length === halluMap.length) {
-      blocks.push('Pas d\'éléments hallucinatoires retrouvés (ni visuels, auditifs, intrapsychiques, cénesthésiques, ni olfactifs).');
+    // --- Contenu de la pensée ---
+    if (d.contenuPensee && d.contenuPensee.length) {
+      const cpMap = {
+        obsess: 'idées obsessionnelles',
+        reviv: 'reviviscences',
+        depressif: 'idées dépressives',
+        grandeur: 'idées de grandeur'
+      };
+      const depressifTypeMap = {
+        devalorisation: 'dévalorisation',
+        culpabilisation: 'culpabilisation',
+        pessimisme: 'pessimisme',
+        incurabilite: 'incurabilité'
+      };
+      const items = d.contenuPensee.map(v => {
+        let base = cpMap[v];
+        if (!base) return null;
+        if (v === 'depressif' && Array.isArray(d.idDepressivesType) && d.idDepressivesType.length) {
+          const types = d.idDepressivesType.map(t => depressifTypeMap[t]).filter(Boolean);
+          if (types.length) base = `${base} (${joinList(types)})`;
+        }
+        return base;
+      }).filter(Boolean);
+      if (items.length) {
+        let s = `Contenu de la pensée marqué par des ${joinList(items)}.`;
+        if (d.contenuPenseeDetails) s += ' ' + d.contenuPenseeDetails;
+        blocks.push(s);
+      }
+    } else if (d.contenuPenseeDetails) {
+      blocks.push(d.contenuPenseeDetails);
     }
 
-    // --- Cognitions ---
-    const cog = [];
-    if (d.ots) {
-      cog.push(d.ots === 'normale' ? 'une orientation temporo-spatiale normale' : 'une désorientation temporo-spatiale');
+    // --- Symptômes psychotiques (idées délirantes + hallucinations) ---
+    const idDel = d.idDelirantes;
+    const hallu = d.hallucinations;
+    if (idDel === false && hallu === false) {
+      blocks.push('Pas d\'idées délirantes ni hallucinations rapportées ni observées.');
+    } else {
+      const psy = [];
+      if (idDel === true) {
+        let s = 'Rapporte des idées délirantes';
+        if (d.idDelirantesDetails) s += ' : ' + d.idDelirantesDetails;
+        if (!s.endsWith('.')) s += '.';
+        psy.push(s);
+      }
+      if (hallu === true) {
+        const modalMap = { vis: 'visuelles', aud: 'auditives', ip: 'intrapsychiques', cen: 'cénesthésiques', olf: 'olfactives' };
+        const modals = Array.isArray(d.halluModal) ? d.halluModal.map(v => modalMap[v]).filter(Boolean) : [];
+        let s = modals.length ? `Rapporte des hallucinations ${joinList(modals)}` : 'Rapporte des hallucinations';
+        if (d.hallu_details) s += ' : ' + d.hallu_details;
+        if (!s.endsWith('.')) s += '.';
+        psy.push(s);
+      }
+      if (psy.length) blocks.push(psy.join(' '));
     }
-    if (d.vigilance) {
-      cog.push(d.vigilance === 'normaux' ? 'une vigilance et un niveau de conscience normaux' : `une vigilance ${humanize('evalPsy', 'vigilance', d.vigilance)}`);
+
+    // --- Cognitions (anormales uniquement, si pas déjà traité par "Orienté·e...") ---
+    if (!allCogNormal) {
+      const cog = [];
+      if (d.ots === 'desorientee') cog.push('désorientation temporo-spatiale');
+      if (d.vigilance && d.vigilance !== 'normaux') {
+        cog.push(`vigilance et niveau de conscience ${humanize('evalPsy', 'vigilance', d.vigilance)}`);
+      }
+      if (d.attention && d.attention !== 'normale') {
+        cog.push(`attention ${humanize('evalPsy', 'attention', d.attention)}`);
+      }
+      if (d.memoire === 'troubles') cog.push('troubles mnésiques rapportés');
+      if (cog.length) blocks.push(`Sur le plan des cognitions : ${joinList(cog)}.`);
     }
-    if (d.attention) {
-      if (d.attention === 'normale') cog.push('une attention normale');
-      else cog.push(`une attention ${humanize('evalPsy', 'attention', d.attention)}`);
-    }
-    if (cog.length) blocks.push(`Sur le plan cognitif, on note ${joinList(cog)}.`);
 
     // --- Fonctions physiologiques ---
     const phys = [];
-    if (d.alimentation) {
-      phys.push(d.alimentation === 'normale' ? 'une alimentation normale' : `une ${humanize('evalPsy', 'alimentation', d.alimentation)}`);
+    const capP = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+    // Alimentation (skip si normale)
+    if (d.alimentation && d.alimentation !== 'normale') {
+      const alimMap = { anorexie: 'Anorexie', hyporexie: 'Hyporexie', hyperphagie: 'Hyperphagie' };
+      if (alimMap[d.alimentation]) phys.push(alimMap[d.alimentation] + '.');
     }
-    if (d.sommeil && d.sommeil.length) {
-      const ctxt = humanizeMulti('evalPsy', 'sommeil', d.sommeil);
-      phys.push(`un sommeil ${joinList(ctxt)}`);
+
+    // Sommeil
+    if (Array.isArray(d.sommeil) && d.sommeil.length) {
+      const positives = d.sommeil.filter(v => v !== 'normal');
+      if (positives.length) {
+        const sommeilMap = {
+          insomnie: 'insomnie',
+          hypersomnie: 'hypersomnie',
+          som_diurne: 'somnolence diurne excessive',
+          cauchemars: 'cauchemars'
+        };
+        const items = positives.map(v => sommeilMap[v]).filter(Boolean);
+        if (positives.includes('insomnie')) {
+          const typeMap = {
+            endorm: 'difficultés d\'endormissement',
+            nocturne: 'réveils nocturnes',
+            precoce: 'réveil précoce'
+          };
+          const types = (d.insomnieType || []).map(v => typeMap[v]).filter(Boolean);
+          const idx = items.indexOf('insomnie');
+          if (idx >= 0) {
+            let str = 'insomnie';
+            if (types.length) str += ` (${joinList(types)})`;
+            if (d.insomnieDetails) str += ` — ${d.insomnieDetails}`;
+            items[idx] = str;
+          }
+        }
+        if (items.length) phys.push(capP(joinList(items)) + '.');
+      }
     }
-    if (d.sexualite) {
-      phys.push(d.sexualite === 'normale' ? 'une sexualité sans particularité rapportée' : `une sexualité : ${humanize('evalPsy', 'sexualite', d.sexualite)}`);
-    }
-    if (phys.length) blocks.push(`Fonctions physiologiques : ${joinList(phys)}.`);
+
+    // Sexualité
+    if (d.sexualite === 'baisse') phys.push('Diminution de la libido.');
+    else if (d.sexualite === 'augmentation') phys.push('Augmentation de la libido.');
+
+    if (phys.length) blocks.push(phys.join(' '));
 
     // --- Jugement ---
     if (d.conscienceTrouble) {
-      blocks.push(`Conscience du trouble : ${humanize('evalPsy', 'conscienceTrouble', d.conscienceTrouble)}.`);
+      const consMap = {
+        totale: 'Bonne conscience des troubles.',
+        partielle: 'Conscience partielle des troubles.',
+        absente: 'Aucune conscience des troubles.'
+      };
+      if (consMap[d.conscienceTrouble]) blocks.push(consMap[d.conscienceTrouble]);
     }
 
-    return blocks.join(' ');
+    // --- Échelles (en fin d'éval psy, après ligne vide) ---
+    if (entretien && entretien.data && entretien.data.scales) {
+      const scaleLines = [];
+      SCALES.forEach(scale => {
+        const sd = entretien.data.scales[scale.key];
+        if (!sd) return;
+        const { total, filled } = computeScaleScore(scale, sd);
+        if (filled === 0) return;
+        scaleLines.push(`${scale.name} : ${total}/${scale.max} (seuil pathologique : ${scale.threshold})`);
+      });
+      if (scaleLines.length) {
+        blocks.push('');
+        blocks.push('**Échelles :**');
+        scaleLines.forEach(l => blocks.push(l));
+      }
+    }
+
+    return blocks.join('\n');
   }
 
   /* ===========================================================
      ASSEMBLAGE FINAL
      =========================================================== */
   function generate(entretien, patient) {
-    const d = entretien.data || {};
     const header = identite(patient, entretien);
 
+    // Mode suivi : sortie très simplifiée
+    if (entretien.type === 'suivi') {
+      let out = 'OBSERVATION — Équipe Mobile de Psychiatrie du Sujet Âgé (EMPSA 94)\n';
+      out += header + '\n\n';
+      out += `__Note de suivi__\n`;
+      out += (entretien.note || '') + '\n';
+      out = out.replace(/__(.+?)__/g, '<strong><u>$1</u></strong>');
+      out = out.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      out = out.replace(/\n/g, '<br>');
+      return out.trim();
+    }
+
+    const d = entretien.data || {};
     const sections = [];
 
-    const bio = biographie(d.biographie || {}, patient);
-    if (bio) sections.push({ title: 'I. Éléments de biographie', body: bio });
+    const bio = biographie(d.biographie || {}, patient, entretien);
+    if (bio) sections.push({ title: 'Éléments de biographie', body: bio });
 
     const ap = atcdMedchir(d.atcdMedchir || {});
-    if (ap) sections.push({ title: 'II. Antécédents médico-chirurgicaux', body: ap });
+    if (ap) sections.push({ title: 'Antécédents médico-chirurgicaux', body: ap });
 
     const app = atcdPsy(d.atcdPsy || {});
-    if (app) sections.push({ title: 'III. Antécédents psychiatriques', body: app });
+    if (app) sections.push({ title: 'Antécédents psychiatriques', body: app });
 
     const hist = histoireMaladie(d.histoireMaladie || {});
-    if (hist) sections.push({ title: 'IV. Histoire récente de la maladie', body: hist });
+    if (hist) sections.push({ title: 'Histoire récente de la maladie', body: hist });
 
     const tr = traitements(d.traitements || {});
-    if (tr) sections.push({ title: 'V. Traitements actuels', body: tr });
+    if (tr) sections.push({ title: 'Traitements actuels', body: tr });
 
-    const ep = evalPsy(d.evalPsy || {}, patient);
-    if (ep) sections.push({ title: 'VI. Évaluation psychiatrique', body: ep });
-
-    const au = autonomieScores(entretien);
-    if (au) sections.push({ title: 'VII. Scores d\'autonomie', body: au });
+    const ep = evalPsy(d.evalPsy || {}, patient, entretien);
+    if (ep) sections.push({ title: 'Évaluation psychiatrique', body: ep });
 
     if (entretien.synthese) {
       sections.push({ title: 'Synthèse / Conclusion', body: entretien.synthese });
     }
 
     let out = 'OBSERVATION — Équipe Mobile de Psychiatrie du Sujet Âgé (EMPSA 94)\n';
-    out += '─'.repeat(60) + '\n';
     out += header + '\n\n';
     sections.forEach(s => {
-      out += s.title + '\n';
-      out += '─'.repeat(s.title.length) + '\n';
+      out += `__${s.title}__\n`;
       out += s.body + '\n\n';
     });
 
-    // Nettoyer : enlever les ** markdown qui sont restés (headers internes)
-    out = out.replace(/\*\*(.+?)\*\*/g, '$1');
+    // Conversion des marqueurs en HTML :
+    //   __texte__ → gras + souligné
+    //   **texte** → gras
+    out = out.replace(/__(.+?)__/g, '<strong><u>$1</u></strong>');
+    out = out.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // Conserver les retours à la ligne en HTML
+    out = out.replace(/\n/g, '<br>');
     return out.trim();
   }
 
@@ -1955,18 +2611,19 @@ const ObsEngine = (() => {
     const d = entretien.data || {};
     const sd = d[sectionKey] || {};
     let text = '';
-    if (sectionKey === 'biographie') text = biographie(sd, patient);
+    if (sectionKey === 'biographie') text = biographie(sd, patient, entretien);
     else if (sectionKey === 'atcdMedchir') text = atcdMedchir(sd);
     else if (sectionKey === 'atcdPsy') text = atcdPsy(sd);
     else if (sectionKey === 'histoireMaladie') text = histoireMaladie(sd);
     else if (sectionKey === 'traitements') text = traitements(sd);
-    else if (sectionKey === 'evalPsy') text = evalPsy(sd, patient);
-    // Nettoyer les marqueurs markdown
+    else if (sectionKey === 'evalPsy') text = evalPsy(sd, patient, entretien);
+    // Nettoyer les marqueurs (préview : texte brut)
+    text = text.replace(/__(.+?)__/g, '$1');
     text = text.replace(/\*\*(.+?)\*\*/g, '$1');
     return text;
   }
 
-  return { generate, preview, computeADL, computeIADL, fmtScore, autonomieScores };
+  return { generate, preview, computeADL, computeIADL, fmtScore, autonomieScoreLines };
 })();
 /* =====================================================================
    UI — ÉTAT APPLICATIF & RENDU
@@ -1975,7 +2632,8 @@ const State = {
   patients: [],
   entretiens: [],
   currentEntretienId: null,
-  currentSection: 'meta'
+  currentSection: 'meta',
+  openScales: {}
 };
 
 // ===== Écran de verrouillage =====
@@ -2053,11 +2711,18 @@ function renderPatientList() {
     const last = [...State.entretiens].filter(e => e.patientId === p.id).sort((a, b) => (b.date || 0) - (a.date || 0))[0];
     const count = State.entretiens.filter(e => e.patientId === p.id).length;
     const sexeLbl = p.sexe === 'f' ? '♀' : p.sexe === 'm' ? '♂' : '';
+    const age = computeAge(p);
+    const badges = [];
+    if (age !== null) badges.push(age + ' ans');
+    if (sexeLbl) badges.push(sexeLbl);
     c.appendChild(
       h('div', { class: 'patient-item', onclick: () => openPatientDetail(p.id) },
         h('div', { class: 'ident' },
-          h('span', { class: 'pid' }, `#${p.shortId}${p.birthYear ? ' · ' + p.birthYear : ''}${sexeLbl ? ' · ' + sexeLbl : ''}`),
-          h('span', { class: 'pname' }, p.initials || '—'),
+          h('span', { class: 'pid' }, '#' + p.shortId),
+          h('span', { class: 'pname' },
+            h('span', {}, p.initials || '—'),
+            badges.length ? h('span', { class: 'pbadge' }, badges.join(' · ')) : null
+          ),
           h('span', { class: 'pmeta' },
             `${count} entretien${count > 1 ? 's' : ''}` +
             (last ? ' · dernier le ' + new Date(last.date).toLocaleDateString('fr-FR') : '')
@@ -2143,35 +2808,122 @@ async function openPatientDetail(patientId) {
   const entretiens = State.entretiens.filter(e => e.patientId === patientId).sort((a, b) => (b.date || 0) - (a.date || 0));
 
   openModal(`${patient.initials} · #${patient.shortId}`, (body, close) => {
-    const infoLine = [];
-    if (patient.sexe === 'f') infoLine.push('Femme');
-    else if (patient.sexe === 'm') infoLine.push('Homme');
-    if (patient.birthDate) infoLine.push(`${accord(patient.sexe, 'né le', 'née le')} ${patient.birthDate}`);
-    else if (patient.birthYear) infoLine.push(`${accord(patient.sexe, 'né', 'née')} en ${patient.birthYear}`);
-    if (patient.contact) infoLine.push(`contact : ${patient.contact}`);
+    const savePatient = async () => {
+      patient.updatedAt = Date.now();
+      await Store.putEnc('patients', patient.id, patient);
+    };
+    let editing = false;
+    const editZone = h('div', {});
+    body.appendChild(editZone);
 
-    body.appendChild(h('div', { style: 'margin-bottom: 16px; font-size: 14px; color: var(--ink-faint); font-family: -apple-system, sans-serif;' },
-      infoLine.join(' · ')
-    ));
+    const renderEditZone = () => {
+      editZone.innerHTML = '';
+
+      // Ligne d'info (toujours visible)
+      const infoParts = [];
+      if (patient.sexe === 'f') infoParts.push('Femme');
+      else if (patient.sexe === 'm') infoParts.push('Homme');
+      const age = computeAge(patient);
+      if (age !== null) infoParts.push(`${age} ans`);
+      if (patient.birthDate) infoParts.push(`${accord(patient.sexe, 'né le', 'née le')} ${patient.birthDate}`);
+      else if (patient.birthYear) infoParts.push(`${accord(patient.sexe, 'né', 'née')} en ${patient.birthYear}`);
+      if (patient.contact) infoParts.push(`contact : ${patient.contact}`);
+
+      // Header avec bouton édition
+      const headerRow = h('div', { style: 'display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 10px;' },
+        h('div', { style: 'font-size: 15px; font-weight: 600; font-family: var(--font-sans);' }, patient.initials || '—'),
+        h('button', {
+          class: 'btn-icon',
+          title: editing ? 'Terminer' : 'Modifier',
+          onclick: async () => {
+            editing = !editing;
+            if (!editing) {
+              await savePatient();
+              renderPatientList();
+              const titleEl = document.querySelector('#modalRoot .modal header h3');
+              if (titleEl) titleEl.textContent = `${patient.initials} · #${patient.shortId}`;
+            }
+            renderEditZone();
+          }
+        }, editing ? '✓' : '✎')
+      );
+      editZone.appendChild(headerRow);
+
+      editZone.appendChild(h('div', {
+        class: 'patient-info-line',
+        style: 'margin-bottom: 16px; font-size: 14px; color: var(--ink-faint); font-family: var(--font-sans);'
+      }, infoParts.join(' · ') || '—'));
+
+      if (!editing) return;
+
+      // Formulaire édition
+      editZone.appendChild(h('div', { class: 'field', style: 'margin-bottom: 10px;' },
+        h('label', { class: 'lbl' }, 'Nom / initiales'),
+        h('input', {
+          type: 'text', value: patient.initials || '', maxlength: 12,
+          oninput: (ev) => { patient.initials = ev.target.value.trim() || patient.initials; }
+        })
+      ));
+      editZone.appendChild(h('div', { class: 'field', style: 'margin-bottom: 10px;' },
+        h('label', { class: 'lbl' }, 'Date de naissance (JJ/MM/AAAA)'),
+        h('input', {
+          type: 'text', value: patient.birthDate || '', placeholder: 'JJ/MM/AAAA',
+          inputmode: 'numeric',
+          oninput: (ev) => { patient.birthDate = ev.target.value.trim() || null; }
+        })
+      ));
+      editZone.appendChild(h('div', { class: 'field', style: 'margin-bottom: 16px;' },
+        h('label', { class: 'lbl' }, 'Ou année seule'),
+        h('input', {
+          type: 'text', value: patient.birthYear || '', placeholder: 'Ex. 1942',
+          inputmode: 'numeric', pattern: '[0-9]{4}', maxlength: 4,
+          oninput: (ev) => { patient.birthYear = ev.target.value.trim() || null; }
+        })
+      ));
+    };
+
+    renderEditZone();
     if (patient.note) {
-      body.appendChild(h('div', { style: 'padding: 10px 12px; background: var(--paper-warm); border-radius: 6px; font-size: 14px; margin-bottom: 16px; font-family: -apple-system, sans-serif;' }, patient.note));
+      body.appendChild(h('div', { style: 'padding: 10px 12px; background: var(--paper-warm); border-radius: 6px; font-size: 14px; margin-bottom: 16px; font-family: var(--font-sans);' }, patient.note));
     }
 
     body.appendChild(h('div', { class: 'sub-head' }, 'Entretiens'));
     if (!entretiens.length) {
-      body.appendChild(h('div', { style: 'color: var(--ink-faint); font-size: 14px; font-family: -apple-system, sans-serif; padding: 8px 0;' }, 'Aucun entretien pour ce patient.'));
+      body.appendChild(h('div', { style: 'color: var(--ink-faint); font-size: 14px; font-family: var(--font-sans); padding: 8px 0;' }, 'Aucun entretien pour ce patient.'));
     } else {
       entretiens.forEach(e => {
         const row = h('div', {
-          style: 'padding: 12px 14px; border: 1px solid var(--rule-soft); border-radius: 6px; margin-bottom: 6px; cursor: pointer; font-family: -apple-system, sans-serif; font-size: 14px; display: flex; justify-content: space-between; align-items: center;',
+          style: 'padding: 12px 14px; border: 1px solid var(--rule-soft); border-radius: 6px; margin-bottom: 6px; font-family: var(--font-sans); font-size: 14px; display: flex; justify-content: space-between; align-items: center; gap: 8px;'
+        });
+        const typeBadge = e.type === 'suivi' ? ' · suivi' : '';
+        const info = h('div', {
+          style: 'flex: 1; cursor: pointer;',
           onclick: () => { close(); openEntretien(e.id); }
         },
-          h('div', {},
-            h('div', { style: 'font-weight: 600;' }, new Date(e.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })),
-            h('div', { style: 'color: var(--ink-faint); font-size: 12px;' }, e.motif || '— sans motif —')
+          h('div', { style: 'font-weight: 600;' },
+            new Date(e.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) + typeBadge
           ),
-          h('span', { style: 'color: var(--ink-faint);' }, '›')
+          h('div', { style: 'color: var(--ink-faint); font-size: 12px;' },
+            (e.lieu === 'EHPAD' ? 'EHPAD' : 'Domicile') +
+            (Array.isArray(e.intervenants) && e.intervenants.length ? ' · ' + e.intervenants.join(', ') : ''))
         );
+        const delBtn = h('button', {
+          class: 'btn-icon',
+          title: 'Supprimer cet entretien',
+          onclick: async (ev) => {
+            ev.stopPropagation();
+            const dateLbl = new Date(e.date).toLocaleDateString('fr-FR');
+            if (!confirm(`Supprimer l'entretien du ${dateLbl} ?`)) return;
+            await Store.del('entretiens', e.id);
+            State.entretiens = State.entretiens.filter(x => x.id !== e.id);
+            close();
+            await openPatientDetail(patient.id);
+            toast('Entretien supprimé', 'ok');
+          }
+        }, '🗑');
+        row.appendChild(info);
+        row.appendChild(delBtn);
+        row.appendChild(h('span', { style: 'color: var(--ink-faint);' }, '›'));
         body.appendChild(row);
       });
     }
@@ -2185,10 +2937,24 @@ async function openPatientDetail(patientId) {
         await refreshPatientList();
         toast('Patient supprimé', 'ok');
       } }, 'Supprimer'),
+      h('button', { class: 'btn', onclick: async () => {
+        const entretien = {
+          id: uid(), patientId: patient.id,
+          type: 'suivi',
+          date: Date.now(), lieu: 'Domicile', intervenants: [], note: ''
+        };
+        await Store.putEnc('entretiens', entretien.id, entretien);
+        State.entretiens.push(entretien);
+        patient.updatedAt = Date.now();
+        await Store.putEnc('patients', patient.id, patient);
+        close();
+        openEntretien(entretien.id);
+      } }, 'Nouveau suivi'),
       h('button', { class: 'btn primary', onclick: async () => {
         const entretien = {
           id: uid(), patientId: patient.id,
-          date: Date.now(), motif: '', synthese: '', data: {}
+          type: 'full',
+          date: Date.now(), lieu: 'Domicile', intervenants: [], synthese: '', data: {}
         };
         await Store.putEnc('entretiens', entretien.id, entretien);
         State.entretiens.push(entretien);
@@ -2251,9 +3017,10 @@ function renderForm() {
 
   // En-tête
   const sexeLbl = patient.sexe === 'f' ? 'Femme' : patient.sexe === 'm' ? 'Homme' : '';
+  const typeLbl = e.type === 'suivi' ? 'Suivi' : 'Entretien';
   scr.appendChild(h('div', { class: 'form-header' },
     h('div', { class: 'h-left' },
-      h('h1', {}, `Entretien · ${patient.initials}`),
+      h('h1', {}, `${typeLbl} · ${patient.initials}`),
       h('div', { class: 'h-sub' },
         `#${patient.shortId}${sexeLbl ? ' · ' + sexeLbl : ''} · ${new Date(e.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`)
     ),
@@ -2262,17 +3029,22 @@ function renderForm() {
     )
   ));
 
-  // Nav sections
+  // Mode suivi : formulaire allégé, pas de nav
+  if (e.type === 'suivi') {
+    scr.appendChild(renderSuivi(e));
+    return;
+  }
+
+  // Nav sections (entretien complet)
   const sections = [
     { key: 'meta', label: 'Visite' },
-    { key: 'biographie', label: 'I. Biographie' },
-    { key: 'atcdMedchir', label: 'II. ATCD méd/chir' },
-    { key: 'atcdPsy', label: 'III. ATCD psy' },
-    { key: 'histoireMaladie', label: 'IV. Histoire' },
-    { key: 'traitements', label: 'V. Traitements' },
-    { key: 'evalPsy', label: 'VI. Éval psy' },
-    { key: 'adl', label: 'VII. ADL' },
-    { key: 'iadl', label: 'VII. IADL' },
+    { key: 'biographie', label: 'Biographie' },
+    { key: 'atcdMedchir', label: 'ATCD méd/chir' },
+    { key: 'atcdPsy', label: 'ATCD psy' },
+    { key: 'histoireMaladie', label: 'Histoire' },
+    { key: 'traitements', label: 'Traitements' },
+    { key: 'evalPsy', label: 'Éval psy' },
+    { key: 'scales', label: 'Échelles' },
     { key: 'synthese', label: 'Synthèse' }
   ];
   const nav = h('div', { class: 'section-nav' });
@@ -2286,13 +3058,87 @@ function renderForm() {
 
   // Section active
   if (State.currentSection === 'meta') scr.appendChild(renderMeta(e));
-  else if (State.currentSection === 'adl') scr.appendChild(renderADL(e));
-  else if (State.currentSection === 'iadl') scr.appendChild(renderIADL(e));
   else if (State.currentSection === 'synthese') scr.appendChild(renderSynthese(e));
-  else if (FORM_SCHEMA[State.currentSection]) scr.appendChild(renderSchemaSection(e, State.currentSection));
+  else if (State.currentSection === 'scales') scr.appendChild(renderScales(e));
+  else if (FORM_SCHEMA[State.currentSection]) {
+    scr.appendChild(renderSchemaSection(e, State.currentSection));
+    if (State.currentSection === 'biographie') {
+      scr.appendChild(renderADL(e));
+      scr.appendChild(renderIADL(e));
+    }
+  }
 }
 
 // ===== Sous-composants =====
+
+function renderSuivi(e) {
+  const block = h('section', { class: 'block' },
+    h('header', {}, h('h3', {}, 'Note de suivi'))
+  );
+  const body = h('div', { class: 'body' });
+  block.appendChild(body);
+
+  const dateISO = new Date(e.date || Date.now()).toISOString().slice(0, 10);
+  body.appendChild(h('div', { class: 'field' },
+    h('label', { class: 'lbl' }, 'Date de la visite'),
+    h('input', {
+      type: 'date', value: dateISO,
+      onchange: (ev) => saveCurrentEntretien({ date: new Date(ev.target.value).getTime() })
+    })
+  ));
+
+  body.appendChild(h('div', { class: 'field' },
+    h('label', { class: 'lbl' }, 'Lieu de la visite'),
+    (() => {
+      const row = h('div', { class: 'choices' });
+      ['Domicile', 'EHPAD'].forEach(lieu => {
+        const sel = e.lieu === lieu;
+        row.appendChild(h('label', {
+          class: `chip ${sel ? 'checked' : ''}`,
+          onclick: () => {
+            saveCurrentEntretien({ lieu: sel ? null : lieu });
+            renderForm();
+          }
+        }, lieu));
+      });
+      return row;
+    })()
+  ));
+
+  e.intervenants = e.intervenants || [];
+  body.appendChild(h('div', { class: 'field' },
+    h('label', { class: 'lbl' }, 'Intervenants'),
+    (() => {
+      const row = h('div', { class: 'choices' });
+      INTERVENANTS.forEach(name => {
+        const sel = e.intervenants.includes(name);
+        row.appendChild(h('label', {
+          class: `chip ${sel ? 'checked' : ''}`,
+          onclick: () => {
+            const next = sel
+              ? e.intervenants.filter(x => x !== name)
+              : [...e.intervenants, name];
+            saveCurrentEntretien({ intervenants: next });
+            renderForm();
+          }
+        }, name));
+      });
+      return row;
+    })()
+  ));
+
+  body.appendChild(h('div', { class: 'field' },
+    h('label', { class: 'lbl' }, 'Note de suivi'),
+    h('textarea', {
+      value: e.note || '',
+      oninput: (ev) => saveCurrentEntretien({ note: ev.target.value }),
+      rows: 10,
+      placeholder: 'Observations de la visite de suivi...'
+    })
+  ));
+
+  return block;
+}
 
 function renderMeta(e) {
   const block = h('section', { class: 'block' },
@@ -2313,14 +3159,46 @@ function renderMeta(e) {
     })
   ));
 
+  // Lieu de la visite
   body.appendChild(h('div', { class: 'field' },
-    h('label', { class: 'lbl' }, 'Motif de visite'),
-    h('textarea', {
-      value: e.motif || '',
-      oninput: (ev) => saveCurrentEntretien({ motif: ev.target.value }),
-      rows: 2,
-      placeholder: 'Motif de la demande de visite EMPSA'
-    })
+    h('label', { class: 'lbl' }, 'Lieu de la visite'),
+    (() => {
+      const row = h('div', { class: 'choices' });
+      ['Domicile', 'EHPAD'].forEach(lieu => {
+        const sel = e.lieu === lieu;
+        row.appendChild(h('label', {
+          class: `chip ${sel ? 'checked' : ''}`,
+          onclick: () => {
+            saveCurrentEntretien({ lieu: sel ? null : lieu });
+            renderForm();
+          }
+        }, lieu));
+      });
+      return row;
+    })()
+  ));
+
+  // Intervenants
+  e.intervenants = e.intervenants || [];
+  body.appendChild(h('div', { class: 'field' },
+    h('label', { class: 'lbl' }, 'Intervenants'),
+    (() => {
+      const row = h('div', { class: 'choices' });
+      INTERVENANTS.forEach(name => {
+        const sel = e.intervenants.includes(name);
+        row.appendChild(h('label', {
+          class: `chip ${sel ? 'checked' : ''}`,
+          onclick: () => {
+            const next = sel
+              ? e.intervenants.filter(x => x !== name)
+              : [...e.intervenants, name];
+            saveCurrentEntretien({ intervenants: next });
+            renderForm();
+          }
+        }, name));
+      });
+      return row;
+    })()
   ));
 
   return block;
@@ -2338,7 +3216,6 @@ function renderSchemaSection(e, sectionKey) {
 
   const block = h('section', { class: 'block' },
     h('header', {},
-      h('span', { class: 'roman' }, schema.roman),
       h('h3', {}, schema.title)
     )
   );
@@ -2456,14 +3333,22 @@ function renderSchemaSection(e, sectionKey) {
       field.appendChild(row);
     } else if (f.type === 'multi') {
       const row = h('div', { class: 'choices' });
-      data[f.key] = data[f.key] || [];
+      if (!Array.isArray(data[f.key])) data[f.key] = [];
+      const exclusiveV = (f.options.find(o => o.exclusive) || {}).v;
       f.options.forEach(o => {
         const checked = data[f.key].includes(o.v);
         row.appendChild(h('label', {
           class: `chip ${checked ? 'checked' : ''} ${checked && o.warn ? 'warn' : ''}`,
           onclick: () => {
-            if (checked) data[f.key] = data[f.key].filter(v => v !== o.v);
-            else data[f.key] = [...data[f.key], o.v];
+            if (checked) {
+              data[f.key] = data[f.key].filter(v => v !== o.v);
+            } else if (o.exclusive) {
+              data[f.key] = [o.v];
+            } else if (exclusiveV) {
+              data[f.key] = [...data[f.key].filter(v => v !== exclusiveV), o.v];
+            } else {
+              data[f.key] = [...data[f.key], o.v];
+            }
             saveCurrentEntretien();
             rerender();
           }
@@ -2516,6 +3401,53 @@ function renderSchemaSection(e, sectionKey) {
         listEl.appendChild(row);
       });
       field.appendChild(listEl);
+    } else if (f.type === 'photos') {
+      if (!Array.isArray(data[f.key])) data[f.key] = [];
+      const gallery = h('div', { class: 'photo-gallery' });
+      data[f.key].forEach((dataUrl, idx) => {
+        const thumb = h('div', { class: 'photo-thumb' });
+        const img = h('img', { src: dataUrl, onclick: () => openPhotoViewer(dataUrl) });
+        const rm = h('button', {
+          class: 'photo-rm',
+          onclick: (ev) => {
+            ev.stopPropagation();
+            data[f.key].splice(idx, 1);
+            saveCurrentEntretien();
+            rerender();
+          }
+        }, '×');
+        thumb.appendChild(img);
+        thumb.appendChild(rm);
+        gallery.appendChild(thumb);
+      });
+      const fileInput = h('input', {
+        type: 'file',
+        accept: 'image/*',
+        capture: 'environment',
+        multiple: true,
+        style: 'display:none',
+        onchange: async (ev) => {
+          const files = Array.from(ev.target.files || []);
+          try {
+            for (const file of files) {
+              const url = await resizeImageToDataUrl(file, 1600, 0.75);
+              data[f.key].push(url);
+            }
+            saveCurrentEntretien();
+            rerender();
+          } catch (err) {
+            toast('Erreur lors de l\'import de la photo', 'error');
+          }
+        }
+      });
+      const addBtn = h('button', {
+        class: 'btn',
+        type: 'button',
+        onclick: () => fileInput.click()
+      }, '📷 Ajouter une photo');
+      field.appendChild(gallery);
+      field.appendChild(fileInput);
+      field.appendChild(addBtn);
     }
 
     body.appendChild(field);
@@ -2536,7 +3468,6 @@ function renderADL(e) {
 
   const block = h('section', { class: 'block' },
     h('header', {},
-      h('span', { class: 'roman' }, 'VII · A'),
       h('h3', {}, 'ADL — Échelle d\'activités de la vie quotidienne (Katz)')
     )
   );
@@ -2588,7 +3519,6 @@ function renderIADL(e) {
 
   const block = h('section', { class: 'block' },
     h('header', {},
-      h('span', { class: 'roman' }, 'VII · B'),
       h('h3', {}, 'IADL — Activités instrumentales (Lawton)')
     )
   );
@@ -2633,6 +3563,96 @@ function renderIADL(e) {
   return block;
 }
 
+/* ===== Rendu Échelles ===== */
+function renderScales(e) {
+  e.data = e.data || {};
+  e.data.scales = e.data.scales || {};
+  const wrapper = h('div', {});
+
+  SCALES.forEach(scale => {
+    e.data.scales[scale.key] = e.data.scales[scale.key] || {};
+    const sd = e.data.scales[scale.key];
+    const { total, filled, totalItems, max } = computeScaleScore(scale, sd);
+    const isOpen = !!State.openScales && State.openScales[scale.key];
+
+    const block = h('section', { class: 'block scale-card' });
+    const header = h('header', {
+      class: 'scale-header',
+      onclick: () => {
+        State.openScales = State.openScales || {};
+        State.openScales[scale.key] = !isOpen;
+        renderForm();
+      }
+    },
+      h('div', {},
+        h('h3', {}, scale.name),
+        scale.description ? h('div', { class: 'scale-desc' }, scale.description) : null
+      ),
+      h('div', { class: 'scale-meta' },
+        h('span', { class: 'scale-score' }, `${total}/${max}`),
+        h('span', { class: 'scale-filled' }, `${filled}/${totalItems}`),
+        h('span', { class: 'scale-chev' }, isOpen ? '▾' : '▸')
+      )
+    );
+    block.appendChild(header);
+
+    if (isOpen) {
+      const body = h('div', { class: 'body' });
+      (scale.sections || []).forEach(section => {
+        if (section.label) body.appendChild(h('div', { class: 'sub-head' }, section.label));
+        const list = h('div', { class: 'score-list' });
+        (section.items || []).forEach(item => {
+          const options = item.options || DEFAULT_BINARY;
+          const row = h('div', { class: 'score-item' },
+            h('div', { class: 's-title' }, h('span', {}, item.label))
+          );
+          const opts = h('div', { class: `score-options ${options.length === 2 ? 'inline' : ''}` });
+          options.forEach(o => {
+            const sel = sd[item.key] === o.v;
+            opts.appendChild(h('div', {
+              class: `score-option ${sel ? 'selected' : ''}`,
+              onclick: () => {
+                sd[item.key] = sel ? null : o.v;
+                saveCurrentEntretien();
+                renderForm();
+              }
+            }, h('span', {}, o.t), h('span', { class: 'pt' }, o.v)));
+          });
+          row.appendChild(opts);
+          list.appendChild(row);
+        });
+        body.appendChild(list);
+      });
+
+      if (scale.bonus) {
+        const bRow = h('div', { class: 'score-item' },
+          h('div', { class: 's-title' }, h('span', {}, scale.bonus.label))
+        );
+        const bOpts = h('div', { class: 'score-options' });
+        const bSel = !!sd[scale.bonus.key];
+        bOpts.appendChild(h('div', {
+          class: `score-option ${bSel ? 'selected' : ''}`,
+          onclick: () => {
+            sd[scale.bonus.key] = !bSel;
+            saveCurrentEntretien();
+            renderForm();
+          }
+        }, h('span', {}, bSel ? 'Oui' : 'Non'), h('span', { class: 'pt' }, `+${scale.bonus.value}`)));
+        bRow.appendChild(bOpts);
+        body.appendChild(bRow);
+      }
+
+      body.appendChild(h('div', { class: 'score-total' },
+        h('span', { class: 'lbl-tot' }, `Total — ${filled}/${totalItems} items · seuil pathologique ${scale.threshold}`),
+        h('span', { class: 'val' }, `${total} / ${max}`)
+      ));
+      block.appendChild(body);
+    }
+    wrapper.appendChild(block);
+  });
+  return wrapper;
+}
+
 /* ===== Rendu Synthèse ===== */
 function renderSynthese(e) {
   const block = h('section', { class: 'block' },
@@ -2666,24 +3686,55 @@ function openGenerateModal() {
   const e = getCurrentEntretien();
   const patient = getCurrentPatient();
   if (!e) return;
-  const text = ObsEngine.generate(e, patient);
+
+  // Si une version éditée existe déjà, la charger ; sinon générer fraîche.
+  if (!e.observation) {
+    e.observation = ObsEngine.generate(e, patient);
+    saveCurrentEntretien();
+  }
 
   openModal('Observation rédigée', (body, close) => {
-    body.appendChild(h('div', { style: 'font-family: -apple-system, sans-serif; font-size: 13px; color: var(--ink-faint); margin-bottom: 12px;' },
-      'Brouillon généré automatiquement. Relisez et ajustez avant de coller dans le SIH.'
+    body.appendChild(h('div', { style: 'font-family: var(--font-sans); font-size: 13px; color: var(--ink-faint); margin-bottom: 12px;' },
+      'Modifiable directement ici. Les changements sont sauvegardés automatiquement.'
     ));
-    const obsEl = h('div', { class: 'obs-text' }, text);
+
+    const obsEl = h('div', { class: 'obs-text', contenteditable: 'true', spellcheck: 'true' });
+    obsEl.innerHTML = e.observation;
+    let saveTimer = null;
+    obsEl.addEventListener('input', () => {
+      e.observation = obsEl.innerHTML;
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => saveCurrentEntretien(), 400);
+    });
     body.appendChild(obsEl);
 
     body.appendChild(h('div', { class: 'obs-actions' },
       h('button', { class: 'btn primary', onclick: async () => {
+        const html = obsEl.innerHTML;
+        const plain = obsEl.innerText;
         try {
-          await navigator.clipboard.writeText(text);
-          toast('Observation copiée dans le presse-papier', 'ok');
+          if (navigator.clipboard && window.ClipboardItem) {
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                'text/html': new Blob([html], { type: 'text/html' }),
+                'text/plain': new Blob([plain], { type: 'text/plain' })
+              })
+            ]);
+          } else {
+            await navigator.clipboard.writeText(plain);
+          }
+          toast('Observation copiée (formaté + texte brut)', 'ok');
         } catch {
-          toast('Copie impossible — sélectionnez le texte manuellement', 'err');
+          toast('Copie impossible — sélectionnez manuellement', 'err');
         }
-      } }, '📋 Copier dans le presse-papier'),
+      } }, '📋 Copier'),
+      h('button', { class: 'btn', onclick: () => {
+        if (!confirm('Régénérer écrasera vos modifications. Confirmer ?')) return;
+        e.observation = ObsEngine.generate(e, patient);
+        obsEl.innerHTML = e.observation;
+        saveCurrentEntretien();
+        toast('Observation régénérée', 'ok');
+      } }, '↻ Régénérer depuis les données'),
       h('button', { class: 'btn', onclick: () => {
         const range = document.createRange();
         range.selectNodeContents(obsEl);
@@ -2762,28 +3813,7 @@ document.getElementById('exportAllBtn').onclick = async () => {
 /* ===== Service Worker ===== */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    const swCode = `
-      const CACHE = 'empsa-v2';
-      self.addEventListener('install', (e) => { self.skipWaiting(); });
-      self.addEventListener('activate', (e) => { self.clients.claim(); });
-      self.addEventListener('fetch', (e) => {
-        e.respondWith(
-          caches.open(CACHE).then(cache =>
-            cache.match(e.request).then(resp =>
-              resp || fetch(e.request).then(r => {
-                if (e.request.method === 'GET' && r.status === 200) cache.put(e.request, r.clone());
-                return r;
-              }).catch(() => cache.match('/'))
-            )
-          )
-        );
-      });
-    `;
-    try {
-      const blob = new Blob([swCode], { type: 'application/javascript' });
-      const url = URL.createObjectURL(blob);
-      navigator.serviceWorker.register(url).catch(() => {});
-    } catch {}
+    navigator.serviceWorker.register('sw.js').catch(() => {});
   });
 }
 
