@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+<meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -881,6 +882,15 @@ async function changePinFlow(oldPin, newPin) {
 }
 
 // ========== Helpers généraux ==========
+function escapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function h(tag, attrs = {}, ...children) {
   const el = document.createElement(tag);
   const t = String(tag).toLowerCase();
@@ -892,6 +902,10 @@ function h(tag, attrs = {}, ...children) {
     else if (v === true) el.setAttribute(k, '');
     else if (v !== false && v !== null && v !== undefined) el.setAttribute(k, v);
   });
+  // Défaut : pas d'autocomplétion ni de mémoire navigateur sur les champs patient.
+  if ((t === 'input' || t === 'textarea') && !(attrs && 'autocomplete' in attrs)) {
+    el.setAttribute('autocomplete', 'off');
+  }
   children.flat().forEach(c => {
     if (c === null || c === undefined || c === false) return;
     if (typeof c === 'string' || typeof c === 'number') el.appendChild(document.createTextNode(String(c)));
@@ -2640,6 +2654,9 @@ const ObsEngine = (() => {
       out += header + '\n\n';
       out += `__Note de suivi__\n`;
       out += (entretien.note || '') + '\n';
+      // Échappe d'abord tout le HTML éventuel (protection XSS des champs utilisateur),
+      // puis on applique les marqueurs markdown maîtrisés.
+      out = escapeHtml(out);
       out = out.replace(/__(.+?)__/g, '<strong><u>$1</u></strong>');
       out = out.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
       out = out.replace(/\n/g, '<br>');
@@ -2681,6 +2698,10 @@ const ObsEngine = (() => {
     // Capitalisation automatique : majuscule après . ! ? et après saut de ligne,
     // mais PAS après ":" (règle: colon = continuation, pas nouvelle phrase).
     out = capitalizeSentences(out);
+
+    // Échappe le HTML éventuel venant des champs utilisateur (protection XSS),
+    // puis on applique les marqueurs markdown maîtrisés.
+    out = escapeHtml(out);
 
     // Conversion des marqueurs en HTML :
     //   __texte__ → gras + souligné
