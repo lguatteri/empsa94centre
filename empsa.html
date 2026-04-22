@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -641,7 +642,7 @@ button.btn.danger:hover {
       <strong>Premier lancement.</strong> Ce code chiffre vos données localement, sur cet appareil uniquement. <strong>En cas d'oubli, les entretiens enregistrés seront irrécupérables</strong> — aucune réinitialisation n'est possible.
     </div>
     <div id="lockError" class="error"></div>
-    <input id="pinInput" class="pin-input" type="password" inputmode="numeric" pattern="[0-9]*" placeholder="••••" maxlength="8" autocomplete="off" value="0000">
+    <input id="pinInput" class="pin-input" type="password" inputmode="numeric" pattern="[0-9]*" placeholder="0000" maxlength="8" autocomplete="off">
     <button id="unlockBtn">Déverrouiller</button>
     <div class="hint">Les données sont chiffrées localement et ne quittent jamais cet appareil.</div>
   </div>
@@ -656,6 +657,7 @@ button.btn.danger:hover {
     </div>
     <div class="actions">
       <button id="exportAllBtn" title="Exporter toutes les données chiffrées">Sauvegarder</button>
+      <button id="changePinBtn" title="Changer le code PIN">Code</button>
       <button id="lockNowBtn" title="Verrouiller l'application">Verrouiller</button>
     </div>
   </div>
@@ -751,6 +753,34 @@ const CryptoBox = (() => {
     lock() { derivedKey = null; },
     isUnlocked() { return !!derivedKey; },
     hasSetup() { return !!localStorage.getItem('empsa.salt'); },
+    async verifyPin(pin) {
+      const saltRaw = localStorage.getItem('empsa.salt');
+      const canaryRaw = localStorage.getItem('empsa.canary');
+      if (!saltRaw || !canaryRaw) return false;
+      try {
+        const salt = new Uint8Array(JSON.parse(saltRaw));
+        const k = await deriveKey(pin, salt);
+        const p = JSON.parse(canaryRaw);
+        const iv = new Uint8Array(p.iv);
+        const cipher = new Uint8Array(p.data);
+        const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, k, cipher);
+        const obj = JSON.parse(dec.decode(plain));
+        return obj.ok === 'empsa-canary';
+      } catch { return false; }
+    },
+    async rekey(newPin) {
+      const saltRaw = localStorage.getItem('empsa.salt');
+      if (!saltRaw) throw new Error('Not setup');
+      const salt = new Uint8Array(JSON.parse(saltRaw));
+      const newKey = await deriveKey(newPin, salt);
+      // Nouveau canary chiffré avec la nouvelle clé
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const json = enc.encode(JSON.stringify({ ok: 'empsa-canary' }));
+      const cipher = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, newKey, json);
+      const payload = { iv: Array.from(iv), data: Array.from(new Uint8Array(cipher)) };
+      localStorage.setItem('empsa.canary', JSON.stringify(payload));
+      derivedKey = newKey;
+    },
     encrypt, decrypt
   };
 })();
@@ -815,8 +845,40 @@ const Store = (() => {
       r.onsuccess = () => res(); r.onerror = () => rej(r.error);
     });
   }
-  return { open, putEnc, getEnc, allEnc, del };
+  async function wipe() {
+    if (db) { try { db.close(); } catch {} db = null; }
+    return new Promise((res) => {
+      const req = indexedDB.deleteDatabase('empsa-db');
+      req.onsuccess = () => res();
+      req.onerror = () => res();
+      req.onblocked = () => res();
+    });
+  }
+  return { open, putEnc, getEnc, allEnc, del, wipe };
 })();
+
+// ========== Effacement total (wipe) ==========
+async function wipeAll() {
+  try { await Store.wipe(); } catch {}
+  ['empsa.salt', 'empsa.canary', 'empsa.failures'].forEach(k => localStorage.removeItem(k));
+  location.reload();
+}
+
+// ========== Changement de PIN (rechiffrement complet) ==========
+async function changePinFlow(oldPin, newPin) {
+  if (!await CryptoBox.verifyPin(oldPin)) return { ok: false, reason: 'bad-old' };
+  if (newPin.length < 4) return { ok: false, reason: 'too-short' };
+  // 1. Lecture de toutes les données avec l'ancienne clé encore active
+  const patients = await Store.allEnc('patients');
+  const entretiens = await Store.allEnc('entretiens');
+  // 2. Dérivation de la nouvelle clé + mise à jour du canary + swap
+  await CryptoBox.rekey(newPin);
+  localStorage.setItem('empsa.failures', '0');
+  // 3. Rechiffrement de tout avec la nouvelle clé
+  for (const p of patients) await Store.putEnc('patients', p.id, p);
+  for (const e of entretiens) await Store.putEnc('entretiens', e.id, e);
+  return { ok: true };
+}
 
 // ========== Helpers généraux ==========
 function h(tag, attrs = {}, ...children) {
@@ -2688,6 +2750,7 @@ async function initLock() {
       const pin = pinInput.value.trim() || '0000';
       if (pin.length < 4) { errEl.textContent = 'Code trop court (4 chiffres minimum).'; return; }
       await CryptoBox.setup(pin);
+      localStorage.setItem('empsa.failures', '0');
       await Store.open();
       onUnlocked();
     };
@@ -2697,10 +2760,21 @@ async function initLock() {
       if (!pin) return;
       const ok = await CryptoBox.unlock(pin);
       if (!ok) {
-        errEl.textContent = 'Code incorrect.';
+        const count = (parseInt(localStorage.getItem('empsa.failures') || '0', 10) || 0) + 1;
+        localStorage.setItem('empsa.failures', String(count));
+        if (count >= 500) {
+          errEl.textContent = 'Effacement des données en cours...';
+          await wipeAll();
+          return;
+        }
+        const left = 500 - count;
+        let msg = 'Code incorrect.';
+        if (left <= 50) msg += ` ${left} tentative${left > 1 ? 's' : ''} restante${left > 1 ? 's' : ''} avant effacement.`;
+        errEl.textContent = msg;
         pinInput.value = '';
         return;
       }
+      localStorage.setItem('empsa.failures', '0');
       errEl.textContent = '';
       await Store.open();
       onUnlocked();
@@ -3852,6 +3926,65 @@ function openModal(title, builder, opts = {}) {
   if (footButtons.length) modal.appendChild(footEl);
   backdrop.appendChild(modal);
   root.appendChild(backdrop);
+}
+
+/* ===== Changement de PIN ===== */
+document.getElementById('changePinBtn').onclick = () => openChangePinModal();
+
+function openChangePinModal() {
+  openModal('Changer le code PIN', (body, close) => {
+    const pinStyle = 'letter-spacing:0.3em; font-size:18px; margin-bottom:12px; text-align:center;';
+    const oldIn = h('input', { type: 'password', inputmode: 'numeric', pattern: '[0-9]*', maxlength: '8', class: 'pin-input', style: pinStyle, placeholder: 'Code actuel' });
+    const newIn = h('input', { type: 'password', inputmode: 'numeric', pattern: '[0-9]*', maxlength: '8', class: 'pin-input', style: pinStyle, placeholder: 'Nouveau code (4 chiffres min)' });
+    const confIn = h('input', { type: 'password', inputmode: 'numeric', pattern: '[0-9]*', maxlength: '8', class: 'pin-input', style: pinStyle, placeholder: 'Confirmer le nouveau code' });
+    const errEl = h('div', { style: 'color: var(--accent); font-size: 13px; min-height: 18px; margin-bottom: 4px; font-family: var(--font-sans);' });
+
+    body.appendChild(h('p', { style: 'font-size:13px; color: var(--ink-soft); margin: 0 0 16px; font-family: var(--font-sans); line-height:1.5;' },
+      'Le changement de code rechiffre toutes les données avec le nouveau code. ',
+      h('strong', {}, 'Ne fermez pas l\'application pendant l\'opération.'),
+      ' En cas d\'oubli du nouveau code, les données resteront irrécupérables.'));
+    body.appendChild(oldIn);
+    body.appendChild(newIn);
+    body.appendChild(confIn);
+    body.appendChild(errEl);
+
+    const validateBtn = h('button', { class: 'btn primary' }, 'Valider');
+    validateBtn.onclick = async () => {
+      const oldPin = oldIn.value.trim();
+      const nw = newIn.value.trim();
+      const cf = confIn.value.trim();
+      errEl.textContent = '';
+      if (!oldPin || !nw || !cf) { errEl.textContent = 'Tous les champs sont requis.'; return; }
+      if (nw.length < 4) { errEl.textContent = 'Nouveau code trop court (4 chiffres minimum).'; return; }
+      if (nw !== cf) { errEl.textContent = 'Les deux nouveaux codes ne correspondent pas.'; return; }
+      if (nw === oldPin) { errEl.textContent = 'Le nouveau code doit être différent de l\'ancien.'; return; }
+      validateBtn.disabled = true;
+      validateBtn.textContent = 'Rechiffrement...';
+      try {
+        const r = await changePinFlow(oldPin, nw);
+        if (!r.ok) {
+          if (r.reason === 'bad-old') errEl.textContent = 'Code actuel incorrect.';
+          else errEl.textContent = 'Erreur.';
+          validateBtn.disabled = false;
+          validateBtn.textContent = 'Valider';
+          return;
+        }
+        close();
+        toast('Code PIN changé avec succès.', 'ok');
+      } catch (err) {
+        errEl.textContent = 'Erreur lors du rechiffrement. Vérifiez vos données.';
+        validateBtn.disabled = false;
+        validateBtn.textContent = 'Valider';
+      }
+    };
+
+    setTimeout(() => oldIn.focus(), 50);
+
+    return [
+      h('button', { class: 'btn', onclick: close }, 'Annuler'),
+      validateBtn
+    ];
+  });
 }
 
 /* ===== Export sauvegarde ===== */
