@@ -1902,10 +1902,8 @@ const ObsEngine = (() => {
       else fam.push(withCom(`${d.enfants} enfant${d.enfants === '1' ? '' : 's'}`, d.enfantsCom));
     }
     if (d.fratrie) {
-      if (d.fratrie === 'Aucune') fam.push('pas de fratrie');
-      else if (d.fratrie === '1') fam.push(withCom('1 frère ou sœur', d.fratrieCom));
-      else if (d.fratrie === '3+') fam.push(withCom('fratrie de 3 ou plus', d.fratrieCom));
-      else fam.push(withCom(`fratrie de ${d.fratrie}`, d.fratrieCom));
+      if (d.fratrie === 'Aucune') fam.push('pas de frère ni sœur');
+      else fam.push(withCom(`fratrie : ${d.fratrie}`, d.fratrieCom));
     }
     if (d.aidantPrincipal) fam.push(`aidant principal : ${d.aidantPrincipal}`);
     if (d.isolement === 'Oui') fam.push('isolement social');
