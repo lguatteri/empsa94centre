@@ -143,6 +143,15 @@ h1, h2, h3, h4 {
   font-size: 12px; font-family: var(--font-sans);
   margin-bottom: 16px; text-align: left;
 }
+.setup-warning {
+  background: rgba(255, 120, 120, 0.12);
+  border: 1px solid rgba(255, 120, 120, 0.35);
+  color: #ffc4c4;
+  padding: 12px 14px; border-radius: 6px;
+  font-size: 12px; font-family: var(--font-sans);
+  margin-bottom: 16px; text-align: left; line-height: 1.5;
+}
+.setup-warning strong { color: #ffe0e0; }
 
 /* ===== Listes patients ===== */
 .screen { padding: 32px 0 120px; }
@@ -627,6 +636,9 @@ button.btn.danger:hover {
     <div class="sub">Entretien mobile de gérontopsychiatrie</div>
     <div class="dev-notice">
       <strong>Mode développement</strong> — PIN par défaut : <strong>0000</strong>
+    </div>
+    <div id="setupWarning" class="setup-warning" style="display:none;">
+      <strong>Premier lancement.</strong> Ce code chiffre vos données localement, sur cet appareil uniquement. <strong>En cas d'oubli, les entretiens enregistrés seront irrécupérables</strong> — aucune réinitialisation n'est possible.
     </div>
     <div id="lockError" class="error"></div>
     <input id="pinInput" class="pin-input" type="password" inputmode="numeric" pattern="[0-9]*" placeholder="••••" maxlength="8" autocomplete="off" value="0000">
@@ -2670,6 +2682,7 @@ async function initLock() {
 
   if (!CryptoBox.hasSetup()) {
     // Premier lancement : on crée automatiquement le code 0000
+    document.getElementById('setupWarning').style.display = '';
     unlockBtn.textContent = 'Démarrer (créer code 0000)';
     unlockBtn.onclick = async () => {
       const pin = pinInput.value.trim() || '0000';

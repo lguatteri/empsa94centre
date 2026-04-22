@@ -1,4 +1,4 @@
-const CACHE = 'empsa-v3';
+const CACHE = 'empsa-v4';
 const ASSETS = [
   './',
   './empsa.html',
