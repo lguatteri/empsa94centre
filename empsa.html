@@ -1092,6 +1092,8 @@ const FORM_SCHEMA = {
     roman: '',
     title: 'Antécédents médico-chirurgicaux',
     fields: [
+      { type: 'text', key: 'medecinTraitant', label: 'Médecin traitant',
+        placeholder: 'Ex : Dr Durand (Créteil)' },
       { type: 'subhead', label: 'Antécédents médicaux' },
       { type: 'atcdList', key: 'medical', items: MEDICAL_ITEMS },
       { type: 'text', key: 'medOther', label: 'Autre antécédent médical',
@@ -1811,8 +1813,7 @@ const ObsEngine = (() => {
     let ligne1 = `${patient.initials || '—'}`;
     if (patient.sexe === 'f') ligne1 += ', sexe féminin';
     else if (patient.sexe === 'm') ligne1 += ', sexe masculin';
-    if (patient.birthDate) ligne1 += `, ${neLe(patient.sexe)} ${patient.birthDate}`;
-    else if (patient.birthYear) ligne1 += `, ${accord(patient.sexe, 'né', 'née')} en ${patient.birthYear}`;
+    if (patient.birthYear) ligne1 += `, ${accord(patient.sexe, 'né', 'née')} en ${patient.birthYear}`;
 
     parts.push(`Patient : ${ligne1}.`);
     parts.push(`Identifiant interne : #${patient.shortId}.`);
@@ -2052,6 +2053,12 @@ const ObsEngine = (() => {
      =========================================================== */
   function atcdMedchir(d) {
     const lines = [];
+
+    // Médecin traitant
+    if (d.medecinTraitant) {
+      lines.push(`Médecin traitant : ${d.medecinTraitant}.`);
+      lines.push('');
+    }
 
     // Médicaux
     const med = d.medical || {};
@@ -2763,14 +2770,13 @@ function openNewPatientModal() {
       h('option', { value: 'f' }, 'Femme'),
       h('option', { value: 'm' }, 'Homme')
     );
-    const birthDateEl = h('input', { type: 'text', placeholder: 'JJ/MM/AAAA (optionnel)', inputmode: 'numeric' });
-    const birthYearEl = h('input', { type: 'text', placeholder: 'Année seule (ex. 1942)', inputmode: 'numeric', pattern: '[0-9]{4}', maxlength: 4 });
+    const birthYearEl = h('input', { type: 'text', placeholder: 'Ex. 1942', inputmode: 'numeric', pattern: '[0-9]{4}', maxlength: 4 });
     const contactEl = h('input', { type: 'text', placeholder: 'Personne à contacter (prénom + lien)' });
     const noteEl = h('textarea', { placeholder: 'Note libre (non identifiante)', rows: 3 });
 
     body.appendChild(h('div', { class: 'helpbar' },
       h('strong', {}, 'Pseudonymisation — '),
-      'utilise uniquement les initiales. Le nom complet ne doit pas être saisi ici. L\'année ou la date de naissance sert uniquement aux accords grammaticaux et au rappel d\'âge dans l\'observation.'
+      'utilise uniquement les initiales. Le nom complet ne doit pas être saisi ici. L\'année de naissance sert aux accords grammaticaux et au rappel d\'âge dans l\'observation.'
     ));
     body.appendChild(h('div', { class: 'field' },
       h('label', { class: 'lbl' }, 'Initiales *'),
@@ -2779,10 +2785,7 @@ function openNewPatientModal() {
       h('label', { class: 'lbl' }, 'Sexe *'),
       sexeEl));
     body.appendChild(h('div', { class: 'field' },
-      h('label', { class: 'lbl' }, 'Date de naissance complète'),
-      birthDateEl));
-    body.appendChild(h('div', { class: 'field' },
-      h('label', { class: 'lbl' }, 'Ou année de naissance seule'),
+      h('label', { class: 'lbl' }, 'Année de naissance'),
       birthYearEl));
     body.appendChild(h('div', { class: 'field' },
       h('label', { class: 'lbl' }, 'Personne à contacter'),
@@ -2803,7 +2806,6 @@ function openNewPatientModal() {
           shortId: shortId(),
           initials,
           sexe,
-          birthDate: birthDateEl.value.trim() || null,
           birthYear: birthYearEl.value.trim() || null,
           contact: contactEl.value.trim() || null,
           note: noteEl.value.trim() || null,
@@ -2843,8 +2845,7 @@ async function openPatientDetail(patientId) {
       else if (patient.sexe === 'm') infoParts.push('Homme');
       const age = computeAge(patient);
       if (age !== null) infoParts.push(`${age} ans`);
-      if (patient.birthDate) infoParts.push(`${accord(patient.sexe, 'né le', 'née le')} ${patient.birthDate}`);
-      else if (patient.birthYear) infoParts.push(`${accord(patient.sexe, 'né', 'née')} en ${patient.birthYear}`);
+      if (patient.birthYear) infoParts.push(`${accord(patient.sexe, 'né', 'née')} en ${patient.birthYear}`);
       if (patient.contact) infoParts.push(`contact : ${patient.contact}`);
 
       // Header avec bouton édition
@@ -2882,16 +2883,8 @@ async function openPatientDetail(patientId) {
           oninput: (ev) => { patient.initials = ev.target.value.trim() || patient.initials; }
         })
       ));
-      editZone.appendChild(h('div', { class: 'field', style: 'margin-bottom: 10px;' },
-        h('label', { class: 'lbl' }, 'Date de naissance (JJ/MM/AAAA)'),
-        h('input', {
-          type: 'text', value: patient.birthDate || '', placeholder: 'JJ/MM/AAAA',
-          inputmode: 'numeric',
-          oninput: (ev) => { patient.birthDate = ev.target.value.trim() || null; }
-        })
-      ));
       editZone.appendChild(h('div', { class: 'field', style: 'margin-bottom: 16px;' },
-        h('label', { class: 'lbl' }, 'Ou année seule'),
+        h('label', { class: 'lbl' }, 'Année de naissance'),
         h('input', {
           type: 'text', value: patient.birthYear || '', placeholder: 'Ex. 1942',
           inputmode: 'numeric', pattern: '[0-9]{4}', maxlength: 4,
@@ -2913,25 +2906,73 @@ async function openPatientDetail(patientId) {
         const row = h('div', {
           style: 'padding: 12px 14px; border: 1px solid var(--rule-soft); border-radius: 6px; margin-bottom: 6px; font-family: var(--font-sans); font-size: 14px; display: flex; justify-content: space-between; align-items: center; gap: 8px;'
         });
-        const typeBadge = e.type === 'suivi' ? ' · suivi' : '';
-        const info = h('div', {
-          style: 'flex: 1; cursor: pointer;',
+        const isFull = e.type !== 'suivi';
+        // Migration : assigner un obsName si full et manquant
+        if (isFull && !e.obsName) {
+          const others = State.entretiens
+            .filter(x => x.patientId === patient.id && x.type !== 'suivi' && x.obsName)
+            .map(x => x.obsName);
+          let n = 1;
+          while (others.includes(`Observation n°${n}`)) n++;
+          e.obsName = `Observation n°${n}`;
+          Store.putEnc('entretiens', e.id, e);
+        }
+        const titleLabel = isFull ? (e.obsName || 'Observation') : 'Suivi';
+        const dateTxt = new Date(e.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+        const info = h('div', { style: 'flex: 1; min-width: 0;' });
+
+        // Ligne titre : éditable (input) si full, lecture seule si suivi
+        if (isFull) {
+          const nameInput = h('input', {
+            type: 'text',
+            value: e.obsName || '',
+            style: 'width: 100%; border: none; background: transparent; font-weight: 600; font-size: 14px; padding: 2px 0; border-bottom: 1px dashed transparent; font-family: var(--font-sans);',
+            onfocus: (ev) => { ev.target.style.borderBottomColor = 'var(--rule)'; },
+            onblur: async (ev) => {
+              ev.target.style.borderBottomColor = 'transparent';
+              const newName = ev.target.value.trim();
+              if (!newName || newName === e.obsName) return;
+              // Collision : supprimer l'autre entretien qui avait ce nom
+              const collision = State.entretiens.find(x =>
+                x.id !== e.id && x.patientId === patient.id && x.type !== 'suivi' && x.obsName === newName
+              );
+              if (collision) {
+                if (!confirm(`"${newName}" existe déjà. Écraser cet entretien ?`)) {
+                  ev.target.value = e.obsName;
+                  return;
+                }
+                await Store.del('entretiens', collision.id);
+                State.entretiens = State.entretiens.filter(x => x.id !== collision.id);
+              }
+              e.obsName = newName;
+              e.updatedAt = Date.now();
+              await Store.putEnc('entretiens', e.id, e);
+              close();
+              await openPatientDetail(patient.id);
+            }
+          });
+          info.appendChild(nameInput);
+        } else {
+          info.appendChild(h('div', { style: 'font-weight: 600;' }, 'Suivi'));
+        }
+
+        // Ligne sous-titre : date + lieu + intervenants (cliquable pour ouvrir)
+        info.appendChild(h('div', {
+          style: 'color: var(--ink-faint); font-size: 12px; cursor: pointer; margin-top: 2px;',
           onclick: () => { close(); openEntretien(e.id); }
         },
-          h('div', { style: 'font-weight: 600;' },
-            new Date(e.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) + typeBadge
-          ),
-          h('div', { style: 'color: var(--ink-faint); font-size: 12px;' },
-            (e.lieu === 'EHPAD' ? 'EHPAD' : 'Domicile') +
-            (Array.isArray(e.intervenants) && e.intervenants.length ? ' · ' + e.intervenants.join(', ') : ''))
-        );
+          dateTxt + ' · ' +
+          (e.lieu === 'EHPAD' ? 'EHPAD' : 'Domicile') +
+          (Array.isArray(e.intervenants) && e.intervenants.length ? ' · ' + e.intervenants.join(', ') : '')
+        ));
+
         const delBtn = h('button', {
           class: 'btn-icon',
           title: 'Supprimer cet entretien',
           onclick: async (ev) => {
             ev.stopPropagation();
-            const dateLbl = new Date(e.date).toLocaleDateString('fr-FR');
-            if (!confirm(`Supprimer l'entretien du ${dateLbl} ?`)) return;
+            const lbl = isFull ? (e.obsName || 'cet entretien') : `le suivi du ${new Date(e.date).toLocaleDateString('fr-FR')}`;
+            if (!confirm(`Supprimer ${lbl} ?`)) return;
             await Store.del('entretiens', e.id);
             State.entretiens = State.entretiens.filter(x => x.id !== e.id);
             close();
@@ -2941,7 +2982,10 @@ async function openPatientDetail(patientId) {
         }, '🗑');
         row.appendChild(info);
         row.appendChild(delBtn);
-        row.appendChild(h('span', { style: 'color: var(--ink-faint);' }, '›'));
+        row.appendChild(h('span', {
+          style: 'color: var(--ink-faint); cursor: pointer;',
+          onclick: () => { close(); openEntretien(e.id); }
+        }, '›'));
         body.appendChild(row);
       });
     }
@@ -2969,9 +3013,12 @@ async function openPatientDetail(patientId) {
         openEntretien(entretien.id);
       } }, 'Nouveau suivi'),
       h('button', { class: 'btn primary', onclick: async () => {
+        const existing = State.entretiens.filter(x => x.patientId === patient.id && x.type !== 'suivi');
+        const nextNum = existing.length + 1;
         const entretien = {
           id: uid(), patientId: patient.id,
           type: 'full',
+          obsName: `Observation n°${nextNum}`,
           date: Date.now(), lieu: 'Domicile', intervenants: [], synthese: '', data: {}
         };
         await Store.putEnc('entretiens', entretien.id, entretien);
