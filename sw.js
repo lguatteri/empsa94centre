@@ -1,9 +1,22 @@
-const CACHE = 'empsa-v4';
+const CACHE = 'empsa-v5';
 const ASSETS = [
   './',
   './empsa.html',
   './manifest.webmanifest',
-  './icon.svg'
+  './icon.svg',
+  './logo-empsa.png',
+  './logo-empsa-white.png',
+  './logo-aphp.png',
+  './logo-dmu.png',
+  './logo-hmn.png',
+  './fonts/montserrat-400.woff2',
+  './fonts/montserrat-500.woff2',
+  './fonts/montserrat-600.woff2',
+  './fonts/montserrat-700.woff2',
+  './fonts/open-sans-400.woff2',
+  './fonts/open-sans-500.woff2',
+  './fonts/open-sans-600.woff2',
+  './fonts/open-sans-700.woff2'
 ];
 
 self.addEventListener('install', (event) => {

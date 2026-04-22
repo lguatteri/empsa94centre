@@ -1,7 +1,7 @@
 {
-  "name": "EMPSA 94 — Entretien gérontopsychiatrie",
+  "name": "EMPSA 94 centre — Entretien gérontopsychiatrie",
   "short_name": "EMPSA",
-  "description": "Trame d'entretien en gérontopsychiatrie (EMPSA 94)",
+  "description": "Trame d'entretien en gérontopsychiatrie (EMPSA 94 centre)",
   "start_url": "./empsa.html",
   "scope": "./",
   "display": "standalone",
