@@ -2287,7 +2287,7 @@ const ObsEngine = (() => {
       if (d.alcoolCom) t += ` (${d.alcoolCom})`;
       addicLines.push(t + '.');
     } else if (d.alcool === 'Non') {
-      addicLines.push('Pas de conso alcoolique.');
+      addicLines.push('Pas de consommation alcoolique.');
     }
     if (d.substances === 'Actuel' || d.substances === 'Sevré') {
       let t = `Trouble de l'usage de substances ${d.substances.toLowerCase()}`;
@@ -2297,7 +2297,7 @@ const ObsEngine = (() => {
       if (extras.length) t += ` (${extras.join(', ')})`;
       addicLines.push(t + '.');
     } else if (d.substances === 'Non') {
-      addicLines.push('Pas de conso d\'autre substance.');
+      addicLines.push('Pas de consommation d\'autre substance.');
     }
     if (addicLines.length) {
       lines.push('');
