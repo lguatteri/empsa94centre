@@ -670,7 +670,7 @@ button.btn.danger:hover {
 <div id="lockScreen" class="lock-screen">
   <div class="lock-card">
     <img src="logo-empsa.png" alt="EMPSA 94 centre" class="lock-logo">
-    <div class="sub">Rédiges ton observation en quelques clics !</div>
+    <div class="sub">Rédige ton observation en quelques clics !</div>
     <div class="dev-notice">
       <strong>Mode développement</strong> — PIN par défaut : <strong>0000</strong>
     </div>
@@ -1937,13 +1937,13 @@ const ObsEngine = (() => {
     else if (patient.sexe === 'm') ligne1 += ', sexe masculin';
     if (patient.birthYear) ligne1 += `, ${accord(patient.sexe, 'né', 'née')} en ${patient.birthYear}`;
 
-    parts.push(`Patient : ${ligne1}.`);
+    parts.push(`Patient : ${ligne1}`);
     const lieuTxt = entretien.lieu === 'EHPAD' ? 'Visite en EHPAD' : 'Visite à domicile';
     const intervList = Array.isArray(entretien.intervenants) ? entretien.intervenants : [];
     if (intervList.length) {
-      parts.push(`${lieuTxt} du ${today} : ${intervList.join(', ')}.`);
+      parts.push(`${lieuTxt} du ${today} : ${intervList.join(', ')}`);
     } else {
-      parts.push(`${lieuTxt} du ${today}.`);
+      parts.push(`${lieuTxt} du ${today}`);
     }
 
     return parts.join('\n');
@@ -1978,7 +1978,6 @@ const ObsEngine = (() => {
       if (type) phrase += ` en ${type}`;
       if (ville) phrase += ` à ${ville}`;
       if (structure) phrase += ` (${structure})`;
-      phrase += '.';
       lieu.push(phrase);
     } else if (mode || ville || type) {
       let phrase = '';
@@ -2001,7 +2000,6 @@ const ObsEngine = (() => {
       if (type === 'Appartement' && etage) {
         phrase += ` au ${etage}${/^\d+$/.test(etage) ? 'e' : ''} étage`;
       }
-      phrase += '.';
       lieu.push(phrase);
     }
 
@@ -2015,7 +2013,7 @@ const ObsEngine = (() => {
     else if (situ === 'Célibataire') situText = withCom('Célibataire', situCom);
     else if (situ === 'Divorcé.e') situText = withCom(accord(sexe, 'Divorcé', 'Divorcée'), situCom);
     else if (situ === 'Veuf / veuve') situText = withCom(accord(sexe, 'Veuf', 'Veuve'), situCom);
-    if (situText) lieu.push(situText + '.');
+    if (situText) lieu.push(situText);
 
     // --- Composition familiale ---
     const fam = [];
@@ -2032,9 +2030,8 @@ const ObsEngine = (() => {
     else if (d.isolement === 'Non') fam.push('entourage présent');
 
     if (fam.length) {
-      // Première lettre en majuscule
-      let t = fam.join('. ');
-      t = t.charAt(0).toUpperCase() + t.slice(1) + '.';
+      // Une ligne par item, première lettre de chaque ligne en majuscule
+      const t = fam.map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('\n');
       lieu.push(t);
     }
 
@@ -2081,7 +2078,7 @@ const ObsEngine = (() => {
     }
 
     if (autonomie.length) {
-      lines.push('**Autonomie**\n' + autonomie.join('.\n') + '.');
+      lines.push('**Autonomie**\n' + autonomie.join('\n'));
     }
 
     // --- Sphère socio-professionnelle ---
@@ -2109,14 +2106,14 @@ const ObsEngine = (() => {
     if (d.social) socio.push(`Accompagnement social : ${d.social}`);
 
     if (socio.length) {
-      lines.push('**Sphère socio-professionnelle**\n' + socio.join('.\n') + '.');
+      lines.push('**Sphère socio-professionnelle**\n' + socio.join('\n'));
     }
 
     // --- Prémorbide et éléments de vie ---
     const premo = [];
     if (d.premorbide) premo.push(`Éléments prémorbides : ${d.premorbide}`);
     if (d.elementsVie) premo.push(`Éléments de vie marquants : ${d.elementsVie}`);
-    if (premo.length) lines.push('**Parcours de vie**\n' + premo.join('.\n') + '.');
+    if (premo.length) lines.push('**Parcours de vie**\n' + premo.join('\n'));
 
     return lines.join('\n\n');
   }
@@ -2177,7 +2174,7 @@ const ObsEngine = (() => {
 
     // Médecin traitant
     if (d.medecinTraitant) {
-      lines.push(`Médecin traitant : ${d.medecinTraitant}.`);
+      lines.push(`Médecin traitant : ${d.medecinTraitant}`);
       lines.push('');
     }
 
@@ -2226,27 +2223,27 @@ const ObsEngine = (() => {
     // Diagnostic
     lines.push('**Diagnostic**');
     if (d.diag === 'Aucun') {
-      lines.push('Aucun.');
+      lines.push('Aucun');
     } else if (d.diag) {
       let t = d.diag;
       if (d.diagCom) t += ` (${d.diagCom})`;
-      lines.push(t + '.');
+      lines.push(t);
     } else if (d.diagCom) {
-      lines.push(d.diagCom + '.');
+      lines.push(d.diagCom);
     } else {
-      lines.push('Non renseigné.');
+      lines.push('Non renseigné');
     }
 
     // Hospitalisations / suivi (ligne vide avant)
     if (d.hospitalisations) {
       lines.push('');
       lines.push('**Hospitalisations et suivi**');
-      lines.push(d.hospitalisations + '.');
+      lines.push(d.hospitalisations);
     }
 
     // Psychotropes antérieurs
     if (d.psychotropesAnt) {
-      lines.push(`Traitements psychotropes antérieurs : ${d.psychotropesAnt}.`);
+      lines.push(`Traitements psychotropes antérieurs : ${d.psychotropesAnt}`);
     }
 
     // Conduites suicidaires (titre + ligne vide avant)
@@ -2259,16 +2256,16 @@ const ObsEngine = (() => {
         else if (d.nbTS === 'Multiples') t = 'Multiples tentatives de suicide';
         else t = `${d.nbTS} tentative${d.nbTS === '1' ? '' : 's'} de suicide`;
         if (d.tsDetails) t += ` (${d.tsDetails})`;
-        lines.push(t + '.');
+        lines.push(t);
       }
       if (d.heteroAgressivite) {
-        lines.push(`Conduites hétéro-agressives : ${d.heteroAgressivite}.`);
+        lines.push(`Conduites hétéro-agressives : ${d.heteroAgressivite}`);
       }
     }
 
     // ATCD familiaux
     if (d.atcdFam) {
-      lines.push(`Antécédents psychiatriques familiaux : ${d.atcdFam}.`);
+      lines.push(`Antécédents psychiatriques familiaux : ${d.atcdFam}`);
     }
 
     // Comorbidités addictologiques (ligne vide avant, pas de tirets)
@@ -2279,16 +2276,16 @@ const ObsEngine = (() => {
       if (d.tabacPA) extras.push(`${d.tabacPA} PA`);
       if (d.tabacCom) extras.push(d.tabacCom);
       if (extras.length) t += ` (${extras.join(', ')})`;
-      addicLines.push(t + '.');
+      addicLines.push(t);
     } else if (d.tabac === 'Non') {
-      addicLines.push('Pas de consommation tabagique.');
+      addicLines.push('Pas de consommation tabagique');
     }
     if (d.alcool === 'Actuel' || d.alcool === 'Sevré') {
       let t = `Trouble de l'usage de l'alcool ${d.alcool.toLowerCase()}`;
       if (d.alcoolCom) t += ` (${d.alcoolCom})`;
-      addicLines.push(t + '.');
+      addicLines.push(t);
     } else if (d.alcool === 'Non') {
-      addicLines.push('Pas de consommation alcoolique.');
+      addicLines.push('Pas de consommation alcoolique');
     }
     if (d.substances === 'Actuel' || d.substances === 'Sevré') {
       let t = `Trouble de l'usage de substances ${d.substances.toLowerCase()}`;
@@ -2296,9 +2293,9 @@ const ObsEngine = (() => {
       if (d.substancesType) extras.push(d.substancesType);
       if (d.substancesCom) extras.push(d.substancesCom);
       if (extras.length) t += ` (${extras.join(', ')})`;
-      addicLines.push(t + '.');
+      addicLines.push(t);
     } else if (d.substances === 'Non') {
-      addicLines.push('Pas de consommation d\'autre substance.');
+      addicLines.push('Pas de consommation d\'autre substance');
     }
     if (addicLines.length) {
       lines.push('');
@@ -2310,7 +2307,7 @@ const ObsEngine = (() => {
     lines.push('');
     lines.push('__Trouble neurocognitif__');
     if (d.tnc === 'Aucun') {
-      lines.push('Pas de trouble neurocognitif.');
+      lines.push('Pas de trouble neurocognitif');
     } else if (d.tnc) {
       let phrase = d.tnc;
       if (d.etiologie) {
@@ -2318,12 +2315,12 @@ const ObsEngine = (() => {
         if (etiTxt) phrase += ` de type ${etiTxt}`;
       }
       if (d.tncCom) phrase += ` (${d.tncCom})`;
-      lines.push(phrase + '.');
+      lines.push(phrase);
     } else {
-      lines.push('Pas de trouble neurocognitif.');
+      lines.push('Pas de trouble neurocognitif');
     }
-    lines.push(`Imagerie : ${d.imagerie ? d.imagerie : 'aucune'}.`);
-    lines.push(`BNP : ${d.bilanNP ? d.bilanNP : 'aucun'}.`);
+    lines.push(`Imagerie : ${d.imagerie ? d.imagerie : 'aucune'}`);
+    lines.push(`BNP : ${d.bilanNP ? d.bilanNP : 'aucun'}`);
 
     return lines.join('\n');
   }
@@ -2344,7 +2341,7 @@ const ObsEngine = (() => {
     const nb = Array.isArray(d.photosTraitement) ? d.photosTraitement.length : 0;
     if (nb > 0) {
       if (out) out += '\n\n';
-      out += `📎 ${nb} photo${nb > 1 ? 's' : ''} d'ordonnance/pilulier jointe${nb > 1 ? 's' : ''}.`;
+      out += `📎 ${nb} photo${nb > 1 ? 's' : ''} d'ordonnance/pilulier jointe${nb > 1 ? 's' : ''}`;
     }
     return out;
   }
@@ -2361,7 +2358,7 @@ const ObsEngine = (() => {
     if (d.contact && d.contact.length) {
       const positives = d.contact.filter(v => v !== 'spl');
       if (positives.length === 0) {
-        blocks.push('De bon contact.');
+        blocks.push('De bon contact');
       } else {
         const contactMap = {
           reticence: 'réticent',
@@ -2372,7 +2369,7 @@ const ObsEngine = (() => {
           froideur: 'froid'
         };
         const adjs = positives.map(v => contactMap[v]).filter(Boolean);
-        if (adjs.length) blocks.push(`Contact ${joinList(adjs)}.`);
+        if (adjs.length) blocks.push(`Contact ${joinList(adjs)}`);
       }
     }
 
@@ -2383,18 +2380,18 @@ const ObsEngine = (() => {
     if (d.hygiene === 'negligee') presAdj.push('négligée');
     if (d.hygiene === 'incurie') incurie = true;
     if (!presAdj.length && !incurie) {
-      if (d.tenue || d.hygiene) blocks.push('Présentation sans particularité.');
+      if (d.tenue || d.hygiene) blocks.push('Présentation sans particularité');
     } else {
       let s = 'Présentation';
       if (presAdj.length) s += ' ' + joinList(presAdj);
       if (incurie) s += ' avec incurie';
-      blocks.push(s + '.');
+      blocks.push(s);
     }
 
     // --- Orientation (si tout est normal : phrase courte en début) ---
     const allCogNormal = d.ots === 'normale' && d.vigilance === 'normaux' && d.attention === 'normale' && d.memoire === 'normale';
     if (allCogNormal) {
-      blocks.push(`${accord(sexe, 'Orienté', 'Orientée')} dans le temps et l'espace.`);
+      blocks.push(`${accord(sexe, 'Orienté', 'Orientée')} dans le temps et l'espace`);
     }
 
     // --- Mimique + activité psychomotrice (même ligne) ---
@@ -2415,9 +2412,9 @@ const ObsEngine = (() => {
     const psychomotPos = (d.psychomot || []).filter(v => v !== 'normale').map(v => psychomotMap[v]).filter(Boolean);
     const motorParts = [];
     const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
-    if (mimiquePos.length) motorParts.push(cap(joinList(mimiquePos)) + '.');
-    if (psychomotPos.length) motorParts.push(cap(joinList(psychomotPos)) + '.');
-    if (motorParts.length) blocks.push(motorParts.join(' '));
+    if (mimiquePos.length) motorParts.push(cap(joinList(mimiquePos)));
+    if (psychomotPos.length) motorParts.push(cap(joinList(psychomotPos)));
+    if (motorParts.length) blocks.push(motorParts.join('\n'));
 
     // --- Langage et pensée ---
     const langpens = [];
@@ -2431,13 +2428,13 @@ const ObsEngine = (() => {
         tangentiel: 'tangentiel', digressif: 'digressif', circonlocutoire: 'circonlocutoire'
       };
       const adjs = d.discours.map(v => discoursMap[v]).filter(Boolean);
-      if (adjs.length) langpens.push(`Discours ${joinList(adjs)}.`);
+      if (adjs.length) langpens.push(`Discours ${joinList(adjs)}`);
     }
 
     // Quantité, rythme et prosodie
     if (Array.isArray(d.qrp) && d.qrp.length) {
       if (d.qrp.length === 1 && d.qrp[0] === 'normal') {
-        langpens.push('Discours de rythme, quantité et prosodie normales.');
+        langpens.push('Discours de rythme, quantité et prosodie normales');
       } else {
         const qrpMap = {
           logorrhee: 'logorrhée', pauvrete: 'pauvreté du discours', mutisme: 'mutisme',
@@ -2446,7 +2443,7 @@ const ObsEngine = (() => {
           hypophonie: 'hypophonie', hyperphonie: 'hyperphonie', cris: 'cris'
         };
         const items = d.qrp.filter(v => v !== 'normal').map(v => qrpMap[v]).filter(Boolean);
-        if (items.length) langpens.push(capFirst(joinList(items)) + '.');
+        if (items.length) langpens.push(capFirst(joinList(items)));
       }
     }
 
@@ -2458,10 +2455,10 @@ const ObsEngine = (() => {
         coq_ane: 'coq à l\'âne', rep_cote: 'réponses à côté'
       };
       const items = d.desorganisation.map(v => desMap[v]).filter(Boolean);
-      if (items.length) langpens.push(`Éléments de désorganisation : ${joinList(items)}.`);
+      if (items.length) langpens.push(`Éléments de désorganisation : ${joinList(items)}`);
     }
 
-    if (langpens.length) blocks.push(langpens.join(' '));
+    if (langpens.length) blocks.push(langpens.join('\n'));
 
     // --- Humeur, émotions, motivation, anxiété ---
     const affect = [];
@@ -2469,11 +2466,11 @@ const ObsEngine = (() => {
     // Humeur
     if (Array.isArray(d.humeur) && d.humeur.length) {
       const humeurPhrases = {
-        tristesse: 'Tristesse de l\'humeur.',
-        elation: 'Élation de l\'humeur.',
-        euphorie: 'Euphorie.',
-        dysphorie: 'Dysphorie de l\'humeur.',
-        labile: 'Labilité de l\'humeur.'
+        tristesse: 'Tristesse de l\'humeur',
+        elation: 'Élation de l\'humeur',
+        euphorie: 'Euphorie',
+        dysphorie: 'Dysphorie de l\'humeur',
+        labile: 'Labilité de l\'humeur'
       };
       d.humeur.filter(v => v !== 'euthymie').forEach(v => {
         if (humeurPhrases[v]) affect.push(humeurPhrases[v]);
@@ -2490,15 +2487,15 @@ const ObsEngine = (() => {
         anhedonie: 'anhédonie'
       };
       const items = d.emotions.filter(v => v !== 'normales').map(v => emoMap[v]).filter(Boolean);
-      if (items.length) affect.push(capFirst(joinList(items)) + '.');
+      if (items.length) affect.push(capFirst(joinList(items)));
     }
 
     // Motivation
     if (Array.isArray(d.motivation) && d.motivation.includes('aboulie')) {
-      affect.push('Aboulie.');
+      affect.push('Aboulie');
     }
 
-    if (affect.length) blocks.push(affect.join(' '));
+    if (affect.length) blocks.push(affect.join('\n'));
 
     // --- Anxiété (bloc séparé) ---
     if (Array.isArray(d.anxiete) && d.anxiete.length) {
@@ -2513,19 +2510,19 @@ const ObsEngine = (() => {
         if (v === 'panique' && d.paniqueFreq) base = `${base} (${d.paniqueFreq})`;
         return base;
       }).filter(Boolean);
-      if (items.length) blocks.push(capFirst(joinList(items)) + '.');
+      if (items.length) blocks.push(capFirst(joinList(items)));
     }
 
     // --- Auto-agressivité (idées noires et suicidaires sur deux lignes) ---
-    if (d.ideesNoires === true) blocks.push('Présence d\'idées noires.');
-    else if (d.ideesNoires === false) blocks.push('Pas d\'idées noires.');
+    if (d.ideesNoires === true) blocks.push('Présence d\'idées noires');
+    else if (d.ideesNoires === false) blocks.push('Pas d\'idées noires');
     if (d.ideesSuicidaires === true) {
-      let s = 'Rapporte des idées suicidaires.';
-      if (d.auto_details) s += ' ' + d.auto_details;
+      let s = 'Rapporte des idées suicidaires';
+      if (d.auto_details) s += '\n' + d.auto_details;
       blocks.push(s);
     } else if (d.ideesSuicidaires === false) {
-      let s = 'Pas d\'idées suicidaires.';
-      if (d.auto_details) s += ' ' + d.auto_details;
+      let s = 'Pas d\'idées suicidaires';
+      if (d.auto_details) s += '\n' + d.auto_details;
       blocks.push(s);
     }
 
@@ -2553,8 +2550,8 @@ const ObsEngine = (() => {
         return base;
       }).filter(Boolean);
       if (items.length) {
-        let s = `Contenu de la pensée marqué par des ${joinList(items)}.`;
-        if (d.contenuPenseeDetails) s += ' ' + d.contenuPenseeDetails;
+        let s = `Contenu de la pensée marqué par des ${joinList(items)}`;
+        if (d.contenuPenseeDetails) s += '\n' + d.contenuPenseeDetails;
         blocks.push(s);
       }
     } else if (d.contenuPenseeDetails) {
@@ -2565,13 +2562,12 @@ const ObsEngine = (() => {
     const idDel = d.idDelirantes;
     const hallu = d.hallucinations;
     if (idDel === false && hallu === false) {
-      blocks.push('Pas d\'idées délirantes ni hallucinations rapportées ni observées.');
+      blocks.push('Pas d\'idées délirantes ni hallucinations rapportées ni observées');
     } else {
       const psy = [];
       if (idDel === true) {
         let s = 'Rapporte des idées délirantes';
         if (d.idDelirantesDetails) s += ' : ' + d.idDelirantesDetails;
-        if (!s.endsWith('.')) s += '.';
         psy.push(s);
       }
       if (hallu === true) {
@@ -2579,10 +2575,9 @@ const ObsEngine = (() => {
         const modals = Array.isArray(d.halluModal) ? d.halluModal.map(v => modalMap[v]).filter(Boolean) : [];
         let s = modals.length ? `Rapporte des hallucinations ${joinList(modals)}` : 'Rapporte des hallucinations';
         if (d.hallu_details) s += ' : ' + d.hallu_details;
-        if (!s.endsWith('.')) s += '.';
         psy.push(s);
       }
-      if (psy.length) blocks.push(psy.join(' '));
+      if (psy.length) blocks.push(psy.join('\n'));
     }
 
     // --- Cognitions (anormales uniquement, si pas déjà traité par "Orienté·e...") ---
@@ -2596,7 +2591,7 @@ const ObsEngine = (() => {
         cog.push(`attention ${humanize('evalPsy', 'attention', d.attention)}`);
       }
       if (d.memoire === 'troubles') cog.push('troubles mnésiques rapportés');
-      if (cog.length) blocks.push(`Sur le plan des cognitions : ${joinList(cog)}.`);
+      if (cog.length) blocks.push(`Sur le plan des cognitions : ${joinList(cog)}`);
     }
 
     // --- Fonctions physiologiques ---
@@ -2606,7 +2601,7 @@ const ObsEngine = (() => {
     // Alimentation (skip si normale)
     if (d.alimentation && d.alimentation !== 'normale') {
       const alimMap = { anorexie: 'Anorexie', hyporexie: 'Hyporexie', hyperphagie: 'Hyperphagie' };
-      if (alimMap[d.alimentation]) phys.push(alimMap[d.alimentation] + '.');
+      if (alimMap[d.alimentation]) phys.push(alimMap[d.alimentation]);
     }
 
     // Sommeil
@@ -2635,22 +2630,22 @@ const ObsEngine = (() => {
             items[idx] = str;
           }
         }
-        if (items.length) phys.push(capP(joinList(items)) + '.');
+        if (items.length) phys.push(capP(joinList(items)));
       }
     }
 
     // Sexualité
-    if (d.sexualite === 'baisse') phys.push('Diminution de la libido.');
-    else if (d.sexualite === 'augmentation') phys.push('Augmentation de la libido.');
+    if (d.sexualite === 'baisse') phys.push('Diminution de la libido');
+    else if (d.sexualite === 'augmentation') phys.push('Augmentation de la libido');
 
-    if (phys.length) blocks.push(phys.join(' '));
+    if (phys.length) blocks.push(phys.join('\n'));
 
     // --- Jugement ---
     if (d.conscienceTrouble) {
       const consMap = {
-        totale: 'Bonne conscience des troubles.',
-        partielle: 'Conscience partielle des troubles.',
-        absente: 'Aucune conscience des troubles.'
+        totale: 'Bonne conscience des troubles',
+        partielle: 'Conscience partielle des troubles',
+        absente: 'Aucune conscience des troubles'
       };
       if (consMap[d.conscienceTrouble]) blocks.push(consMap[d.conscienceTrouble]);
     }
