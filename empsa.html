@@ -1292,7 +1292,10 @@ const FORM_SCHEMA = {
       // --- Lieu de vie ---
       { type: 'subhead', label: 'Lieu de vie' },
       { type: 'select', key: 'modeVie', label: 'Mode de vie',
-        options: ['Seul', 'En couple', 'En colocation', 'Avec enfants', 'Chez un enfant', 'Avec famille'] },
+        options: ['Seul', 'En couple', 'En colocation', 'Avec enfants', 'Chez un proche', 'Avec famille'] },
+      { type: 'text', key: 'modeVieProche', label: 'Précisions (chez qui)',
+        placeholder: 'Ex : sa fille, son fils, sa sœur...',
+        showIf: (d) => d.modeVie === 'Chez un proche' },
       { type: 'select', key: 'ville', label: 'Ville', options: VILLES, allowCustom: true },
       { type: 'select', key: 'statut', label: 'Statut',
         options: ['Locataire', 'Propriétaire', 'Résident', 'Hébergé'] },
@@ -1312,12 +1315,20 @@ const FORM_SCHEMA = {
       // --- Composition familiale ---
       { type: 'subhead', label: 'Composition familiale / entourage' },
       { type: 'select', key: 'enfants', label: 'Enfants',
-        options: ['Aucun', '1', '2', '3', '4+'] },
+        options: ['Aucun', '1', '2', '3', '+'] },
+      { type: 'text', key: 'enfantsNb', label: 'Nombre d\'enfants',
+        placeholder: 'Ex : 5',
+        showIf: (d) => d.enfants === '+' },
       { type: 'text', key: 'enfantsCom', label: 'Précisions sur les enfants',
         placeholder: 'Ex : vit à Lyon, en contact régulier' },
       { type: 'select', key: 'fratrie', label: 'Fratrie',
-        options: ['Aucune', '1', '2', '3+'] },
+        options: ['Aucune', '1', '2', '+'] },
+      { type: 'text', key: 'fratrieNb', label: 'Taille de la fratrie',
+        placeholder: 'Ex : quatre',
+        showIf: (d) => d.fratrie === '+' },
       { type: 'text', key: 'fratrieCom', label: 'Précisions sur la fratrie' },
+      { type: 'text', key: 'autreEntourage', label: 'Autre entourage familial/amical',
+        placeholder: 'Ex : neveu présent, voisine aidante, ami proche...' },
       { type: 'text', key: 'aidantPrincipal', label: 'Aidant principal',
         placeholder: 'Ex : fille aînée, conjoint, voisin...' },
       { type: 'select', key: 'isolement', label: 'Isolement social', options: ['Oui', 'Non'] },
@@ -1382,15 +1393,21 @@ const FORM_SCHEMA = {
         options: PRESTATIONS_OPTIONS },
       { type: 'text', key: 'prestationsOther', label: 'Autre prestation',
         placeholder: 'Hors liste' },
+      { type: 'text', key: 'prestationsPrecision', label: 'Précisions (entre parenthèses)',
+        placeholder: 'Ex : en cours de renouvellement',
+        showIf: (d) => (Array.isArray(d.prestations) && d.prestations.length > 0) || !!d.prestationsOther },
       { type: 'select', key: 'protection', label: 'Mesure de protection juridique',
         options: ['Aucune', 'Curatelle simple', 'Curatelle renforcée', 'Tutelle', 'Sauvegarde de justice', 'Autre'] },
       { type: 'text', key: 'protectionCom', label: 'Préciser (si autre)',
         showIf: (d) => d.protection === 'Autre' },
+      { type: 'text', key: 'protectionPrecision', label: 'Précisions (entre parenthèses)',
+        placeholder: 'Ex : exercée par l\'UDAF',
+        showIf: (d) => d.protection && d.protection !== 'Aucune' },
       { type: 'textarea', key: 'social', label: 'Accompagnement social',
         placeholder: 'Ex : suivi assistante sociale, dossier APA en cours...' },
 
       // --- Éléments de vie / personnalité ---
-      { type: 'subhead', label: 'Éléments de vie et prémorbide' },
+      { type: 'subhead', label: 'Éléments de vie et prémorbides' },
       { type: 'textarea', key: 'premorbide', label: 'Éléments prémorbides / personnalité' },
       { type: 'textarea', key: 'elementsVie', label: 'Éléments de vie marquants' }
     ]
@@ -2186,9 +2203,12 @@ const ObsEngine = (() => {
     const etage = d.etage;
     const structure = d.structure;
 
-    if (type === 'EHPAD' || type === 'Résidence autonomie') {
-      let phrase = 'Réside';
-      if (type) phrase += ` en ${type}`;
+    const INSTITUTIONS = ['EHPAD', 'Résidence autonomie', 'Foyer logement', 'USLD', 'MAS', 'FAM'];
+    if (INSTITUTIONS.includes(type)) {
+      // Établissement : « Réside en … » (pas de tournure « statut de son… »).
+      // Sigles (EHPAD/USLD/MAS/FAM) gardés en majuscules, le reste en minuscules.
+      const disp = (type === type.toUpperCase()) ? type : type.toLowerCase();
+      let phrase = `Réside en ${disp}`;
       if (ville) phrase += ` à ${ville}`;
       if (structure) phrase += ` (${structure})`;
       lieu.push(phrase);
@@ -2198,12 +2218,20 @@ const ObsEngine = (() => {
       else if (mode === 'En couple') phrase = 'Vit en couple';
       else if (mode === 'En colocation') phrase = 'Vit en colocation';
       else if (mode === 'Avec enfants') phrase = 'Vit avec ses enfants';
+      else if (mode === 'Chez un proche') phrase = 'Vit chez ' + (d.modeVieProche || 'un proche');
       else if (mode === 'Avec famille') phrase = 'Vit en famille';
       else phrase = 'Réside';
 
       if (ville) phrase += ` à ${ville}`;
+      // Statut accordé en genre (logement personnel : appartement / maison).
       if (statut && type) {
-        phrase += `, ${statut.toLowerCase()} de `;
+        const statutLabel = {
+          'Locataire': 'locataire',
+          'Propriétaire': 'propriétaire',
+          'Résident': accord(sexe, 'résident', 'résidente'),
+          'Hébergé': accord(sexe, 'hébergé', 'hébergée')
+        }[statut] || statut.toLowerCase();
+        phrase += `, ${statutLabel} de `;
         if (type === 'Appartement') phrase += 'son appartement';
         else if (type === 'Maison') phrase += 'sa maison';
         else phrase += `son ${type.toLowerCase()}`;
@@ -2232,12 +2260,21 @@ const ObsEngine = (() => {
     const fam = [];
     if (d.enfants) {
       if (d.enfants === 'Aucun') fam.push('Pas d\'enfant');
-      else fam.push(withCom(`${d.enfants} enfant${d.enfants === '1' ? '' : 's'}`, d.enfantsCom));
+      else {
+        const n = d.enfants === '+' ? (d.enfantsNb || 'plusieurs') : d.enfants;
+        fam.push(withCom(`${n} enfant${n === '1' ? '' : 's'}`, d.enfantsCom));
+      }
     }
     if (d.fratrie) {
       if (d.fratrie === 'Aucune') fam.push('pas de frère ni sœur');
-      else fam.push(withCom(`fratrie : ${d.fratrie}`, d.fratrieCom));
+      else {
+        const fratrieMots = { '1': 'un', '2': 'deux' };
+        const n = d.fratrie === '+' ? (d.fratrieNb || 'plusieurs') : (fratrieMots[d.fratrie] || d.fratrie);
+        const liaison = /^[aeiouy]/i.test(n) ? "d'" : 'de ';
+        fam.push(withCom(`fratrie ${liaison}${n}`, d.fratrieCom));
+      }
     }
+    if (d.autreEntourage) fam.push(`autre entourage familial/amical : ${d.autreEntourage}`);
     if (d.aidantPrincipal) fam.push(`aidant principal : ${d.aidantPrincipal}`);
     if (d.isolement === 'Oui') fam.push('isolement social');
     else if (d.isolement === 'Non') fam.push('entourage présent');
@@ -2273,18 +2310,19 @@ const ObsEngine = (() => {
     if (aides.length) autonomie.push(`Intervenants : ${joinList(aides)}`);
 
     const app = [];
-    const appDesc = (key, prefix) => {
+    const capApp = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+    const appItems = (key) => {
       const arr = Array.isArray(d[key]) ? d[key] : [];
-      if (!arr.length) return;
-      if (arr.length === 1 && arr[0] === 'aucun') return;
-      const labels = arr.filter(v => v !== 'aucun').map(v => APP_LABELS[key][v] || v);
-      if (labels.length) app.push(`${prefix} (${joinList(labels)})`);
+      return arr.filter(v => v !== 'aucun').map(v => APP_LABELS[key][v] || v);
     };
-    appDesc('appVisuel', 'visuel');
-    appDesc('appAuditif', 'auditif');
-    appDesc('appDentaire', 'dentaire');
-    appDesc('appMarche', 'aide à la marche');
-    if (app.length) autonomie.push(`Appareillages : ${joinList(app)}`);
+    // Visuel / auditif / dentaire : libellé seul (capitalisé). Marche : préfixe conservé.
+    ['appVisuel', 'appAuditif', 'appDentaire'].forEach(key => {
+      appItems(key).forEach(lbl => app.push(capApp(lbl)));
+    });
+    const marche = appItems('appMarche');
+    if (marche.length) app.push(`Aide à la marche (${joinList(marche)})`);
+    // Appareillages séparés par des virgules (et non « et »).
+    if (app.length) autonomie.push(app.join(', '));
 
     if (entretien) {
       autonomieScoreLines(entretien).forEach(l => autonomie.push(l));
@@ -2305,7 +2343,11 @@ const ObsEngine = (() => {
     const prestArr = Array.isArray(d.prestations) ? d.prestations : [];
     const prestList = prestArr.map(v => PRESTATIONS_LABELS[v] || v);
     if (d.prestationsOther) prestList.push(d.prestationsOther);
-    if (prestList.length) socio.push(`Prestations sociales : ${prestList.join(', ')}`);
+    if (prestList.length) {
+      let prest = prestList.join(', ');
+      if (d.prestationsPrecision) prest += ` (${d.prestationsPrecision})`;
+      socio.push(`Prestations sociales : ${prest}`);
+    }
 
     if (d.protection) {
       if (d.protection === 'Aucune') {
@@ -2313,6 +2355,9 @@ const ObsEngine = (() => {
       } else {
         let prot = d.protection;
         if (d.protection === 'Autre' && d.protectionCom) prot = d.protectionCom;
+        // Pas de majuscule après les « : »
+        prot = prot.charAt(0).toLowerCase() + prot.slice(1);
+        if (d.protectionPrecision) prot += ` (${d.protectionPrecision})`;
         socio.push(`Mesure de protection : ${prot}`);
       }
     }
@@ -2326,7 +2371,7 @@ const ObsEngine = (() => {
     const premo = [];
     if (d.premorbide) premo.push(`Éléments prémorbides : ${d.premorbide}`);
     if (d.elementsVie) premo.push(`Éléments de vie marquants : ${d.elementsVie}`);
-    if (premo.length) lines.push('**Parcours de vie**\n' + premo.join('\n'));
+    if (premo.length) lines.push('**Éléments de vie et prémorbides**\n' + premo.join('\n'));
 
     return lines.join('\n\n');
   }
