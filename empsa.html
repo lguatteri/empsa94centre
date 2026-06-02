@@ -305,27 +305,27 @@ section.block > header h3 {
 }
 section.block .body { padding: 18px 22px 22px; }
 
-/* Champs */
-.field { margin-bottom: 18px; }
+/* Champs (densité compacte) */
+.field { margin-bottom: 11px; }
 .field:last-child { margin-bottom: 0; }
 .field label.lbl {
   display: block; font-family: var(--font-sans);
-  font-size: 12px; font-weight: 600;
+  font-size: 11px; font-weight: 600;
   color: var(--ink-soft); text-transform: uppercase;
-  letter-spacing: 0.08em; margin-bottom: 6px;
+  letter-spacing: 0.06em; margin-bottom: 3px;
 }
 .field input[type="text"],
 .field input[type="number"],
 .field input[type="date"],
 .field textarea,
 .field select {
-  width: 100%; padding: 10px 12px;
+  width: 100%; padding: 6px 9px;
   border: 1px solid var(--rule); border-radius: 6px;
-  font-family: inherit; font-size: 15px;
+  font-family: inherit; font-size: 13px;
   background: var(--paper-card); color: var(--ink);
   -webkit-appearance: none;
 }
-.field textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
+.field textarea { resize: vertical; min-height: 54px; line-height: 1.45; }
 .field input:focus, .field textarea:focus, .field select:focus {
   outline: none; border-color: var(--ink);
   box-shadow: 0 0 0 3px rgba(26, 41, 66, 0.1);
@@ -340,10 +340,26 @@ section.block .body { padding: 18px 22px 22px; }
   .field-row, .field-row-3 { grid-template-columns: 1fr; }
 }
 
+/* Sections en colonnes (opt-in via schema.cols = 2 ou 3) */
+.body.cols-2, .body.cols-3 {
+  display: grid; align-items: start; column-gap: 18px;
+}
+.body.cols-2 { grid-template-columns: 1fr 1fr; }
+.body.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.body.cols-2 > .sub-head, .body.cols-2 > .field.full,
+.body.cols-3 > .sub-head, .body.cols-3 > .field.full { grid-column: 1 / -1; }
+.body.cols-2 .chip, .body.cols-3 .chip { font-size: 12px; padding: 5px 9px; }
+.body.cols-2 .choices, .body.cols-3 .choices { gap: 5px; }
+
+@media (max-width: 760px) { .body.cols-3 { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) {
+  .body.cols-2, .body.cols-3 { grid-template-columns: 1fr; column-gap: 0; }
+}
+
 .sub-head {
   font-family: var(--font-sans);
   font-size: 13px; font-weight: 700; color: var(--ink);
-  margin: 20px 0 12px; padding-bottom: 6px;
+  margin: 12px 0 8px; padding-bottom: 6px;
   border-bottom: 1px dashed var(--rule); letter-spacing: 0.02em;
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
 }
@@ -396,8 +412,10 @@ section.block .body { padding: 18px 22px 22px; }
 
 /* Liste d'antécédents avec cases à cocher */
 .atcd-list {
-  display: flex; flex-direction: column; gap: 8px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; align-items: start;
 }
+@media (max-width: 640px) { .atcd-list { grid-template-columns: 1fr; } }
 .atcd-row {
   display: grid; grid-template-columns: auto 1fr; gap: 10px;
   align-items: start; padding: 8px 10px;
@@ -500,6 +518,35 @@ section.block .body { padding: 18px 22px 22px; }
   font-family: var(--font-serif);
   font-size: 22px; font-weight: 600;
 }
+
+/* ADL / IADL sur deux colonnes (lecture plus rapide) */
+.score-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  column-gap: 28px;
+}
+.score-grid .score-item { padding: 12px 0; }
+@media (max-width: 640px) {
+  .score-grid { grid-template-columns: 1fr; column-gap: 0; }
+}
+
+/* Sous-onglets ADL / IADL en haut de la biographie */
+.bio-subnav { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+.bio-subnav-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--paper-card); border: 1px solid var(--rule);
+  color: var(--ink); padding: 9px 16px; border-radius: 999px;
+  font-size: 13px; font-weight: 600; font-family: var(--font-sans);
+  cursor: pointer; transition: all 0.15s;
+}
+.bio-subnav-btn:hover { background: var(--paper-warm); }
+.bio-subnav-btn.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+.bio-subnav-caret { font-size: 11px; opacity: 0.7; }
+.bio-subnav-badge {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  background: var(--accent-soft); color: var(--ink-soft);
+  padding: 2px 7px; border-radius: 999px;
+}
+.bio-subnav-btn.active .bio-subnav-badge { background: rgba(255,255,255,0.22); color: #fff; }
 
 /* Cartes d'échelles cliniques */
 .scale-card .scale-header {
@@ -1212,6 +1259,7 @@ const FORM_SCHEMA = {
   biographie: {
     roman: '',
     title: 'Éléments de biographie',
+    cols: 3,
     fields: [
       // --- Lieu de vie ---
       { type: 'subhead', label: 'Lieu de vie' },
@@ -1347,6 +1395,7 @@ const FORM_SCHEMA = {
   atcdPsy: {
     roman: '',
     title: 'Antécédents psychiatriques',
+    cols: 2,
     fields: [
       { type: 'select', key: 'diag', label: 'Diagnostic principal',
         options: [
@@ -2962,7 +3011,8 @@ const State = {
   currentEntretienId: null,
   currentSection: 'meta',
   openScales: {},
-  evalPsyNotesOpen: {}
+  evalPsyNotesOpen: {},
+  bioPanel: { adl: false, iadl: false }
 };
 
 // ===== Écran de verrouillage =====
@@ -3539,11 +3589,13 @@ function renderForm() {
   else if (State.currentSection === 'synthese') scr.appendChild(renderSynthese(e));
   else if (State.currentSection === 'scales') scr.appendChild(renderScales(e));
   else if (FORM_SCHEMA[State.currentSection]) {
-    scr.appendChild(renderSchemaSection(e, State.currentSection));
     if (State.currentSection === 'biographie') {
-      scr.appendChild(renderADL(e));
-      scr.appendChild(renderIADL(e));
+      // Sous-onglets ADL / IADL en haut, puis les éléments de biographie.
+      scr.appendChild(renderBioSubnav(e));
+      if (State.bioPanel.adl) scr.appendChild(renderADL(e));
+      if (State.bioPanel.iadl) scr.appendChild(renderIADL(e));
     }
+    scr.appendChild(renderSchemaSection(e, State.currentSection));
   }
 }
 
@@ -3696,7 +3748,8 @@ function renderSchemaSection(e, sectionKey) {
       h('h3', {}, schema.title)
     )
   );
-  const body = h('div', { class: 'body' });
+  // cols: 2 ou 3 → champs disposés en colonnes (moins de défilement).
+  const body = h('div', { class: 'body' + ((schema.cols === 2 || schema.cols === 3) ? ' cols-' + schema.cols : '') });
   block.appendChild(body);
 
   // Conteneur de l'aperçu
@@ -3766,6 +3819,8 @@ function renderSchemaSection(e, sectionKey) {
     }
 
     const field = h('div', { class: 'field' });
+    // En mode 2 colonnes, les champs longs s'étalent sur toute la largeur.
+    if (f.type === 'textarea' || f.type === 'atcdList') field.classList.add('full');
     if (f.label) field.appendChild(h('label', { class: 'lbl' }, f.label));
 
     if (f.type === 'text') {
@@ -3973,6 +4028,30 @@ function renderSchemaSection(e, sectionKey) {
 }
 
 /* ===== Rendu ADL ===== */
+// Barre de sous-onglets ADL / IADL (en haut de la biographie). Chaque bouton
+// déplie/replie son questionnaire et affiche le score quand des items sont remplis.
+function renderBioSubnav(e) {
+  e.data = e.data || {};
+  const bar = h('div', { class: 'bio-subnav' });
+  const defs = [
+    { key: 'adl', label: 'ADL', score: ObsEngine.computeADL(e.data.adl || {}) },
+    { key: 'iadl', label: 'IADL', score: ObsEngine.computeIADL(e.data.iadl || {}) }
+  ];
+  defs.forEach(d => {
+    const active = !!State.bioPanel[d.key];
+    const badge = d.score.filled
+      ? h('span', { class: 'bio-subnav-badge' }, `${ObsEngine.fmtScore(d.score.total)}/${d.score.max}`)
+      : null;
+    bar.appendChild(h('button', {
+      type: 'button',
+      class: 'bio-subnav-btn' + (active ? ' active' : ''),
+      'aria-expanded': active ? 'true' : 'false',
+      onclick: () => { State.bioPanel[d.key] = !State.bioPanel[d.key]; renderForm(); }
+    }, d.label, badge, h('span', { class: 'bio-subnav-caret' }, active ? '▾' : '▸')));
+  });
+  return bar;
+}
+
 function renderADL(e) {
   e.data = e.data || {};
   e.data.adl = e.data.adl || {};
@@ -3986,7 +4065,7 @@ function renderADL(e) {
   const body = h('div', { class: 'body' });
   block.appendChild(body);
 
-  const list = h('div', { class: 'score-list' });
+  const list = h('div', { class: 'score-list score-grid' });
   ADL_ITEMS.forEach((it, idx) => {
     const cur = data[it.key];
     const row = h('div', { class: 'score-item' },
@@ -4037,7 +4116,7 @@ function renderIADL(e) {
   const body = h('div', { class: 'body' });
   block.appendChild(body);
 
-  const list = h('div', { class: 'score-list' });
+  const list = h('div', { class: 'score-list score-grid' });
   IADL_ITEMS.forEach((it, idx) => {
     const curIdx = data[`${it.key}__idx`];
     const row = h('div', { class: 'score-item' },
