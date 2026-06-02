@@ -576,6 +576,34 @@ section.block .body { padding: 18px 22px 22px; }
 .scale-meta .scale-chev {
   font-size: 14px; color: var(--ink-faint); width: 14px; text-align: center;
 }
+/* Échelles : version la plus compacte possible (déplié) */
+.scale-card .scale-header { padding: 9px 16px; }
+.scale-card .scale-header h3 { font-size: 14px; }
+.scale-card .scale-desc { margin-top: 1px; }
+.scale-card .scale-meta .scale-score { font-size: 16px; }
+.scale-card .body { padding: 8px 16px 14px; }
+.scale-card .body .sub-head { margin: 8px 0 5px; padding-bottom: 4px; font-size: 12px; }
+.scale-card .score-grid { column-gap: 18px; }
+.scale-card .score-item { padding: 5px 0; }
+.scale-card .score-item .s-title { font-size: 12.5px; margin-bottom: 3px; }
+.scale-card .score-options { gap: 4px; margin-top: 2px; }
+.scale-card .score-option { padding: 4px 8px; font-size: 12px; gap: 6px; }
+/* Items binaires : titre + 2 boutons sur une seule ligne */
+.scale-card .score-item.inline-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.scale-card .score-item.inline-item .s-title { margin-bottom: 0; flex: 1 1 auto; min-width: 0; }
+.scale-card .score-item.inline-item .score-options.inline {
+  flex: 0 0 auto; width: 148px; margin-top: 0;
+}
+/* Marqueurs binaires : ✓ vert gras, ✗ rouge gras (caractère seul) */
+.scale-card .score-option .mark-yes { color: #167a3c; font-weight: 800; }
+.scale-card .score-option .mark-no { color: #c62828; font-weight: 800; }
+.scale-card .score-option.selected .mark-yes { color: #46d07a; }
+.scale-card .score-option.selected .mark-no { color: #ff8a8a; }
+.scale-card .score-total { padding: 9px 14px; margin-top: 12px; }
+.scale-card .score-total .val { font-size: 18px; }
+@media (max-width: 600px) { .scale-card .score-grid { grid-template-columns: 1fr; } }
 
 /* Modales */
 .modal-backdrop {
@@ -4191,15 +4219,22 @@ function renderScales(e) {
       const body = h('div', { class: 'body' });
       (scale.sections || []).forEach(section => {
         if (section.label) body.appendChild(h('div', { class: 'sub-head' }, section.label));
-        const list = h('div', { class: 'score-list' });
+        const list = h('div', { class: 'score-list score-grid' });
         (section.items || []).forEach(item => {
           const options = item.options || DEFAULT_BINARY;
-          const row = h('div', { class: 'score-item' },
+          const isBinary = options.length === 2;
+          const row = h('div', { class: 'score-item' + (isBinary ? ' inline-item' : '') },
             h('div', { class: 's-title' }, h('span', {}, item.label))
           );
-          const opts = h('div', { class: `score-options ${options.length === 2 ? 'inline' : ''}` });
+          const opts = h('div', { class: `score-options ${isBinary ? 'inline' : ''}` });
           options.forEach(o => {
             const sel = sd[item.key] === o.v;
+            // Items binaires : ✓ en vert gras, ✗ en rouge gras (le caractère seulement).
+            let markClass = null;
+            if (isBinary) {
+              if (String(o.t).indexOf('✓') !== -1) markClass = 'mark-yes';
+              else if (String(o.t).indexOf('✗') !== -1) markClass = 'mark-no';
+            }
             opts.appendChild(h('div', {
               class: `score-option ${sel ? 'selected' : ''}`,
               onclick: () => {
@@ -4207,7 +4242,7 @@ function renderScales(e) {
                 saveCurrentEntretien();
                 renderForm();
               }
-            }, h('span', {}, o.t), h('span', { class: 'pt' }, o.v)));
+            }, h('span', markClass ? { class: markClass } : {}, o.t), h('span', { class: 'pt' }, o.v)));
           });
           row.appendChild(opts);
           list.appendChild(row);
