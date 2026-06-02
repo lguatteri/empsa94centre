@@ -345,8 +345,19 @@ section.block .body { padding: 18px 22px 22px; }
   font-size: 13px; font-weight: 700; color: var(--ink);
   margin: 20px 0 12px; padding-bottom: 6px;
   border-bottom: 1px dashed var(--rule); letter-spacing: 0.02em;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
 }
 .sub-head:first-child { margin-top: 0; }
+
+/* Bouton (+) de note libre par rubrique (éval psy) */
+.subnote-toggle {
+  flex: 0 0 auto; width: 22px; height: 22px; padding: 0; line-height: 1;
+  border: 1px solid var(--rule); background: var(--paper-card);
+  border-radius: 999px; cursor: pointer; font-size: 15px; color: var(--ink-soft);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.subnote-toggle:hover { background: var(--paper-warm); }
+.subnote-toggle.open { background: var(--ink); color: #fff; border-color: var(--ink); }
 
 /* Cases à cocher et radio (chips) */
 .choices {
@@ -368,6 +379,12 @@ section.block .body { padding: 18px 22px 22px; }
 .chip.checked.warn {
   background: var(--danger); border-color: var(--danger); color: #fff;
 }
+
+/* Paramètres : chips de gestion des termes */
+.settings-chip .chip-x { margin-left: 6px; font-weight: 700; opacity: 0.7; }
+.settings-chip.is-hidden { opacity: 0.45; text-decoration: line-through; }
+.chip.custom { border-style: dashed; }
+.btn.add-term-btn { padding: 6px 12px; font-size: 13px; }
 
 .toggle-row {
   display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
@@ -726,6 +743,7 @@ button.btn.danger:hover {
       <svg class="brand-mark" viewBox="0 8 320 100" role="img" aria-label="EMPSA 94 centre"><use href="#logoEmpsa"/></svg>
     </div>
     <div class="actions">
+      <button id="settingsBtn" title="Personnaliser les termes de l'évaluation psychiatrique">Paramètres</button>
       <button id="exportAllBtn" title="Exporter toutes les données chiffrées">Sauvegarder</button>
       <button id="changePinBtn" title="Changer le code PIN">Code</button>
       <button id="lockNowBtn" title="Verrouiller l'application">Verrouiller</button>
@@ -744,6 +762,9 @@ button.btn.danger:hover {
 
     <!-- Écran formulaire -->
     <div id="formScreen" class="screen" style="display:none;"></div>
+
+    <!-- Écran paramètres -->
+    <div id="settingsScreen" class="screen" style="display:none;"></div>
   </div>
 
   <button id="newPatientFab" class="fab">
@@ -1038,6 +1059,64 @@ function joinList(arr) {
   if (arr.length === 1) return arr[0];
   return arr.slice(0, -1).join(', ') + ' et ' + arr[arr.length - 1];
 }
+
+// ===========================================================
+// Personnalisation des termes de l'évaluation psychiatrique
+// Données de gabarit (non patient, non sensibles) → localStorage, accès synchrone.
+// Forme : { hidden: { [fieldKey]: [v,...] }, added: { [fieldKey]: [{ v, t, phrase, warn? }] } }
+// Ne mute jamais FORM_SCHEMA : la fusion se fait au rendu (effectiveOptions).
+// ===========================================================
+const EvalPsyCustom = (() => {
+  const KEY = 'empsa.evalPsyCustom';
+  let cache = null;
+  function load() {
+    if (cache) return cache;
+    try { cache = JSON.parse(localStorage.getItem(KEY)) || {}; }
+    catch (e) { cache = {}; }
+    cache.hidden = cache.hidden || {};
+    cache.added = cache.added || {};
+    return cache;
+  }
+  function save() { localStorage.setItem(KEY, JSON.stringify(load())); }
+  function isHidden(fieldKey, v) {
+    return (load().hidden[fieldKey] || []).includes(v);
+  }
+  function hide(fieldKey, v) {
+    const c = load();
+    c.hidden[fieldKey] = c.hidden[fieldKey] || [];
+    if (!c.hidden[fieldKey].includes(v)) c.hidden[fieldKey].push(v);
+    save();
+  }
+  function unhide(fieldKey, v) {
+    const c = load();
+    c.hidden[fieldKey] = (c.hidden[fieldKey] || []).filter(x => x !== v);
+    save();
+  }
+  function added(fieldKey) { return load().added[fieldKey] || []; }
+  function addTerm(fieldKey, term) {
+    const c = load();
+    c.added[fieldKey] = c.added[fieldKey] || [];
+    const v = 'cust_' + uid(); // préfixe garantissant l'unicité vs valeurs natives
+    c.added[fieldKey].push({
+      v,
+      t: (term.t || '').trim(),
+      phrase: (term.phrase || '').trim(),
+      warn: !!term.warn
+    });
+    save();
+    return v;
+  }
+  function removeTerm(fieldKey, v) {
+    const c = load();
+    c.added[fieldKey] = (c.added[fieldKey] || []).filter(o => o.v !== v);
+    save();
+  }
+  function phraseFor(fieldKey, v) {
+    const o = (load().added[fieldKey] || []).find(x => x.v === v);
+    return o ? o.phrase : null;
+  }
+  return { load, save, isHidden, hide, unhide, added, addTerm, removeTerm, phraseFor };
+})();
 
 // Redimensionne une image (File) en data URL JPEG
 function resizeImageToDataUrl(file, maxDim = 1600, quality = 0.75) {
@@ -1369,7 +1448,7 @@ const FORM_SCHEMA = {
     roman: '',
     title: 'Évaluation psychiatrique',
     fields: [
-      { type: 'subhead', label: 'Présentation & description générale' },
+      { type: 'subhead', key: 'presentation', label: 'Présentation & description générale' },
 
       { type: 'choice', key: 'tenue', label: 'Tenue vestimentaire',
         options: [
@@ -1410,7 +1489,7 @@ const FORM_SCHEMA = {
           { v: 'stereotypies', t: 'Stéréotypies', warn: true }
         ]},
 
-      { type: 'subhead', label: 'Langage et pensée' },
+      { type: 'subhead', key: 'langage', label: 'Langage et pensée' },
       { type: 'multi', key: 'discours', label: 'Discours',
         options: [
           { v: 'fluide', t: 'Fluide' },
@@ -1450,7 +1529,7 @@ const FORM_SCHEMA = {
           { v: 'coq_ane', t: 'Coq à l\'âne', warn: true },
           { v: 'rep_cote', t: 'Réponses à côté', warn: true }
         ]},
-      { type: 'subhead', label: 'Humeur et émotions' },
+      { type: 'subhead', key: 'humeur', label: 'Humeur et émotions' },
       { type: 'multi', key: 'humeur', label: 'Humeur',
         options: [
           { v: 'euthymie', t: 'Euthymie', exclusive: true },
@@ -1475,7 +1554,7 @@ const FORM_SCHEMA = {
           { v: 'aboulie', t: 'Aboulie', warn: true }
         ]},
 
-      { type: 'subhead', label: 'Anxiété' },
+      { type: 'subhead', key: 'anxiete', label: 'Anxiété' },
       { type: 'multi', key: 'anxiete', label: 'Anxiété',
         options: [
           { v: 'diffuse', t: 'Anxiété diffuse', warn: true },
@@ -1486,13 +1565,13 @@ const FORM_SCHEMA = {
         placeholder: 'Ex : plusieurs fois par semaine...',
         showIf: (d) => Array.isArray(d.anxiete) && d.anxiete.includes('panique') },
 
-      { type: 'subhead', label: 'Auto-agressivité' },
+      { type: 'subhead', key: 'autoagressivite', label: 'Auto-agressivité' },
       { type: 'bool', key: 'ideesNoires', label: 'Idées noires', warn: true },
       { type: 'bool', key: 'ideesSuicidaires', label: 'Idées suicidaires présentes', warn: true },
       { type: 'textarea', key: 'auto_details', label: 'Précisions (scénario, moyen, date, facteurs de protection)',
         showIf: (d) => d.ideesNoires || d.ideesSuicidaires },
 
-      { type: 'subhead', label: 'Contenu de la pensée' },
+      { type: 'subhead', key: 'contenu', label: 'Contenu de la pensée' },
       { type: 'multi', key: 'contenuPensee', label: 'Contenu de la pensée',
         options: [
           { v: 'obsess', t: 'Idées obsessionnelles', warn: true },
@@ -1510,7 +1589,7 @@ const FORM_SCHEMA = {
         ]},
       { type: 'textarea', key: 'contenuPenseeDetails', label: 'Précisions' },
 
-      { type: 'subhead', label: 'Symptômes psychotiques' },
+      { type: 'subhead', key: 'psychotiques', label: 'Symptômes psychotiques' },
       { type: 'bool', key: 'idDelirantes', label: 'Idées délirantes', warn: true },
       { type: 'textarea', key: 'idDelirantesDetails', label: 'Précisions sur les idées délirantes',
         placeholder: 'Thématique, mécanisme, adhésion...',
@@ -1529,7 +1608,7 @@ const FORM_SCHEMA = {
         placeholder: 'Thématique, critique, retentissement...',
         showIf: (d) => d.hallucinations === true },
 
-      { type: 'subhead', label: 'Cognitions' },
+      { type: 'subhead', key: 'cognitions', label: 'Cognitions' },
       { type: 'choice', key: 'ots', label: 'Orientation temporo-spatiale',
         options: [
           { v: 'normale', t: 'Normale' },
@@ -1552,7 +1631,7 @@ const FORM_SCHEMA = {
           { v: 'troubles', t: 'Troubles mnésiques', warn: true }
         ]},
 
-      { type: 'subhead', label: 'Fonctions physiologiques' },
+      { type: 'subhead', key: 'physiologiques', label: 'Fonctions physiologiques' },
       { type: 'choice', key: 'alimentation', label: 'Alimentation',
         options: [
           { v: 'normale', t: 'Normale' },
@@ -1584,7 +1663,7 @@ const FORM_SCHEMA = {
           { v: 'augmentation', t: 'Augmentation du désir / de l\'excitation', warn: true }
         ]},
 
-      { type: 'subhead', label: 'Évaluation du jugement' },
+      { type: 'subhead', key: 'jugement', label: 'Évaluation du jugement' },
       { type: 'choice', key: 'conscienceTrouble', label: 'Conscience du trouble',
         options: [
           { v: 'totale', t: 'Totale' },
@@ -1594,6 +1673,28 @@ const FORM_SCHEMA = {
     ]
   }
 };
+
+// Map champ → sous-section (subId) de l'éval psy, dérivée du schéma (dernier subhead rencontré).
+const EVALPSY_SUBID = (() => {
+  const map = {};
+  let cur = null;
+  FORM_SCHEMA.evalPsy.fields.forEach(f => {
+    if (f.type === 'subhead') cur = f.key || null;
+    else if (f.key) map[f.key] = cur;
+  });
+  return map;
+})();
+
+// Options effectives d'un champ au rendu : natives (moins masquées) + custom,
+// en gardant toujours une native masquée si elle est déjà sélectionnée (anciennes obs).
+function effectiveOptions(sectionKey, f, data) {
+  if (sectionKey !== 'evalPsy' || !Array.isArray(f.options)) return f.options;
+  const sel = data ? data[f.key] : null;
+  const isSel = v => Array.isArray(sel) ? sel.includes(v) : sel === v;
+  const builtIn = f.options.filter(o => !EvalPsyCustom.isHidden(f.key, o.v) || isSel(o.v));
+  const extra = EvalPsyCustom.added(f.key).map(o => ({ v: o.v, t: o.t, warn: o.warn }));
+  return builtIn.concat(extra);
+}
 
 // Items ADL (Katz)
 const ADL_ITEMS = [
@@ -2389,6 +2490,30 @@ const ObsEngine = (() => {
     const sujet = sujetPatient(sexe);
     const blocks = [];
 
+    // Ajouts par rubrique : termes personnalisés sélectionnés (Paramètres)
+    // + note libre saisie via le bouton (+). Insérés à la fin de chaque sous-section.
+    const notes = (d._notes && typeof d._notes === 'object') ? d._notes : {};
+    function customPhrasesFor(subId) {
+      const out = [];
+      for (const fieldKey in EVALPSY_SUBID) {
+        if (EVALPSY_SUBID[fieldKey] !== subId) continue;
+        const v = d[fieldKey];
+        const selected = Array.isArray(v) ? v : (v != null ? [v] : []);
+        selected.forEach(val => {
+          if (typeof val === 'string' && val.indexOf('cust_') === 0) {
+            const ph = EvalPsyCustom.phraseFor(fieldKey, val);
+            if (ph) out.push(ph);
+          }
+        });
+      }
+      return out;
+    }
+    function flushExtras(subId) {
+      customPhrasesFor(subId).forEach(p => blocks.push(p));
+      const note = (notes[subId] || '').trim();
+      if (note) blocks.push(note);
+    }
+
     // --- Contact ---
     if (d.contact && d.contact.length) {
       const positives = d.contact.filter(v => v !== 'spl');
@@ -2451,6 +2576,8 @@ const ObsEngine = (() => {
     if (psychomotPos.length) motorParts.push(cap(joinList(psychomotPos)));
     if (motorParts.length) blocks.push(motorParts.join('\n'));
 
+    flushExtras('presentation');
+
     // --- Langage et pensée ---
     const langpens = [];
     const capFirst = (s) => s.charAt(0).toUpperCase() + s.slice(1);
@@ -2495,6 +2622,8 @@ const ObsEngine = (() => {
 
     if (langpens.length) blocks.push(langpens.join('\n'));
 
+    flushExtras('langage');
+
     // --- Humeur, émotions, motivation, anxiété ---
     const affect = [];
 
@@ -2532,6 +2661,8 @@ const ObsEngine = (() => {
 
     if (affect.length) blocks.push(affect.join('\n'));
 
+    flushExtras('humeur');
+
     // --- Anxiété (bloc séparé) ---
     if (Array.isArray(d.anxiete) && d.anxiete.length) {
       const anxMap = {
@@ -2548,6 +2679,8 @@ const ObsEngine = (() => {
       if (items.length) blocks.push(capFirst(joinList(items)));
     }
 
+    flushExtras('anxiete');
+
     // --- Auto-agressivité (idées noires et suicidaires sur deux lignes) ---
     if (d.ideesNoires === true) blocks.push('Présence d\'idées noires');
     else if (d.ideesNoires === false) blocks.push('Pas d\'idées noires');
@@ -2560,6 +2693,8 @@ const ObsEngine = (() => {
       if (d.auto_details) s += '\n' + d.auto_details;
       blocks.push(s);
     }
+
+    flushExtras('autoagressivite');
 
     // --- Contenu de la pensée ---
     if (d.contenuPensee && d.contenuPensee.length) {
@@ -2593,6 +2728,8 @@ const ObsEngine = (() => {
       blocks.push(d.contenuPenseeDetails);
     }
 
+    flushExtras('contenu');
+
     // --- Symptômes psychotiques (idées délirantes + hallucinations) ---
     const idDel = d.idDelirantes;
     const hallu = d.hallucinations;
@@ -2615,6 +2752,8 @@ const ObsEngine = (() => {
       if (psy.length) blocks.push(psy.join('\n'));
     }
 
+    flushExtras('psychotiques');
+
     // --- Cognitions (anormales uniquement, si pas déjà traité par "Orienté·e...") ---
     if (!allCogNormal) {
       const cog = [];
@@ -2628,6 +2767,8 @@ const ObsEngine = (() => {
       if (d.memoire === 'troubles') cog.push('troubles mnésiques rapportés');
       if (cog.length) blocks.push(`Sur le plan des cognitions : ${joinList(cog)}`);
     }
+
+    flushExtras('cognitions');
 
     // --- Fonctions physiologiques ---
     const phys = [];
@@ -2675,6 +2816,8 @@ const ObsEngine = (() => {
 
     if (phys.length) blocks.push(phys.join('\n'));
 
+    flushExtras('physiologiques');
+
     // --- Jugement ---
     if (d.conscienceTrouble) {
       const consMap = {
@@ -2684,6 +2827,8 @@ const ObsEngine = (() => {
       };
       if (consMap[d.conscienceTrouble]) blocks.push(consMap[d.conscienceTrouble]);
     }
+
+    flushExtras('jugement');
 
     // --- Échelles (en fin d'éval psy, après ligne vide) ---
     if (entretien && entretien.data && entretien.data.scales) {
@@ -2816,7 +2961,8 @@ const State = {
   entretiens: [],
   currentEntretienId: null,
   currentSection: 'meta',
-  openScales: {}
+  openScales: {},
+  evalPsyNotesOpen: {}
 };
 
 // ===== Écran de verrouillage =====
@@ -3222,6 +3368,103 @@ function closeEntretien() {
   refreshPatientList();
 }
 
+// ===== Écran Paramètres : personnalisation des termes de l'éval psy =====
+function openSettings() {
+  document.getElementById('listScreen').style.display = 'none';
+  document.getElementById('newPatientFab').style.display = 'none';
+  document.getElementById('formScreen').style.display = 'none';
+  const scr = document.getElementById('settingsScreen');
+  scr.style.display = '';
+  renderSettings();
+}
+
+function closeSettings() {
+  document.getElementById('settingsScreen').style.display = 'none';
+  document.getElementById('settingsScreen').innerHTML = '';
+  document.getElementById('listScreen').style.display = '';
+  document.getElementById('newPatientFab').style.display = '';
+}
+
+function renderSettings() {
+  const scr = document.getElementById('settingsScreen');
+  scr.innerHTML = '';
+  scr.appendChild(h('button', { class: 'btn', style: 'margin-bottom:14px;', onclick: closeSettings }, '‹ Retour'));
+  scr.appendChild(h('h2', {}, 'Paramètres — termes de l\'évaluation psychiatrique'));
+  scr.appendChild(h('p', { style: 'font-family:var(--font-sans);font-size:13px;color:var(--ink-soft);margin:0 0 8px;' },
+    'Masquez les termes que vous n\'utilisez pas (×) ou ajoutez vos propres termes. Ces réglages s\'appliquent à toutes les observations.'));
+  scr.appendChild(h('p', { style: 'font-family:var(--font-sans);font-size:12px;color:var(--ink-faint);margin:0 0 16px;' },
+    'Masquer un terme « Normale / Sans particularité » retire la possibilité de cocher ce normal à l\'avenir.'));
+
+  const block = h('section', { class: 'block' });
+  const body = h('div', { class: 'body' });
+  block.appendChild(body);
+  scr.appendChild(block);
+
+  FORM_SCHEMA.evalPsy.fields.forEach(f => {
+    if (f.type === 'subhead') { body.appendChild(h('div', { class: 'sub-head' }, f.label)); return; }
+    if ((f.type !== 'choice' && f.type !== 'multi') || !Array.isArray(f.options)) return;
+
+    const fieldEl = h('div', { class: 'field' });
+    fieldEl.appendChild(h('label', { class: 'lbl' }, f.label));
+    const row = h('div', { class: 'choices' });
+
+    // Termes natifs : × pour masquer, ↺ pour réafficher.
+    f.options.forEach(o => {
+      const hidden = EvalPsyCustom.isHidden(f.key, o.v);
+      row.appendChild(h('span', {
+        class: 'chip settings-chip' + (hidden ? ' is-hidden' : ''),
+        title: hidden ? 'Réafficher ce terme' : 'Masquer ce terme',
+        onclick: () => { hidden ? EvalPsyCustom.unhide(f.key, o.v) : EvalPsyCustom.hide(f.key, o.v); renderSettings(); }
+      }, o.t, h('span', { class: 'chip-x' }, hidden ? '↺' : '×')));
+    });
+
+    // Termes personnalisés : 🗑 pour supprimer (la phrase générée est en infobulle).
+    EvalPsyCustom.added(f.key).forEach(o => {
+      row.appendChild(h('span', { class: 'chip settings-chip custom', title: o.phrase || '' },
+        o.t,
+        h('span', {
+          class: 'chip-x',
+          title: 'Supprimer ce terme',
+          onclick: (ev) => { ev.stopPropagation(); EvalPsyCustom.removeTerm(f.key, o.v); renderSettings(); }
+        }, '🗑')
+      ));
+    });
+
+    row.appendChild(h('button', {
+      type: 'button', class: 'btn add-term-btn',
+      onclick: () => openAddTermModal(f.key, f.label)
+    }, '+ Ajouter un terme'));
+
+    fieldEl.appendChild(row);
+    body.appendChild(fieldEl);
+  });
+}
+
+function openAddTermModal(fieldKey, fieldLabel) {
+  openModal('Nouveau terme — ' + fieldLabel, (body, close) => {
+    const tIn = h('input', { type: 'text', placeholder: 'Ex : Clinophilie' });
+    const pIn = h('textarea', { rows: 2, placeholder: 'Phrase écrite dans l\'observation quand ce terme est coché' });
+    let warn = false;
+    const warnChip = h('label', { class: 'chip', onclick: () => { warn = !warn; warnChip.className = 'chip' + (warn ? ' checked warn' : ''); } }, 'Marquer comme signe d\'alerte');
+
+    body.appendChild(h('div', { class: 'field' }, h('label', { class: 'lbl' }, 'Libellé du bouton (court)'), tIn));
+    body.appendChild(h('div', { class: 'field' }, h('label', { class: 'lbl' }, 'Phrase générée'), pIn));
+    body.appendChild(h('div', { class: 'field' }, h('div', { class: 'choices' }, warnChip)));
+
+    return [
+      h('button', { class: 'btn', onclick: close }, 'Annuler'),
+      h('button', { class: 'btn primary', onclick: () => {
+        if (!tIn.value.trim()) { tIn.focus(); return; }
+        EvalPsyCustom.addTerm(fieldKey, { t: tIn.value, phrase: pIn.value || tIn.value, warn });
+        close();
+        renderSettings();
+      } }, 'Ajouter')
+    ];
+  });
+}
+
+document.getElementById('settingsBtn').onclick = openSettings;
+
 async function saveCurrentEntretien(updates = {}) {
   if (!State.currentEntretienId) return;
   const e = State.entretiens.find(x => x.id === State.currentEntretienId);
@@ -3484,6 +3727,40 @@ function renderSchemaSection(e, sectionKey) {
     if (!isVisible(f)) return;
 
     if (f.type === 'subhead') {
+      const subId = f.key;
+      // Éval psy : chaque rubrique reçoit un (+) qui déplie un champ note libre.
+      if (sectionKey === 'evalPsy' && subId) {
+        const head = h('div', { class: 'sub-head' }, f.label);
+        const noteVal = (data._notes && data._notes[subId]) || '';
+        const open = !!(State.evalPsyNotesOpen && State.evalPsyNotesOpen[subId]) || !!noteVal.trim();
+        head.appendChild(h('button', {
+          type: 'button',
+          class: 'subnote-toggle' + (open ? ' open' : ''),
+          title: 'Ajouter une note libre à cette rubrique',
+          onclick: () => {
+            State.evalPsyNotesOpen = State.evalPsyNotesOpen || {};
+            State.evalPsyNotesOpen[subId] = !State.evalPsyNotesOpen[subId];
+            rerender();
+          }
+        }, open ? '−' : '+'));
+        body.appendChild(head);
+        if (open) {
+          const wrap = h('div', { class: 'field' });
+          wrap.appendChild(h('textarea', {
+            value: noteVal,
+            rows: 2,
+            placeholder: 'Note libre pour cette rubrique…',
+            oninput: (ev) => {
+              data._notes = data._notes || {};
+              data._notes[subId] = ev.target.value;
+              saveCurrentEntretien();
+              updatePreview();
+            }
+          }));
+          body.appendChild(wrap);
+        }
+        return;
+      }
       body.appendChild(h('div', { class: 'sub-head' }, f.label));
       return;
     }
@@ -3553,7 +3830,7 @@ function renderSchemaSection(e, sectionKey) {
       field.appendChild(row);
     } else if (f.type === 'choice' || f.type === 'radio') {
       const row = h('div', { class: 'choices' });
-      f.options.forEach(o => {
+      effectiveOptions(sectionKey, f, data).forEach(o => {
         const checked = data[f.key] === o.v;
         row.appendChild(h('label', {
           class: `chip ${checked ? 'checked' : ''} ${checked && o.warn ? 'warn' : ''}`,
@@ -3568,8 +3845,9 @@ function renderSchemaSection(e, sectionKey) {
     } else if (f.type === 'multi') {
       const row = h('div', { class: 'choices' });
       if (!Array.isArray(data[f.key])) data[f.key] = [];
-      const exclusiveV = (f.options.find(o => o.exclusive) || {}).v;
-      f.options.forEach(o => {
+      const opts = effectiveOptions(sectionKey, f, data);
+      const exclusiveV = (opts.find(o => o.exclusive) || {}).v;
+      opts.forEach(o => {
         const checked = data[f.key].includes(o.v);
         row.appendChild(h('label', {
           class: `chip ${checked ? 'checked' : ''} ${checked && o.warn ? 'warn' : ''}`,
