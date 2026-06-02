@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="EMPSA">
-<meta name="theme-color" content="#1a2942">
+<meta name="theme-color" content="#3a567c">
 <title>EMPSA 94 centre — Entretien gérontopsychiatrie</title>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -25,23 +25,25 @@
 @font-face { font-family: 'Open Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url('fonts/open-sans-500.woff2') format('woff2'); }
 @font-face { font-family: 'Open Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/open-sans-600.woff2') format('woff2'); }
 @font-face { font-family: 'Open Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/open-sans-700.woff2') format('woff2'); }
+/* Nunito : police du logo (« typo ancienne »), auto-hébergée — fichier variable couvrant 700/800 */
+@font-face { font-family: 'Nunito'; font-style: normal; font-weight: 400 800; font-display: swap; src: url('fonts/nunito-700.woff2') format('woff2'); }
 
 :root {
-  --ink: #153d8a;            /* bleu charte : rgb(21, 61, 138) */
-  --ink-soft: #2d3d56;
-  --ink-faint: #5a6478;
-  --ink-light: #3d5a9b;       /* bleu moyen — 2e ton de bleu de la charte */
-  --paper: #f9faf6;          /* gris très clair, micro-cool — accordé au fond du logo */
-  --paper-warm: #eff0ea;     /* idem, plus marqué — hovers / cards */
+  --ink: #4a6b92;            /* bleu principal — couleur du texte « EMPSA » du nouveau logo */
+  --ink-soft: #3e506f;       /* bleu-ardoise — texte secondaire */
+  --ink-faint: #6e7a90;      /* texte atténué */
+  --ink-light: #7b9bc4;      /* bleu pastel du logo (les bonhommes) */
+  --paper: #fbfaf6;          /* fond du logo (blanc cassé légèrement cool) */
+  --paper-warm: #f1efe7;     /* idem, plus marqué — hovers / cards */
   --paper-card: #ffffff;
-  --ink-pale: #dbe5f3;       /* bleu très pâle — fond des en-têtes de section */
-  --accent: #f4d88e;         /* or pastel — moins saturé, inspiré plaquette */
-  --accent-strong: #f5c43d;  /* or saturé pour emphase forte (cartouche EMPSA) */
-  --accent-soft: #fbeac5;    /* or très pâle pour fonds / hover doux */
+  --ink-pale: #e1e8f2;       /* bleu très pâle — fond des en-têtes de section */
+  --accent: #f0cd77;         /* or pastel */
+  --accent-strong: #e8b84a;  /* or du logo — emphase forte */
+  --accent-soft: #f8e9c6;    /* or très pâle pour fonds / hover doux */
   --danger: #b91c1c;         /* rouge pour vraies alertes (errors, delete, wipe) */
   --danger-soft: #8b1e1e;
-  --rule: #d0d6df;
-  --rule-soft: #e2e6ec;
+  --rule: #d3d8e0;
+  --rule-soft: #e4e7ec;
   --ok: #3d6b4a;
   --warn: #8b6914;
   --shadow-sm: 0 1px 2px rgba(26, 41, 66, 0.06);
@@ -91,7 +93,7 @@ h1, h2, h3, h4 {
 
 .topbar {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 24px; background: #0d2856; color: #fff;
+  padding: 16px 24px; background: #3a567c; color: #fff;
   position: sticky; top: 0; z-index: 50;
   padding-top: calc(16px + env(safe-area-inset-top));
   box-shadow: var(--shadow-md);
@@ -140,7 +142,7 @@ h1, h2, h3, h4 {
 }
 .pin-input:focus {
   outline: none; border-color: var(--ink);
-  box-shadow: 0 0 0 3px rgba(21, 61, 138, 0.1);
+  box-shadow: 0 0 0 3px rgba(74, 107, 146, 0.18);
 }
 .lock-card button {
   width: 100%; padding: 14px; background: var(--ink); color: #fff;
@@ -157,9 +159,9 @@ h1, h2, h3, h4 {
   font-family: var(--font-sans); min-height: 18px; margin-bottom: 12px;
 }
 .dev-notice {
-  background: rgba(245, 196, 61, 0.15);
-  border: 1px solid rgba(245, 196, 61, 0.5);
-  color: #8b6914;
+  background: rgba(232, 184, 74, 0.15);
+  border: 1px solid rgba(232, 184, 74, 0.5);
+  color: var(--warn);
   padding: 10px 14px; border-radius: 6px;
   font-size: 12px; font-family: var(--font-sans);
   margin-bottom: 16px; text-align: left;
@@ -563,12 +565,12 @@ button.btn.primary {
 }
 button.btn.primary:hover { background: var(--ink-soft); }
 button.btn.primary.generate-obs {
-  background: var(--accent-strong); color: #fff;
+  background: var(--accent-strong); color: var(--ink);
   border-color: var(--accent-strong); font-weight: 700;
   padding: 8px 14px; font-size: 13px;
 }
 button.btn.primary.generate-obs:hover {
-  background: var(--accent-soft); border-color: var(--accent-soft);
+  background: var(--accent); border-color: var(--accent);
 }
 button.btn.danger { color: var(--danger); border-color: var(--rule); }
 button.btn.danger:hover {
@@ -666,10 +668,43 @@ button.btn.danger:hover {
 </head>
 <body>
 
+<!-- Définition unique du logo EMPSA (réutilisée via <use>) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="logoEmpsa" viewBox="0 8 320 100">
+    <defs>
+      <linearGradient id="logoEmpsaGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#7B9BC4"/>
+        <stop offset="60%" stop-color="#7B9BC4"/>
+        <stop offset="82%" stop-color="#B5B89E"/>
+        <stop offset="100%" stop-color="#E8B84A"/>
+      </linearGradient>
+    </defs>
+    <!-- Ligne pointillée -->
+    <path d="M 30 35 Q 60 18 100 35" fill="none" stroke="url(#logoEmpsaGrad)" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 4"/>
+    <!-- Épingle -->
+    <path d="M 100 35 C 91 27, 91 15, 100 15 C 109 15, 109 27, 100 35 Z" fill="#E8B84A"/>
+    <circle cx="100" cy="22" r="3" fill="#FBFAF6"/>
+    <!-- Équipe (3 bonhommes bleus) -->
+    <circle cx="15" cy="54" r="7" fill="#7B9BC4"/>
+    <path d="M 5 94 Q 5 66 15 64 Q 25 66 25 94 Z" fill="#7B9BC4"/>
+    <circle cx="30" cy="50" r="7" fill="#A8C0DD"/>
+    <path d="M 20 94 Q 20 62 30 60 Q 40 62 40 94 Z" fill="#A8C0DD"/>
+    <circle cx="45" cy="54" r="7" fill="#7B9BC4"/>
+    <path d="M 35 94 Q 35 66 45 64 Q 55 66 55 94 Z" fill="#7B9BC4"/>
+    <!-- Bonhomme jaune avec toit -->
+    <path d="M 80 52 L 100 38 L 120 52" fill="none" stroke="#E8B84A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="100" cy="62" r="8" fill="#E8B84A"/>
+    <path d="M 89 102 Q 89 73 100 71 Q 111 73 111 102 Z" fill="#E8B84A"/>
+    <!-- Texte (typo Nunito) -->
+    <text x="135" y="55" font-family="Nunito, sans-serif" font-size="46" font-weight="700" fill="#4A6B92" letter-spacing="1">EMPSA</text>
+    <text x="135" y="90" font-family="Nunito, sans-serif" font-size="22" font-weight="700" fill="#4A6B92" letter-spacing="6" textLength="177" lengthAdjust="spacingAndGlyphs">94 CENTRE</text>
+  </symbol>
+</svg>
+
 <!-- Écran verrouillé -->
 <div id="lockScreen" class="lock-screen">
   <div class="lock-card">
-    <img src="logo-empsa.png" alt="EMPSA 94 centre" class="lock-logo">
+    <svg class="lock-logo" viewBox="0 8 320 100" role="img" aria-label="EMPSA 94 centre"><use href="#logoEmpsa"/></svg>
     <div class="sub">Rédige ton observation en quelques clics !</div>
     <div class="dev-notice">
       <strong>Mode développement</strong> — PIN par défaut : <strong>0000</strong>
@@ -688,7 +723,7 @@ button.btn.danger:hover {
 <div id="app" style="display:none;">
   <div class="topbar">
     <div class="brand">
-      <img src="logo-empsa.png" class="brand-mark" alt="EMPSA 94 centre">
+      <svg class="brand-mark" viewBox="0 8 320 100" role="img" aria-label="EMPSA 94 centre"><use href="#logoEmpsa"/></svg>
     </div>
     <div class="actions">
       <button id="exportAllBtn" title="Exporter toutes les données chiffrées">Sauvegarder</button>

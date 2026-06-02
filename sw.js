@@ -1,4 +1,4 @@
-const CACHE = 'empsa-v7';
+const CACHE = 'empsa-v8';
 const ASSETS = [
   './',
   './empsa.html',
@@ -6,9 +6,6 @@ const ASSETS = [
   './icon.svg',
   './logo-empsa.png',
   './logo-empsa-white.png',
-  './logo-aphp.png',
-  './logo-dmu.png',
-  './logo-hmn.png',
   './fonts/montserrat-400.woff2',
   './fonts/montserrat-500.woff2',
   './fonts/montserrat-600.woff2',
@@ -16,7 +13,8 @@ const ASSETS = [
   './fonts/open-sans-400.woff2',
   './fonts/open-sans-500.woff2',
   './fonts/open-sans-600.woff2',
-  './fonts/open-sans-700.woff2'
+  './fonts/open-sans-700.woff2',
+  './fonts/nunito-700.woff2'
 ];
 
 self.addEventListener('install', (event) => {

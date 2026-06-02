@@ -1,8 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" fill="#1a2942"/>
-  <text x="256" y="360" text-anchor="middle"
-        font-family="Georgia, 'Iowan Old Style', serif"
-        font-size="280"
-        fill="#e8e4dc"
-        font-style="italic">e</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="EMPSA 94 centre">
+  <!-- Fond : bleu du logo -->
+  <rect width="512" height="512" rx="112" fill="#4a6b92"/>
+  <!-- Épingle de localisation (or) -->
+  <path d="M256 96 C 220 96 192 124 192 160 C 192 206 256 268 256 268 C 256 268 320 206 320 160 C 320 124 292 96 256 96 Z" fill="#e8b84a"/>
+  <circle cx="256" cy="160" r="22" fill="#4a6b92"/>
+  <!-- Personne (crème) -->
+  <circle cx="256" cy="330" r="36" fill="#fbfaf6"/>
+  <path d="M204 446 Q 204 376 256 374 Q 308 376 308 446 Z" fill="#fbfaf6"/>
 </svg>
